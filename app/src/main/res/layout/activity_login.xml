@@ -5,10 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context="com.example.albert.partymaps.LoginActivity">
+    tools:context="com.example.albert.partymaps.LoginActivity"
+    android:gravity="center"
+    >
 
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:id="@+id/user"
+        android:background="@color/colorAccent"
 
+        />
 
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/user"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/password"
+        android:background="@color/colorAccent"/>
 
 
 
