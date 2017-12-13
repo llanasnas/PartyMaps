@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "287452001615",
+    "firebase_url": "https://partymaps-51476.firebaseio.com",
+    "project_id": "partymaps-51476",
+    "storage_bucket": "partymaps-51476.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287452001615:android:9394218ac47b70dd",
+        "android_client_info": {
+          "package_name": "com.example.albert.partymaps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "287452001615-okv37ltpk91c0f445rgta2hk6o4264us.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.albert.partymaps",
+            "certificate_hash": "3f16702ea273aa269b4cba7cf4d1dc5aeed1ff57"
+          }
+        },
+        {
+          "client_id": "287452001615-5ka5m5qsrh0ijicfadequnerm8csk9ot.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzk8qohLEgY5I-p6nPSHTohzMShuI8nW8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "287452001615-5ka5m5qsrh0ijicfadequnerm8csk9ot.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
