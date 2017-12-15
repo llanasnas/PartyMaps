@@ -1,5 +1,6 @@
 package com.example.albert.partymaps;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         TextView createAccount = (TextView) findViewById(R.id.create);
         submit.setOnClickListener(this);
 
+
+        createAccount.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                //Intent intent = new Intent(this, OtherActivity.class);
+                //startActivity(intent);
+            }
+        });
 
 
     }

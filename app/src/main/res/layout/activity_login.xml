@@ -48,16 +48,16 @@
         android:layout_centerHorizontal="true"
 
         />
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/submit"
         android:layout_centerHorizontal="true"
         android:text="Crear cuenta"
+        android:textSize="20sp"
         android:id="@+id/create"
         android:textColor="#14DEE1"
-        android:linksClickable="true"
-
+        android:layout_marginTop="10dp"
         />
 
 
