@@ -6,25 +6,48 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context="com.example.albert.partymaps.LoginActivity"
-    android:gravity="center"
+
     >
 
     <EditText
+        android:id="@+id/user"
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:id="@+id/user"
-        android:background="@color/colorAccent"
-
+        android:layout_alignStart="@+id/password"
+        android:background="@drawable/edittextstyle"
+        android:layout_above="@+id/password"
         />
 
     <EditText
         android:layout_width="200dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/user"
+
+        android:background="@drawable/edittextstyle"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="30dp"
+        android:layout_centerVertical="true"
         android:id="@+id/password"
-        android:background="@color/colorAccent"/>
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_below="@id/password"
+        android:text="Submit"
+        android:id="@+id/submit"
+        android:layout_centerHorizontal="true"
+
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/submit"
+        android:layout_centerHorizontal="true"
+        android:text="Crear cuenta"
+        android:textColor="#14DEE1"
+        android:linksClickable="true"
+
+        />
 
 
 
