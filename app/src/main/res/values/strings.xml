@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PartyMaps</string>
+    <string name="nombre">Nombre</string>
+    <string name="email">Email</string>
+    <string name="fecha_nacimiento">Fecha de nacimiento</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="registrarse">Crear Cuenta</string>
+    <string name="ya_registrado">Ya tienes una cuenta? Login </string>
 </resources>
