@@ -28,6 +28,7 @@
         android:layout_above="@+id/password"
         />
 
+
     <EditText
         android:layout_width="200dp"
         android:layout_height="50dp"
@@ -48,10 +49,19 @@
         android:layout_centerHorizontal="true"
 
         />
+    <Button
+        android:layout_width="160dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/submit"
+        android:id="@+id/facebook"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/facebook_login"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/submit"
+        android:layout_below="@+id/facebook"
         android:layout_centerHorizontal="true"
         android:text="Crear cuenta"
         android:textSize="20sp"

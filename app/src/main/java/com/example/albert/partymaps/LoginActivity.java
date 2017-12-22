@@ -23,21 +23,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         EditText password = (EditText) findViewById(R.id.password);
         Button submit = (Button) findViewById(R.id.submit);
         TextView createAccount = (TextView) findViewById(R.id.create);
-        submit.setOnClickListener(this);
 
 
         createAccount.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                //Intent intent = new Intent(this, OtherActivity.class);
-                //startActivity(intent);
+
+            @Override
+            public void onClick(View view) {
+
+                    Intent intent = new Intent(getBaseContext(), RegisterActivity.class);
+                    startActivity(intent);
+
             }
         });
 
 
     }
 
+
     @Override
     public void onClick(View view) {
+
 
         EditText user = (EditText) view.findViewById(R.id.user);
         EditText password = (EditText) view.findViewById(R.id.password);
