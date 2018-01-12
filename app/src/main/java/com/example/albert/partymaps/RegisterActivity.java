@@ -44,18 +44,22 @@ public class RegisterActivity extends AppCompatActivity {
                 EditText nombre = (EditText) findViewById(R.id.input_name);
                 EditText fecha_nacimiento = (EditText) findViewById(R.id.date);
                 //Validem les dades del registre -->>>
-                if (!validarEmail(String.valueOf(correo.getText()))){
+                if (!validarEmail(correo.getText().toString())){
                     correo.setError("Email no válido");
                 }else{mail=true;}
-                if(!validarNombre(String.valueOf(nombre.getText()))){
+                if(!validarNombre(nombre.getText().toString())){
                     nombre.setError("Este campo no puede estar vacio");
                 }else{name=true;}
-                if(!validarPassword(String.valueOf(password.getText()))){
-                    password.setError("Formato de password incorrecto");
+                if(password.getText().toString().length()<8 &&!validarPassword(password.getText().toString())){
+                    password.setError("contraseña no válida");
                 }else{pass=true;}
                 if(repassword.getText().equals(password.getText())){
                     repass=true;
-                }
+                }else{
+                    repassword.setError("No coinciden los passwords");
+                }if(fecha_nacimiento.getText().toString().length()==0){fecha_nacimiento.setError("Fecha no válida");}else{fecha=true;}
+
+
 
             }
         });
