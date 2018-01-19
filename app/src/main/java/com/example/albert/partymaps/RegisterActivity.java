@@ -1,20 +1,32 @@
 package com.example.albert.partymaps;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
+
+    private FirebaseAuth mAuth;
+    private static final String TAG = RegisterActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 
-
+        mAuth = FirebaseAuth.getInstance();
 
         TextView tornar = (TextView) findViewById(R.id.link_login);
 
@@ -53,14 +65,36 @@ public class RegisterActivity extends AppCompatActivity {
                 if(password.getText().toString().length()<8 &&!validarPassword(password.getText().toString())){
                     password.setError("contraseña no válida");
                 }else{pass=true;}
-                if(repassword.getText().equals(password.getText())){
+                if(repassword.getText().toString().equals(password.getText().toString())){
                     repass=true;
                 }else{
                     repassword.setError("No coinciden los passwords");
                 }if(fecha_nacimiento.getText().toString().length()==0){fecha_nacimiento.setError("Fecha no válida");}else{fecha=true;}
 
+                 if (mail&&pass&repass&name&fecha){
 
+                     mAuth.createUserWithEmailAndPassword(correo.getText().toString(), password.getText().toString())
+                             .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                 @Override
+                                 public void onComplete(@NonNull Task<AuthResult> task) {
+                                     if (task.isSuccessful()) {
+                                         // Sign in success, update UI with the signed-in user's information
+                                         Toast.makeText(getApplicationContext(), "Te has registrao pescao.",
+                                                 Toast.LENGTH_SHORT).show();
+                                         Log.d(TAG, "createUserWithEmail:success");
+                                         FirebaseUser user = mAuth.getCurrentUser();
+                                         updateUI(user);
+                                     } else {
+                                         // If sign in fails, display a message to the user.
+                                         Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                                         Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                                 Toast.LENGTH_SHORT).show();
+                                         updateUI(null);
+                                     }
 
+                                 }
+                             });
+                 }
             }
         });
 
@@ -79,6 +113,20 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+
+
+    public void updateUI(FirebaseUser user){
+
+
+
+
+
+    }
+
     private boolean validarEmail(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;
         return pattern.matcher(email).matches();
