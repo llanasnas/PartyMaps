@@ -9,4 +9,6 @@
     <string name="ya_registrado">Ya tienes una cuenta? Login </string>
     <string name="facebook_app_id">346503992520927</string>
     <string name="fb_login_protocol_scheme">fb346503992520927</string>
+    <string name="perfil">Perfil</string>
+    <string name="log_out">cerrar sesión</string>
 </resources>

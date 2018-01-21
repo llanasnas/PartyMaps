@@ -2,5 +2,6 @@
 <resources>
     <dimen name="title_main_activity">65dp</dimen>
     <dimen name="titles">50dp</dimen>
-
+    <dimen name="logo_width">200dp</dimen>
+    <dimen name="logo_height">245dp</dimen>
 </resources>

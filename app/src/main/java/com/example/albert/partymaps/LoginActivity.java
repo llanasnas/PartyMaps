@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +31,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_login);
-        TextView logo = (TextView) findViewById(R.id.logo);
-        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/RubikMonoOne-Regular.ttf");
-        logo.setTypeface(font);
+        ImageView logo = (ImageView) findViewById(R.id.logo);
+
         final EditText emailInput = (EditText) findViewById(R.id.user);
         final EditText passwordInput = (EditText) findViewById(R.id.password);
         Button submit = (Button) findViewById(R.id.submit);

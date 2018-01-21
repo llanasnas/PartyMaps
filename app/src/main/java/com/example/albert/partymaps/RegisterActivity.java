@@ -15,11 +15,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static final String TAG = RegisterActivity.class.getSimpleName();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                 EditText repassword = (EditText) findViewById(R.id.input_repassword);
                 EditText nombre = (EditText) findViewById(R.id.input_name);
                 EditText fecha_nacimiento = (EditText) findViewById(R.id.date);
+
                 //Validem les dades del registre -->>>
                 if (!validarEmail(correo.getText().toString())){
                     correo.setError("Email no válido");
@@ -71,8 +79,10 @@ public class RegisterActivity extends AppCompatActivity {
                     repassword.setError("No coinciden los passwords");
                 }if(fecha_nacimiento.getText().toString().length()==0){fecha_nacimiento.setError("Fecha no válida");}else{fecha=true;}
 
-                 if (mail&&pass&repass&name&fecha){
 
+
+                 if (mail&&pass&repass&name&fecha){
+                     final user usuario = new user(nombre.getText().toString(),correo.getText().toString(),fecha_nacimiento.getText().toString());
                      mAuth.createUserWithEmailAndPassword(correo.getText().toString(), password.getText().toString())
                              .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                                  @Override
@@ -84,6 +94,35 @@ public class RegisterActivity extends AppCompatActivity {
                                          Log.d(TAG, "createUserWithEmail:success");
                                          FirebaseUser user = mAuth.getCurrentUser();
                                          updateUI(user);
+                                         String uid = user.getUid();
+
+
+                                         Map<String, Object> user_add = new HashMap<>();
+                                         user_add.put("name", usuario.getName());
+                                         user_add.put("mail",usuario.getMail());
+                                         user_add.put("date", usuario.getDate());
+
+
+                                         db.collection("users").document(uid)
+                                                 .set(user_add)
+                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                     @Override
+                                                     public void onSuccess(Void aVoid) {
+                                                         Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                         Toast.makeText(getApplicationContext(), "tot correcte",
+                                                                 Toast.LENGTH_SHORT).show();
+                                                     }
+                                                 })
+                                                 .addOnFailureListener(new OnFailureListener() {
+                                                     @Override
+                                                     public void onFailure(@NonNull Exception e) {
+                                                         Log.w(TAG, "Error writing document", e);
+                                                         Toast.makeText(getApplicationContext(), "Guardado failed.",
+                                                                 Toast.LENGTH_SHORT).show();
+                                                     }
+                                                 });
+
+
                                      } else {
                                          // If sign in fails, display a message to the user.
                                          Log.w(TAG, "createUserWithEmail:failure", task.getException());
@@ -94,6 +133,11 @@ public class RegisterActivity extends AppCompatActivity {
 
                                  }
                              });
+
+
+
+
+
                  }
             }
         });
