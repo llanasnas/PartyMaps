@@ -49,19 +49,19 @@
         android:layout_centerHorizontal="true"
 
         />
-    <Button
-        android:layout_width="160dp"
-        android:layout_height="45dp"
-        android:layout_below="@+id/submit"
-        android:id="@+id/facebook"
-        android:layout_marginTop="5dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/facebook_login"
-        />
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/submit"
+        android:layout_marginBottom="30dp"
+        android:layout_centerHorizontal="true"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/facebook"
+        android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true"
         android:text="Crear cuenta"
         android:textSize="20sp"

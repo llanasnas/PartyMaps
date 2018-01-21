@@ -7,4 +7,6 @@
     <string name="contraseña2">Confirmar Contraseña</string>
     <string name="registrarse">Crear Cuenta</string>
     <string name="ya_registrado">Ya tienes una cuenta? Login </string>
+    <string name="facebook_app_id">346503992520927</string>
+    <string name="fb_login_protocol_scheme">fb346503992520927</string>
 </resources>
