@@ -40,7 +40,7 @@
         android:layout_height="45dp"
         android:background="@drawable/submitbutton"
         android:layout_below="@id/password"
-        android:textColor="#2AFF12"
+        android:textColor="#FFFFFF"
         android:text="Iniciar Sesión"
         android:id="@+id/submit"
         android:layout_centerHorizontal="true"
