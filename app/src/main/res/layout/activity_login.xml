@@ -19,6 +19,7 @@
         android:id="@+id/user"
         android:layout_width="200dp"
         android:layout_height="50dp"
+        android:inputType="textEmailAddress"
         android:layout_alignStart="@+id/password"
         android:background="@drawable/edittextstyle"
         android:layout_above="@+id/password"
