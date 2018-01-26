@@ -12,7 +12,7 @@
         android:layout_width="@dimen/logo_width"
         android:layout_height="@dimen/logo_height"
         android:layout_alignEnd="@+id/buscar_evento"
-        android:src="@drawable/logo1" />
+        />
 
     <Button
         android:layout_width="200dp"

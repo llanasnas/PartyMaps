@@ -103,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                                          user_add.put("date", usuario.getDate());
 
 
-                                         db.collection("users").document(uid)
+                                         db.collection("Users").document(uid)
                                                  .set(user_add)
                                                  .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                      @Override
