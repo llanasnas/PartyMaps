@@ -83,6 +83,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     // there was an error
                                     Toast.makeText(LoginActivity.this, "Has entrao pescao", Toast.LENGTH_SHORT).show();;
 
+                                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                    startActivity(intent);
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Email o contraseña incorrecta", Toast.LENGTH_SHORT).show();;
                                 }
