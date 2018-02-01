@@ -1,8 +1,11 @@
 package com.example.albert.partymaps;
 
+import android.content.pm.PackageManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
+import android.Manifest;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,10 +20,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private boolean marked=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        } else {
+            // Show rationale and request permission.
+        }
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -53,11 +63,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                if(marked){
+                    marked=false;
 
-                mMap.addMarker(new MarkerOptions().position(latLng).title("castle")
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
-                        .anchor(0.0f,1.0f).position(latLng));
 
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
+                            .anchor(0.0f, 1.0f).position(latLng));
+                }else {
+                    mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
+                            .anchor(0.0f, 1.0f).position(latLng));
+                }
 
             }
         });
