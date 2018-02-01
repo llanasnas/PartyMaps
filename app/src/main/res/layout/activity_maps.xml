@@ -55,6 +55,35 @@
             android:hint="@string/descripcion"
             android:inputType="text"
             />
+
+        <Spinner
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Ciudad"
+            android:id="@+id/spinner_city"
+            >
+        </Spinner>
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/date_picker"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/date_picker"
+            android:onClick="showDatePickerDialog" />
+
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/time_picker"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/time_picker"
+            android:onClick="showTimePickerDialog" />
+
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
@@ -66,6 +95,15 @@
             android:layout_gravity="center_horizontal"
             android:layout_height="200dp"
             tools:context="com.example.albert.partymaps.MapsActivity" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/confirm_event"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:text="@string/registrarse"/>
 
 
 

@@ -18,4 +18,13 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
+    <string-array name="cities">
+        <item>Barcelona</item>
+        <item>Madrid</item>
+        <item>Valladolid</item>
+    </string-array>
+    <string name="time_picker">Hora</string>
+    <string name="date_picker">Fecha</string>
 </resources>
+
+
