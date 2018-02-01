@@ -87,7 +87,6 @@
             <EditText android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:onClick="showDatePickerDialog"
                 android:hint="Fecha de nacimiento"/>
         </android.support.design.widget.TextInputLayout>
