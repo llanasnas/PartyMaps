@@ -2,6 +2,7 @@ package com.example.albert.partymaps;
 
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -10,6 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -45,10 +47,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+
+
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
-                mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston)).anchor(0.0f,1.0f).position(latLng));
+            public void onMapClick(LatLng latLng) {
+
+                mMap.addMarker(new MarkerOptions().position(latLng).title("castle")
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
+                        .anchor(0.0f,1.0f).position(latLng));
+
+
             }
         });
     }
