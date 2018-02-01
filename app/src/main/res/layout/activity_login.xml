@@ -42,7 +42,7 @@
         android:layout_height="45dp"
         android:background="@drawable/submitbutton"
         android:layout_below="@id/password"
-        android:textColor="#FF1C1FCA"
+        android:textColor="#FFFFFF"
         android:text="Iniciar Sesión"
         android:id="@+id/submit"
         android:layout_centerHorizontal="true"
@@ -63,9 +63,9 @@
         android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true"
         android:text="Crear cuenta"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:id="@+id/create"
-        android:textColor="#2AFF12"
+        android:textColor="#FF1C1FCA"
         />
 
 

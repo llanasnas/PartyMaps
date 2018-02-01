@@ -70,14 +70,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-                //authenticate user
+                //authenticate User
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // If sign in fails, display a message to the User. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
+                                // signed in User can be handled in the listener.
 
                                 if (task.isSuccessful()) {
                                     // there was an error
@@ -97,14 +97,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // Check if User is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //updateUI(currentUser);
     }
-    /*private void updateUI(FirebaseUser user) {
-        if (user != null) {
+    /*private void updateUI(FirebaseUser User) {
+        if (User != null) {
             ((TextView) findViewById(R.id.text_sign_in_status)).setText(
-                    "User ID: " + user.getUid());
+                    "User ID: " + User.getUid());
         } else {
             ((TextView) findViewById(R.id.text_sign_in_status)).setText(
                     "Error: sign in failed.");
