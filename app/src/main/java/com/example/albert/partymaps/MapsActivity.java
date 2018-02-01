@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.text.InputType;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -30,19 +33,32 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private static boolean marked=false,nombre=false,descripcion=false,date=false,time=false;
-    private Event evento;
+    private FirebaseAuth mAuth;
+    private static final String TAG = MapsActivity.class.getSimpleName();
+    private static EditText datePicker;
+    private static EditText timePicker ;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static boolean marked=false,nombre=false,descripcion=false,date=false,time=false,coord=false,musicType=false;
+    private static Event evento = new Event();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -55,36 +71,85 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_city);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_city);
 
         String[] arraySpinner = getResources().getStringArray(R.array.cities);
         ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,
                 arraySpinner);
         spinner.setAdapter(adapter);
+        timePicker = (EditText) findViewById(R.id.time_picker);
+        datePicker = (EditText) findViewById(R.id.date_picker);
 
 
-        EditText datePicker = (EditText) findViewById(R.id.date_picker);
-        EditText timePicker = (EditText) findViewById(R.id.time_picker);
         datePicker.setInputType(InputType.TYPE_NULL);
         timePicker.setInputType(InputType.TYPE_NULL);
-        AppCompatButton submit = (AppCompatButton) findViewById(R.id.btn_signup);
+        AppCompatButton submit = (AppCompatButton) findViewById(R.id.confirm_event);
 
 
         submit.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-                marked=false;nombre=false;descripcion=false;date=false;time=false;
+                nombre=false;descripcion=false;
                 EditText name = (EditText) findViewById(R.id.nombre_evento);
                 EditText description = (EditText) findViewById(R.id.description);
-                if(marked&&nombre&&descripcion&date&&time){
+                EditText music = (EditText) findViewById(R.id.estilo_musica);
 
-                    if(isEmpty(name.getText().toString())){
-                       name.setError("Este campo no puede estar vacio");
-                    }else{nombre=true;}
-                    if(isEmpty(description.getText().toString())){
-                        description.setError("Este campo no puede estar vacio");
-                    }else{descripcion=true;}
+                if(isEmpty(name.getText().toString())){
+                    name.setError("Este campo no puede estar vacio");
+                }else{nombre=true;}
+                if(!isEmpty(music.getText().toString())){musicType=true;}
+                if(isEmpty(description.getText().toString())){
+                    description.setError("Este campo no puede estar vacio");
+                }else{descripcion=true;}
+                if(marked){coord=true;}else{
+                    Toast.makeText(getApplicationContext(), "Inserta una ubicación",
+                            Toast.LENGTH_SHORT).show();
+                }
+                if(!date){datePicker.setError("Debes asignar una fecha");}
+                if(!time){timePicker.setError("Debes asignar una hora");}
+
+
+                if(coord&&nombre&&descripcion&date&&time&&musicType){
+                    evento.setName(name.getText().toString());
+                    evento.setDescription(description.getText().toString());
+                    evento.setLocality(spinner.getSelectedItem().toString());
+                    evento.setMusic_type(music.getText().toString());
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    String uid = user.getUid();
+
+
+                    Map<String, Object> user_add = new HashMap<>();
+                    user_add.put("event_name", evento.getName());
+                    user_add.put("music_style",evento.getMusic_type());
+                    user_add.put("Description",evento.getDescription());
+                    user_add.put("locality", evento.getLocality());
+                    user_add.put("date", evento.getDate());
+                    user_add.put("Time",evento.getTime());
+                    user_add.put("ubication",evento.getUbication());
+                    user_add.put("event_maker",uid);
+
+
+                    db.collection("Events").document()
+                            .set(user_add)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    Toast.makeText(getApplicationContext(), "tot correcte",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                    Toast.makeText(getApplicationContext(), "Guardado failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    //Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    //startActivity(intent);
 
 
                 }
@@ -162,10 +227,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
                             .anchor(0.0f, 1.0f).position(latLng));
+                            evento.setUbication(String.valueOf(latLng));
                 }else {
                     mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
                             .anchor(0.0f, 1.0f).position(latLng));
+                            evento.setUbication(String.valueOf(latLng));
                     marked=true;
 
                 }
@@ -192,7 +259,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
             date=true;
-            String fecha ;
+            String fecha = day + "/" + month + "/" + year;
+            evento.setDate(fecha);
+            datePicker.setText(fecha);
 
 
         }
@@ -215,6 +284,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             // Do something with the time chosen by the user
+
+            time = true;
+            String hora = hourOfDay + ":" + minute;
+            evento.setTime(hora);
+            timePicker.setText(hora);
+
         }
     }
 

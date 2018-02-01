@@ -12,6 +12,15 @@ public class Event {
     private String locality;
     private String date;
     private String time;
+    private String ubication;
+
+    public String getUbication() {
+        return ubication;
+    }
+
+    public void setUbication(String ubication) {
+        this.ubication = ubication;
+    }
 
     public Event() {
     }
