@@ -53,6 +53,7 @@
         android:textColor="@color/white"
         android:layout_height="50dp"
         android:text="@string/log_out"
+        android:id="@+id/logout"
         android:backgroundTint="@color/buton_crear"
         android:layout_below="@+id/perfil"/>
 

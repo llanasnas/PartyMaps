@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.login.LoginManager;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button crear_evento = (Button) findViewById(R.id.crear_evento);
         Button buscar_evento = (Button) findViewById(R.id.buscar_evento);
+        Button cerrar_sesion = (Button) findViewById(R.id.logout);
 
 
         crear_evento.setOnClickListener(new View.OnClickListener(){
@@ -35,6 +38,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+            }
+        });
+
+        cerrar_sesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                finish();
             }
         });
 
