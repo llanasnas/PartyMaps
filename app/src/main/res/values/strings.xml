@@ -25,6 +25,21 @@
     </string-array>
     <string name="time_picker">Hora</string>
     <string name="date_picker">Fecha</string>
+    <string-array name="menu">
+        <item>Buscar evento</item>
+        <item>Crear evento</item>
+        <item>Amigos</item>
+        <item>Mi perfil</item>
+        <item>Cerrar sesión</item>
+    </string-array>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="crear_evento">Crear evento</string>
+
 </resources>
 
 

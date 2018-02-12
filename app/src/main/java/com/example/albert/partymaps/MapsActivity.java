@@ -71,110 +71,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner_city);
-
-        String[] arraySpinner = getResources().getStringArray(R.array.cities);
-        ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,
-                arraySpinner);
-        spinner.setAdapter(adapter);
-        timePicker = (EditText) findViewById(R.id.time_picker);
-        datePicker = (EditText) findViewById(R.id.date_picker);
-
-
-        datePicker.setInputType(InputType.TYPE_NULL);
-        timePicker.setInputType(InputType.TYPE_NULL);
-        AppCompatButton submit = (AppCompatButton) findViewById(R.id.confirm_event);
-
-
-        submit.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                nombre=false;descripcion=false;
-                EditText name = (EditText) findViewById(R.id.nombre_evento);
-                EditText description = (EditText) findViewById(R.id.description);
-                EditText music = (EditText) findViewById(R.id.estilo_musica);
-
-                if(isEmpty(name.getText().toString())){
-                    name.setError("Este campo no puede estar vacio");
-                }else{nombre=true;}
-                if(!isEmpty(music.getText().toString())){musicType=true;}
-                if(isEmpty(description.getText().toString())){
-                    description.setError("Este campo no puede estar vacio");
-                }else{descripcion=true;}
-                if(marked){coord=true;}else{
-                    Toast.makeText(getApplicationContext(), "Inserta una ubicación",
-                            Toast.LENGTH_SHORT).show();
-                }
-                if(!date){datePicker.setError("Debes asignar una fecha");}
-                if(!time){timePicker.setError("Debes asignar una hora");}
-
-
-                if(coord&&nombre&&descripcion&date&&time&&musicType){
-                    evento.setName(name.getText().toString());
-                    evento.setDescription(description.getText().toString());
-                    evento.setLocality(spinner.getSelectedItem().toString());
-                    evento.setMusic_type(music.getText().toString());
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    String uid = user.getUid();
-
-
-                    Map<String, Object> user_add = new HashMap<>();
-                    user_add.put("event_name", evento.getName());
-                    user_add.put("music_style",evento.getMusic_type());
-                    user_add.put("Description",evento.getDescription());
-                    user_add.put("locality", evento.getLocality());
-                    user_add.put("date", evento.getDate());
-                    user_add.put("Time",evento.getTime());
-                    user_add.put("ubication",evento.getUbication());
-                    user_add.put("event_maker",uid);
-
-
-                    db.collection("Events").document()
-                            .set(user_add)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    Toast.makeText(getApplicationContext(), "tot correcte",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error writing document", e);
-                                    Toast.makeText(getApplicationContext(), "Guardado failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                    //Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                    //startActivity(intent);
-
-
-                }
-
-            }
-        });
-
-
-        datePicker.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                    showDatePickerDialog(view);
-            }
-        });
-        timePicker.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View view) {
-                showTimePickerDialog(view);
-            }
-        });
-
-
-
     }
     private boolean isEmpty(String nombre){
 
@@ -185,15 +81,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return false;
         }
     }
-    public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-    }
-    public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new DatePickerFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
 
     /**
      * Manipulates the map once available.
@@ -240,57 +127,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
-
-    public static class DatePickerFragment extends DialogFragment
-            implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default date in the picker
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            // Create a new instance of DatePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-            date=true;
-            String fecha = day + "/" + month + "/" + year;
-            evento.setDate(fecha);
-            datePicker.setText(fecha);
-
-
-        }
-    }
-
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
-
-            time = true;
-            String hora = hourOfDay + ":" + minute;
-            evento.setTime(hora);
-            timePicker.setText(hora);
-
-        }
-    }
-
 }

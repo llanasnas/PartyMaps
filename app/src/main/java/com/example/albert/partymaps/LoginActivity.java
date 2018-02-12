@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null){
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    Intent intent = new Intent(getBaseContext(), Main2Activity.class);
                     startActivity(intent);
                 }
             }
@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     // there was an error
                                     Toast.makeText(LoginActivity.this, "Has entrao pescao", Toast.LENGTH_SHORT).show();;
 
-                                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                    Intent intent = new Intent(getBaseContext(), Main2Activity.class);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Email o contraseña incorrecta", Toast.LENGTH_SHORT).show();;
