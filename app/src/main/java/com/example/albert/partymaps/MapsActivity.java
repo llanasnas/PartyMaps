@@ -48,11 +48,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private FirebaseAuth mAuth;
     private static final String TAG = MapsActivity.class.getSimpleName();
-    private static EditText datePicker;
-    private static EditText timePicker ;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static boolean marked=false,nombre=false,descripcion=false,date=false,time=false,coord=false,musicType=false;
-    private static Event evento = new Event();
+    private static boolean marked=false;
+
 
 
     @Override
@@ -114,16 +111,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
                             .anchor(0.0f, 1.0f).position(latLng));
-                            evento.setUbication(String.valueOf(latLng));
+
                 }else {
                     mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
                             .anchor(0.0f, 1.0f).position(latLng));
-                            evento.setUbication(String.valueOf(latLng));
                     marked=true;
-
                 }
             }
         });
+
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        marked=false;
+
     }
 }
