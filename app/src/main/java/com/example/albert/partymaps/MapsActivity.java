@@ -108,7 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
 
             public void onMapClick(LatLng latLng) {
-
+                CrearEvento.takePos(latLng);
                 if(marked){
                     mark.remove();
                     mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
@@ -123,7 +123,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     marked=true;
 
                 }
-
             }
         });
     }

@@ -43,11 +43,13 @@ import java.util.Map;
 
 public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private static GoogleMap mMap;
     private FirebaseAuth mAuth;
     private static final String TAG = CrearEvento.class.getSimpleName();
     private static EditText datePicker;
-    private static EditText timePicker ;
+    private static EditText timePicker;
+    private static LatLng position;
+    private static Marker mark;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static boolean marked=false,nombre=false,descripcion=false,date=false,time=false,coord=false,musicType=false;
     private static Event evento = new Event();
@@ -206,13 +208,17 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // Add a marker in Sydney and move the camera
-        LatLng barcelona = new LatLng(41.390205, 2.154007);
-        mMap.addMarker(new MarkerOptions().position(barcelona).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(barcelona));
-
-
+        LatLng posicio;
+        if(marked){
+            mark.remove();
+            mark = mMap.addMarker(new MarkerOptions().position(position).title("Fiesta"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
+        }else {
+            posicio = new LatLng(41.390205, 2.154007);
+            mark = mMap.addMarker(new MarkerOptions().position(posicio).title("Fiesta"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(posicio));
+        }
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             Marker mark;
@@ -251,6 +257,18 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
 
         }
+    }
+    public static void takePos(LatLng latLng){
+
+        marked = true;
+        evento.setUbication(String.valueOf(latLng));
+        position = latLng;
+        mark.remove();
+        mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
+                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.fieston))
+                .anchor(0.0f, 1.0f).position(latLng));
+        evento.setUbication(String.valueOf(latLng));
+
     }
 
     public static class TimePickerFragment extends DialogFragment
