@@ -91,6 +91,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="300dp"
             android:longClickable="true"
+            map:cameraZoom="10"
             android:layout_marginTop="40dp"
             android:layout_gravity="center_horizontal"
             android:layout_height="200dp"
