@@ -25,6 +25,16 @@ public class Event {
     public Event() {
     }
 
+    public Event(String name, String music_type, String description, String locality, String date, String time, String ubication) {
+        this.name = name;
+        this.music_type = music_type;
+        this.description = description;
+        this.locality = locality;
+        this.date = date;
+        this.time = time;
+        this.ubication = ubication;
+    }
+
     public String getName() {
         return name;
     }

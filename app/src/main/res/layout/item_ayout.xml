@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="@dimen/item_image_height">
+
+
+
+    <ImageView
+        android:layout_width="@dimen/item_image_width"
+        android:layout_height="@dimen/item_image_height"
+        android:id="@+id/imagen"
+        android:src="@drawable/logo1"
+        />
+
+    <TextView
+        android:id="@+id/nombre_evento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/text_margin"
+        android:text="@string/nombre_evento" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/nombre_evento"
+        android:layout_below="@+id/nombre_evento"
+        android:id="@+id/localidad"
+        android:layout_marginTop="@dimen/text_margin"
+        android:text="@string/nombre_evento" />
+
+
+</RelativeLayout>

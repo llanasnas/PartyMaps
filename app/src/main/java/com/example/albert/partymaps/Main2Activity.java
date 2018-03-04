@@ -1,5 +1,6 @@
 package com.example.albert.partymaps;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -42,6 +43,13 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ListFragment listFragment = new ListFragment();
+        //listFragment.setArguments(createBundle());
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().
+                add(R.id.main, listFragment).
+                commit();
     }
 
     @Override
