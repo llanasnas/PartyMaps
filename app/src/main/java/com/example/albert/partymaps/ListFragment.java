@@ -30,9 +30,10 @@ import java.util.List;
  */
 public class ListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private ArrayList<Event> events;
+    private ArrayList<Event> events = new ArrayList<>();
     private FirebaseAuth mAuth;
     private ArrayList<Event> eventos = new ArrayList<Event>();
+    ListView listView;
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -46,10 +47,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_list_, container, false);
-
-        ListView listView = view.findViewById(R.id.listViewEvents);
-        EventAdapter adapter = new EventAdapter(events, getActivity());
-        listView.setAdapter(adapter);
+        listView = view.findViewById(R.id.listViewEvents);
         listView.setOnItemClickListener(this);
         return view;
 
@@ -59,22 +57,28 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        events = getEvents();
+        getEvents();
 
 
     }
 
-    public ArrayList<Event> getEvents() {
+    public void getEvents() {
 
 
-        setEvents();
+        readData(new Firestorecallback() {
+            @Override
+            public void onCallback(ArrayList<Event> list) {
+                events = list;
+                Log.d(TAG,"Tamaño" + events.size());
+                EventAdapter adapter = new EventAdapter(events, getActivity());
+                listView.setAdapter(adapter);
 
-        return eventos;
+            }
+        });
 
     }
 
-    public void setEvents() {
-
+    private void readData(final Firestorecallback firestorecallback) {
         db.collection("Events")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -89,6 +93,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                 eventos.add(e);
 
                             }
+                            firestorecallback.onCallback(eventos);
 
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -96,7 +101,13 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     }
                 });
 
+
     }
+
+    private interface Firestorecallback {
+        void onCallback(ArrayList<Event> list);
+    }
+
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
