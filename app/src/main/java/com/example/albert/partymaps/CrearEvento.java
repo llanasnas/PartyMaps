@@ -128,15 +128,16 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                     String uid = user.getUid();
 
 
+
                     Map<String, Object> user_add = new HashMap<>();
-                    user_add.put("event_name", evento.getName());
-                    user_add.put("music_style",evento.getMusic_type());
-                    user_add.put("Description",evento.getDescription());
+                    user_add.put("name", evento.getName());
+                    user_add.put("music_type",evento.getMusic_type());
+                    user_add.put("description",evento.getDescription());
                     user_add.put("locality", evento.getLocality());
                     user_add.put("date", evento.getDate());
-                    user_add.put("Time",evento.getTime());
+                    user_add.put("time",evento.getTime());
                     user_add.put("ubication",evento.getUbication());
-                    user_add.put("event_maker",uid);
+                   // user_add.put("event_maker",uid);
 
 
                     db.collection("Events").document()

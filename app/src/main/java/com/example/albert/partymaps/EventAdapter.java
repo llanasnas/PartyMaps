@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Gerard on 04/03/2018.
@@ -14,22 +15,22 @@ import android.widget.TextView;
 
 public class EventAdapter extends BaseAdapter {
 
-    private Event[] events;
+    private ArrayList<Event> events;
     private Context context;
 
-    public EventAdapter(Event[] events, Context context) {
+    public EventAdapter(ArrayList<Event> events, Context context) {
         this.events = events;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return events.length;
+        return events.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return events[i];
+        return events.get(i);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class EventAdapter extends BaseAdapter {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.item_ayout, viewGroup, false);
         }
-        Event event = events[i];
+        Event event = events.get(i);
         TextView name = (TextView) view.findViewById(R.id.nombre_evento);
         name.setText(event.getName());
         TextView locality = (TextView) view.findViewById(R.id.localidad);

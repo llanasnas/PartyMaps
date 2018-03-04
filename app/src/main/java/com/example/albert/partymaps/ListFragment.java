@@ -3,7 +3,9 @@ package com.example.albert.partymaps;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +13,28 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ListFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class ListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private Event[] events;
+    private ArrayList<Event> events;
+    private FirebaseAuth mAuth;
+    private ArrayList<Event> eventos = new ArrayList<Event>();
+    private static final String TAG = RegisterActivity.class.getSimpleName();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public ListFragment() {
         // Required empty public constructor
@@ -49,17 +64,38 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-    public Event[] getEvents() {
+    public ArrayList<Event> getEvents() {
 
-        /*Event[] events  =  new Event[3];
-        Date data = new Date(20,5,2010);
-        Event event1 = new Event("nombre del niño","Badalona style","descripcion acúsica", "Barcelona","data","10:10","ubicacion" );
-        Event event2 = new Event("Calidoscopio terremotrico 2 ","Badalona style","descripcion acúsica", "Coruña","data","10:10","ubicacion" );
-        Event event3 = new Event("nombre del niño","Badalona style","descripcion acúsica", "Barcelona","data","10:10","ubicacion" );
-        events[0] = event1;
-        events[1] = event2;
-        events[2] = event3;*/
-        return events;
+
+        setEvents();
+
+        return eventos;
+
+    }
+
+    public void setEvents() {
+
+        db.collection("Events")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
+                                        document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
+
+                                eventos.add(e);
+
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 
     @Override
