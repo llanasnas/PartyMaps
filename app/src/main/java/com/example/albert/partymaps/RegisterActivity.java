@@ -130,7 +130,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                                  Toast.LENGTH_SHORT).show();
                                                      }
                                                  });
-                                         Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                         Intent intent = new Intent(getBaseContext(), Main2Activity.class);
                                          startActivity(intent);
 
                                      } else {

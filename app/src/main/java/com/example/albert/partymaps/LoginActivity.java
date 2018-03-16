@@ -68,6 +68,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onSuccess(LoginResult loginResult) {
                 handleFacebookAccesToken(loginResult.getAccessToken());
+                Intent intent = new Intent(getBaseContext(), Main2Activity.class);
+                startActivity(intent);
             }
 
             @Override
