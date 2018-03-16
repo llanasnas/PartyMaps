@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -89,21 +91,21 @@ public class Main2Activity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Toast.makeText(this,"Funciona nena", Toast.LENGTH_SHORT).show();
         if (id == R.id.nav_buscar) {
 
         } else if (id == R.id.nav_crear) {
-            Toast.makeText(this,"Funciona nena", Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(getBaseContext(), CrearEvento.class);
             startActivity(intent);
         } else if (id == R.id.nav_amigos) {
-            Toast.makeText(this,"Funciona nena", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.nav_perfil) {
-            Toast.makeText(this,"Funciona nena", Toast.LENGTH_SHORT).show();
+
         } else if (id == R.id.nav_cerrar) {
-            Toast.makeText(this,"Funciona nena", Toast.LENGTH_SHORT).show();
+            FirebaseAuth.getInstance().signOut();
+            this.finish();
         } else if (id == R.id.nav_send) {
-            Toast.makeText(this,"Funciona nena", Toast.LENGTH_SHORT).show();
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
