@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PartyMaps.iml" filepath="$PROJECT_DIR$/PartyMaps.iml" />
+      <module fileurl="file://C:\Users\Usuari1\Desktop\PartyMaps\PartyMaps.iml" filepath="C:\Users\Usuari1\Desktop\PartyMaps\PartyMaps.iml" />
       <module fileurl="file://C:\Users\Usuari1\Desktop\PartyMaps\PartyMapsss.iml" filepath="C:\Users\Usuari1\Desktop\PartyMaps\PartyMapsss.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

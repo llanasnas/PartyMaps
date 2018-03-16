@@ -19,7 +19,24 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
-
+    <string-array name="music_styles">
+        <item>Estilo musical</item>
+        <item>Reggae</item>
+        <item>House</item>
+        <item>Rap</item>
+        <item>Battala de Gallos</item>
+        <item>Trance</item>
+        <item>Techno</item>
+        <item>Dancehall</item>
+        <item>Dance</item>
+        <item>Hip-Hop</item>
+        <item>Rock</item>
+        <item>Jazz</item>
+        <item>HardCore</item>
+        <item>Acid Tribe</item>
+        <item>Drum and Bass</item>
+        <item>Otros..</item>
+    </string-array>
     <string-array name="cities">
         <item>Barcelona</item>
         <item>Madrid</item>

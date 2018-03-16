@@ -1,10 +1,13 @@
 package com.example.albert.partymaps;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Gerard on 01/02/2018.
  */
 
-public class Event {
+public class Event implements Parcelable{
 
     private String name;
     private String music_type;
@@ -13,6 +16,28 @@ public class Event {
     private String date;
     private String time;
     private String ubication;
+
+    protected Event(Parcel in) {
+        name = in.readString();
+        music_type = in.readString();
+        description = in.readString();
+        locality = in.readString();
+        date = in.readString();
+        time = in.readString();
+        ubication = in.readString();
+    }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 
     public String getUbication() {
         return ubication;
@@ -81,5 +106,21 @@ public class Event {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(music_type);
+        dest.writeString(description);
+        dest.writeString(locality);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeString(ubication);
     }
 }

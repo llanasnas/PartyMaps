@@ -93,7 +93,8 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_buscar) {
-
+            Intent intent = new Intent(getBaseContext(),BuscarEventoActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_crear) {
 
             Intent intent = new Intent(getBaseContext(), CrearEvento.class);

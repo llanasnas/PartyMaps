@@ -52,7 +52,7 @@
         ></Spinner>
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/confirm_event"
+        android:id="@+id/buscar_boton"
         android:layout_width="@dimen/edit_width"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
