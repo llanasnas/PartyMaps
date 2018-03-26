@@ -62,8 +62,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     }
 
-    public void getEvents() {
-
+    public ArrayList<Event> getEvents() {
 
         readData(new Firestorecallback() {
             @Override
@@ -73,10 +72,13 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                 EventAdapter adapter = new EventAdapter(events, getActivity());
                 listView.setAdapter(adapter);
 
+
             }
         });
+        return events;
 
     }
+
 
     private void readData(final Firestorecallback firestorecallback) {
         db.collection("Events")

@@ -29,6 +29,7 @@
         <EditText
             android:layout_width="300dp"
             android:layout_gravity="center"
+            android:id="@+id/bpn"
             android:layout_height="wrap_content"
             android:hint="Buscar por nombre"/>
     </android.support.design.widget.TextInputLayout>
@@ -60,6 +61,6 @@
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:padding="12dp"
-        android:text="@string/crear_evento"/>
+        android:text="@string/buscar_evento"/>
 
 </RelativeLayout>

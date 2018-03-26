@@ -1,6 +1,7 @@
 package com.example.albert.partymaps;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -18,14 +19,17 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class BuscarEventoActivity extends AppCompatActivity {
 
+    private ArrayList<Event> events = new ArrayList<Event>();
     private ArrayList<Event> eventos = new ArrayList<Event>();
     private static final String TAG = RegisterActivity.class.getSimpleName();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -37,17 +41,19 @@ public class BuscarEventoActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final EditText nombre = (EditText) findViewById(R.id.buscar_por_nombre);
+        final EditText nombre = (EditText) findViewById(R.id.bpn);
         final Spinner localities = (Spinner) findViewById(R.id.buscar_por_localidad);
         final Spinner musicTypes = (Spinner) findViewById(R.id.estilo_de_musica);
 
+
         String[] arraySpinner = getResources().getStringArray(R.array.cities);
-        ArrayAdapter<String> adapterLocalities = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,
+        ArrayAdapter<String> adapterLocalities = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
                 arraySpinner);
         localities.setAdapter(adapterLocalities);
         String[] arraymusic = getResources().getStringArray(R.array.music_styles);
-        ArrayAdapter<String> adapterMusica = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,
+        ArrayAdapter<String> adapterMusica = new ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
                 arraymusic);
+        events = getIntent().getParcelableArrayListExtra("events");
         musicTypes.setAdapter(adapterMusica);
 
         AppCompatButton buscar = (AppCompatButton) findViewById(R.id.buscar_boton);
@@ -56,54 +62,51 @@ public class BuscarEventoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(nombre.getText().toString().isEmpty()&&musicTypes.getSelectedItem().toString().equals("Estilo musical")){
+                if (nombre.getText().toString().isEmpty() && musicTypes.getSelectedItem().toString().equals("Estilo musical") && localities.getSelectedItem().toString().equals("Localidad")) {
 
-                    nombre.setError("");
+                    nombre.setError("Busca por nombre, localidad o estilo musical");
 
-                }   else {
-                    ListFragment listFragment = new ListFragment();
-                    //listFragment.setArguments(createBundle());
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().
-                            add(R.id.main, listFragment).
-                            commit();
+                } else {
+
+                    String nom = "", localidad = "", musica = "";
+
+                    if (!nombre.getText().toString().isEmpty()) {
+                        nom = nombre.getText().toString();
+                    }
+                    if (!localities.getSelectedItem().toString().equals("Localidad")) {
+                        localidad = localities.getSelectedItem().toString();
+                    }
+                    if (!musicTypes.getSelectedItem().toString().equals("Estilo musical")) {
+                        musica = musicTypes.getSelectedItem().toString();
+                    }
+                    Boolean added ;
+                    for (Event event : events) {
+                        added=false;
+                        while(!added){
+                            if (!nom.equals("")) {
+                                if (event.getName().contains(nom)) {
+                                    eventos.add(event);
+                                    break;
+                                }
+                            }
+                            if (!localidad.equals("")) {
+                                if (event.getLocality().equals(localidad)) {
+                                    eventos.add(event);
+                                    break;
+                                }
+                            }
+                            added = true;
+                        }
+
+
+                    }
+
+
                 }
             }
         });
 
 
-
-
-
-
-    }
-    private void readData(final ListFragment.Firestorecallback firestorecallback) {
-        db.collection("Events")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
-                                        document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
-
-                                eventos.add(e);
-
-                            }
-                            firestorecallback.onCallback(eventos);
-
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-
-    }
-    private interface Firestorecallback {
-        void onCallback(ArrayList<Event> list);
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.albert.partymaps;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -15,12 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ListFragment listFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +51,13 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ListFragment listFragment = new ListFragment();
+        listFragment = new ListFragment();
         //listFragment.setArguments(createBundle());
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().
                 add(R.id.main, listFragment).
                 commit();
+
     }
 
     @Override
@@ -93,7 +98,11 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_buscar) {
+            ArrayList<Event> listEvents = listFragment.getEvents();
             Intent intent = new Intent(getBaseContext(),BuscarEventoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("events",listEvents); // Be sure con is not null here
+            intent.putExtras(bundle);
             startActivity(intent);
         } else if (id == R.id.nav_crear) {
 

@@ -3,11 +3,13 @@ package com.example.albert.partymaps;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by Gerard on 01/02/2018.
  */
 
-public class Event implements Parcelable{
+public class Event implements Parcelable,Serializable{
 
     private String name;
     private String music_type;
