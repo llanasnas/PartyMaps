@@ -49,6 +49,17 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         View view = inflater.inflate(R.layout.fragment_list_, container, false);
         listView = view.findViewById(R.id.listViewEvents);
         listView.setOnItemClickListener(this);
+        if(getArguments().getString("activity").equals("Main2Activity")){
+
+            getEvents();
+
+        }else{
+
+            events = getArguments().getParcelableArrayList("eventos");
+            EventAdapter adapter = new EventAdapter(events, getActivity());
+            listView.setAdapter(adapter);
+
+        }
         return view;
 
     }
@@ -57,7 +68,9 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getEvents();
+
+
+
 
 
     }

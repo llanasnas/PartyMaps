@@ -26,6 +26,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuscarEventoActivity extends AppCompatActivity {
 
@@ -79,10 +80,10 @@ public class BuscarEventoActivity extends AppCompatActivity {
                     if (!musicTypes.getSelectedItem().toString().equals("Estilo musical")) {
                         musica = musicTypes.getSelectedItem().toString();
                     }
-                    Boolean added ;
+                    Boolean added;
                     for (Event event : events) {
-                        added=false;
-                        while(!added){
+                        added = false;
+                        while (!added) {
                             if (!nom.equals("")) {
                                 if (event.getName().contains(nom)) {
                                     eventos.add(event);
@@ -95,14 +96,26 @@ public class BuscarEventoActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
+                            if(!musica.equals("")){
+                                if(event.getMusic_type().equals(musica)){
+                                    eventos.add(event);
+                                    break;
+                                }
+                            }
                             added = true;
                         }
-
-
                     }
-
-
                 }
+                ListFragment listFragment = new ListFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("eventos",eventos);
+                bundle.putString("activity","BuscarEvento");
+                listFragment.setArguments(bundle);
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().
+                        add(R.id.buscar_eventos, listFragment).
+                        commit();
+
             }
         });
 

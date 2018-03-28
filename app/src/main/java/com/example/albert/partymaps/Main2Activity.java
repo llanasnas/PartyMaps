@@ -52,7 +52,9 @@ public class Main2Activity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         listFragment = new ListFragment();
-        //listFragment.setArguments(createBundle());
+        Bundle bundle = new Bundle();
+        bundle.putString("activity","Main2Activity");
+        listFragment.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().
                 add(R.id.main, listFragment).
