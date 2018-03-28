@@ -10,6 +10,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +35,7 @@ public class DescriptionFragment extends Fragment  {
     private static GoogleMap mMap;
     private static LatLng position;
     private static Marker mark;
+    private boolean favorite = false;
     private static MapFragment mapFragment;
 
     public DescriptionFragment() {
@@ -65,8 +69,21 @@ public class DescriptionFragment extends Fragment  {
         TextView description = (TextView) view.findViewById(R.id.description_description);
         TextView fecha = (TextView) view.findViewById(R.id.date_description);
         TextView hora = (TextView) view.findViewById(R.id.hour_description);
+        final ImageView star = (ImageView) view.findViewById(R.id.star);
 
+        star.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                if(favorite){
+                    star.setImageResource(R.drawable.ic_star_border_black_24dp);
+                    favorite = false;
+                }else {
+                    star.setImageResource(R.drawable.ic_star_llena_24dp);
+                    favorite = true;
+                }
+            }
+        });
 
         name.setText(event.getName());
         description.setText(event.getDescription());

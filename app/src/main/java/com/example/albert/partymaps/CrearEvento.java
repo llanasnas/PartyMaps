@@ -271,7 +271,6 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             evento.setDate(fecha);
             datePicker.setText(fecha);
 
-
         }
     }
     public static void takePos(LatLng latLng){
@@ -306,9 +305,21 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             // Do something with the time chosen by the user
+            String hora,minuts;
+            if(hourOfDay<10){
+                hora = "0" + hourOfDay;
+            }else{
+                hora = String.valueOf(hourOfDay);
+            }
+            if(minute<10){
+                minuts = "0" + minute;
+            }else{
+                minuts = String.valueOf(minute);
+            }
+
 
             time = true;
-            String hora = hourOfDay + ":" + minute;
+            hora = hora + ":" + minuts;
             evento.setTime(hora);
             timePicker.setText(hora);
 

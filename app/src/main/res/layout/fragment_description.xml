@@ -43,6 +43,20 @@
         android:src="@drawable/logo1"
         android:layout_marginTop="@dimen/titles"
         />
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@+id/image_description"
+        android:src="@drawable/ic_star_border_black_24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_marginLeft="50dp"
+        android:id="@+id/star"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="75dp"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
