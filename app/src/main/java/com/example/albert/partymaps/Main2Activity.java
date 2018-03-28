@@ -94,7 +94,13 @@ public class Main2Activity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
+    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

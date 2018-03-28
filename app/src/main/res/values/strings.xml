@@ -37,6 +37,7 @@
         <item>Drum and Bass</item>
         <item>Otros..</item>
     </string-array>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor massa sit amet velit vehicula, sed porta quam tempus. Nam commodo sapien sit amet ex eleifend suscipit. Aliquam volutpat lobortis urna id auctor. Proin sed tortor in elit ornare rutrum non a arcu. Aenean eget neque at orci sollicitudin dignissim vitae vel orci. Nam tortor nunc, faucibus ut justo ut, lacinia volutpat dolor. Mauris ac ultrices dui, sit amet ultricies purus. Vestibulum laoreet lacinia sapien at hendrerit. Phasellus eu tristique ante. Aliquam erat volutpat. Vivamus a ultricies tellus, vel consectetur lacus. Curabitur consectetur sagittis magna, accumsan pretium odio accumsan sit amet.</string>
     <string-array name="cities">
         <item>Localidad</item>
         <item>Barcelona</item>

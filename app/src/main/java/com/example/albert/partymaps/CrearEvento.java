@@ -142,7 +142,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                     user_add.put("date", evento.getDate());
                     user_add.put("time",evento.getTime());
                     user_add.put("ubication",evento.getUbication());
-                   // user_add.put("event_maker",uid);
+                    user_add.put("event_maker",uid);
 
 
                     db.collection("Events").document()

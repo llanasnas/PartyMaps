@@ -1,6 +1,7 @@
 package com.example.albert.partymaps;
 
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private ArrayList<Event> events = new ArrayList<>();
     private FirebaseAuth mAuth;
+    private String activity;
     private ArrayList<Event> eventos = new ArrayList<Event>();
     ListView listView;
     private static final String TAG = RegisterActivity.class.getSimpleName();
@@ -43,6 +45,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         super.onPause();
         eventos.clear();
         events.clear();
+        getEvents();
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +54,8 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         View view = inflater.inflate(R.layout.fragment_list_, container, false);
         listView = view.findViewById(R.id.listViewEvents);
         listView.setOnItemClickListener(this);
-        if(getArguments().getString("activity").equals("Main2Activity")){
+        activity = getArguments().getString("activity");
+        if(activity.equals("Main2Activity")){
 
             getEvents();
 
@@ -122,6 +126,32 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        Event event = events.get(i);
+        DescriptionFragment descriptionFragment = new DescriptionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("evento",event);
+        descriptionFragment.setArguments(bundle);
+
+        if(activity.equals("Main2Activity")){
+
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().
+                    replace(R.id.main,descriptionFragment).
+                    addToBackStack(null).
+                    commit();
+
+        }
+        else{
+
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().
+                    replace(R.id.buscar_eventos, descriptionFragment).
+                    addToBackStack(null).
+                    commit();
+        }
 
     }
 }
