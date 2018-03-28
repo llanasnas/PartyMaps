@@ -21,9 +21,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +38,12 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         // Required empty public constructor
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        eventos.clear();
+        events.clear();
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,12 +69,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
-
-
     }
 
     public ArrayList<Event> getEvents() {

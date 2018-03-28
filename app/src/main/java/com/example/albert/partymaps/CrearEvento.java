@@ -74,11 +74,16 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
        final Spinner spinner = (Spinner) findViewById(R.id.spinner_city);
+       final Spinner music_type = (Spinner) findViewById(R.id.estilo_musica);
 
+        String[] arraySpinnerMusica = getResources().getStringArray(R.array.music_styles);
         String[] arraySpinner = getResources().getStringArray(R.array.cities);
         ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,
-               arraySpinner);
+                arraySpinner);
+        ArrayAdapter<String> adapterMusica = new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,
+                arraySpinnerMusica);
        spinner.setAdapter(adapter);
+       music_type.setAdapter(adapterMusica);
         timePicker = (EditText) findViewById(R.id.time_picker);
         datePicker = (EditText) findViewById(R.id.date_picker);
 
@@ -102,12 +107,12 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                 nombre=false;descripcion=false;
                 EditText name = (EditText) findViewById(R.id.nombre_evento);
                 EditText description = (EditText) findViewById(R.id.description);
-                EditText music = (EditText) findViewById(R.id.estilo_musica);
+                Spinner music = (Spinner) findViewById(R.id.estilo_musica);
 
                 if(isEmpty(name.getText().toString())){
                     name.setError("Este campo no puede estar vacio");
                 }else{nombre=true;}
-                if(!isEmpty(music.getText().toString())){musicType=true;}
+                if(!music.getSelectedItem().toString().equals("Estilo Musical")){musicType=true;}
                 if(isEmpty(description.getText().toString())){
                     description.setError("Este campo no puede estar vacio");
                 }else{descripcion=true;}
@@ -123,7 +128,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
                     evento.setName(name.getText().toString());
                     evento.setDescription(description.getText().toString());
                     evento.setLocality(spinner.getSelectedItem().toString());
-                    evento.setMusic_type(music.getText().toString());
+                    evento.setMusic_type(music.getSelectedItem().toString());
                     FirebaseUser user = mAuth.getCurrentUser();
                     String uid = user.getUid();
 
