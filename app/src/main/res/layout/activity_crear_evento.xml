@@ -32,19 +32,15 @@
                 android:hint="@string/nombre_evento"/>
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/estilo_musica"
-                android:layout_width="300dp"
-                android:textAlignment="center"
-                android:layout_gravity="center_horizontal"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:hint="@string/estilo"/>
-        </android.support.design.widget.TextInputLayout>
+        <Spinner
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="Ciudad"
+            android:id="@+id/estilo_musica"
+            >
+        </Spinner>
 
 
         <EditText
@@ -73,7 +69,6 @@
             android:layout_gravity="center_horizontal"
             android:hint="@string/date_picker"
             android:onClick="showDatePickerDialog" />
-
 
         <EditText
             android:layout_width="300dp"
@@ -105,9 +100,6 @@
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:text="@string/crear_evento"/>
-
-
-
 
     </LinearLayout>
 </ScrollView>

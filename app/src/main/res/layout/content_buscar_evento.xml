@@ -8,60 +8,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.albert.partymaps.BuscarEventoActivity"
-    tools:showIn="@layout/activity_buscar_evento">
+    tools:showIn="@layout/activity_buscar_evento"
+    >
 
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buscar_evento"
-        android:textSize="@dimen/h2"
-        android:id="@+id/buscar_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/text_margin"
-        />
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_below="@+id/buscar_title"
-        android:id="@+id/buscar_por_nombre"
-        android:layout_marginBottom="8dp">
-        <EditText
-            android:layout_width="300dp"
-            android:layout_gravity="center"
-            android:id="@+id/bpn"
-            android:layout_height="wrap_content"
-            android:hint="Buscar por nombre"/>
-    </android.support.design.widget.TextInputLayout>
-
-    <Spinner
-        android:layout_width="@dimen/edit_width"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/buscar_por_localidad"
-        android:layout_marginTop="@dimen/text_margin"
-        android:layout_below="@id/buscar_por_nombre"
-        ></Spinner>
-
-    <Spinner
-        android:layout_width="@dimen/edit_width"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/text_margin"
-        android:id="@+id/estilo_de_musica"
-        android:layout_below="@id/buscar_por_localidad"
-        ></Spinner>
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/buscar_boton"
-        android:layout_width="@dimen/edit_width"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/estilo_de_musica"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:padding="12dp"
-        android:text="@string/buscar_evento"/>
 
 </RelativeLayout>
