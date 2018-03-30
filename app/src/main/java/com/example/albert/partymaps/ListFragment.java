@@ -147,8 +147,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     addToBackStack(null).
                     commit();
 
-        }
-        else{
+        } else if(activity.equals("BuscarEvento")){
 
 
             FragmentManager fragmentManager = getFragmentManager();
@@ -156,6 +155,13 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     replace(R.id.buscar_eventos, descriptionFragment).
                     addToBackStack(null).
                     commit();
+        } else if(activity.equals("MisEventos")){
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().
+                    replace(R.id.miseventos, descriptionFragment).
+                    commit();
+
         }
 
     }
