@@ -12,6 +12,12 @@
             android:id="@+id/nav_crear"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Crear Eventos" />
+
+        <item
+            android:id="@+id/nav_misEventos"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Mis eventos" />
+
         <item
             android:id="@+id/nav_amigos"
             android:icon="@drawable/ic_menu_slideshow"

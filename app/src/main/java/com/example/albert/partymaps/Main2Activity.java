@@ -117,7 +117,15 @@ public class Main2Activity extends AppCompatActivity
 
             Intent intent = new Intent(getBaseContext(), CrearEvento.class);
             startActivity(intent);
-        } else if (id == R.id.nav_amigos) {
+        }else if(id == R.id.nav_misEventos){
+
+            Intent intent = new Intent(getBaseContext(),MisEventosActivity.class);
+            Bundle bundle = new Bundle();// Be sure con is not null here
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+
+        }else if (id == R.id.nav_amigos) {
 
         } else if (id == R.id.nav_perfil) {
 

@@ -59,12 +59,17 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
             getEvents();
 
-        }else{
+        }else if(activity.equals("BuscarEvento")){
 
             events = getArguments().getParcelableArrayList("eventos");
             EventAdapter adapter = new EventAdapter(events, getActivity());
             listView.setAdapter(adapter);
 
+        }else if(activity.equals("MisEventos")){
+
+            events = getArguments().getParcelableArrayList("eventos");
+            EventAdapter adapter = new EventAdapter(events, getActivity());
+            listView.setAdapter(adapter);
         }
         return view;
 
