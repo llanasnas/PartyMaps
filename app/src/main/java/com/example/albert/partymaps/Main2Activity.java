@@ -58,7 +58,6 @@ public class Main2Activity extends AppCompatActivity
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().
                 add(R.id.main, listFragment).
-                addToBackStack(null).
                 commit();
 
     }
