@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true"
@@ -66,6 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:id="@+id/date_picker"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
             android:layout_gravity="center_horizontal"
             android:hint="@string/date_picker"
             android:onClick="showDatePickerDialog" />
@@ -74,10 +77,13 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:id="@+id/time_picker"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
             android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:hint="@string/time_picker"
-            android:onClick="showTimePickerDialog" />
+            android:onClick="showTimePickerDialog"
+            />
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
