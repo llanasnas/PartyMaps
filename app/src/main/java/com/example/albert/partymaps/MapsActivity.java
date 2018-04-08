@@ -23,6 +23,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FirebaseAuth mAuth;
     private static final String TAG = MapsActivity.class.getSimpleName();
     private static boolean marked=false;
+    private static Marker mark;
 
 
 
@@ -43,7 +44,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
     }
+    private void moveToCurrentLocation(LatLng currentLocation)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
+    }
 
 
     private boolean isEmpty(String nombre){
@@ -71,13 +80,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng barcelona = new LatLng(41.390205, 2.154007);
-        mMap.addMarker(new MarkerOptions().position(barcelona).title("Marker in Sydney"));
+        mark = mMap.addMarker(new MarkerOptions().position(barcelona).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(barcelona));
 
-
+        moveToCurrentLocation(barcelona);
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            Marker mark;
+
 
             @Override
 
@@ -89,6 +98,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .position(latLng));
 
                 }else {
+                    mark.remove();
                     mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
                             .position(latLng));
                     marked=true;
