@@ -282,9 +282,16 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")
                 .position(latLng));
         evento.setUbication(String.valueOf(latLng));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.moveCamera(CameraUpdateFactory.zoomIn());
+        moveToCurrentLocation(latLng);
 
+    }
+    static private void moveToCurrentLocation(LatLng currentLocation)
+    {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation,15));
+        // Zoom in, animating the camera.
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 155, null);
 
     }
 
