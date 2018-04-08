@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,6 @@ public class DescriptionFragment extends Fragment  {
     private static GoogleMap mMap;
     private static LatLng position;
     private static Marker mark;
-    private static Event event;
     private boolean favorite = false;
     private static MapFragment mapFragment;
 
@@ -49,7 +50,12 @@ public class DescriptionFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_description, container, false);
-        event = getArguments().getParcelable("evento");
+        Toolbar toolbar = view.findViewById(R.id.toolbarDesc);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        if( ((AppCompatActivity)getActivity()).getSupportActionBar() != null){
+            ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        }
+        Event event = getArguments().getParcelable("evento");
         String ubicacion = event.getUbication().substring(10,event.getUbication().length()-1);
         String[] ubi = ubicacion.split(",");
         final LatLng latLng = new LatLng(Double.parseDouble(ubi[0]),Double.parseDouble(ubi[1]));
@@ -60,7 +66,7 @@ public class DescriptionFragment extends Fragment  {
                 public void onMapReady(GoogleMap googleMap) {
 
                     googleMap.addMarker(new MarkerOptions().position(latLng)
-                            .title(event.getName()));
+                            .title("Singapore"));
                     googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 }
             });
@@ -69,10 +75,10 @@ public class DescriptionFragment extends Fragment  {
         TextView name = (TextView) view.findViewById(R.id.name_description);
         TextView description = (TextView) view.findViewById(R.id.description_description);
         TextView fecha = (TextView) view.findViewById(R.id.date_description);
-        TextView hora = (TextView) view.findViewById(R.id.hour_description);
-        final ImageView star = (ImageView) view.findViewById(R.id.star);
+        //TextView hora = (TextView) view.findViewById(R.id.hour_description);
+        //final ImageView star = (ImageView) view.findViewById(R.id.fav);
 
-        star.setOnClickListener(new View.OnClickListener() {
+       /* star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -84,12 +90,13 @@ public class DescriptionFragment extends Fragment  {
                     favorite = true;
                 }
             }
-        });
+        });*/
 
-        name.setText(event.getName());
+        name.setText(event.getMusic_type());
+        toolbar.setTitle(event.getName());
         description.setText(event.getDescription());
-        fecha.setText(event.getDate());
-        hora.setText(event.getTime());
+        fecha.setText(event.getDate() + " " + event.getTime());
+        //hora.setText(event.getTime());
 
 
 
@@ -104,23 +111,7 @@ public class DescriptionFragment extends Fragment  {
 
 
     }
-    private void reloadMap(){
 
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
 
-                googleMap.addMarker(new MarkerOptions().position(position)
-                        .title(event.getName()));
-                googleMap.animateCamera(CameraUpdateFactory.newLatLng(position));
-            }
-        });
 
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        reloadMap();
-    }
 }

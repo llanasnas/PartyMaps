@@ -268,6 +268,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
+            month++;
             date=true;
             String dia,mes;     
             if(day<10){
@@ -280,7 +281,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             }else{
                 mes = String.valueOf(month);
             }
-            String fecha = day + "/" + month + "/" + year;
+            String fecha = dia + "/" + mes + "/" + year;
             evento.setDate(fecha);
             datePicker.setText(fecha);
         }
