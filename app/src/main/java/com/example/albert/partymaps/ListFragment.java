@@ -111,7 +111,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
 
     private void readData(final Firestorecallback firestorecallback) {
-        db.collection("Events")
+        db.collection("Events").orderBy("date")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
