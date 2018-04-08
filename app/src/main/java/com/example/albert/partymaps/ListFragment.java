@@ -30,6 +30,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private ArrayList<Event> events = new ArrayList<>();
     private FirebaseAuth mAuth;
+    EventAdapter adapter;
     private String activity;
     private ArrayList<Event> eventos = new ArrayList<Event>();
     ListView listView;
@@ -45,8 +46,19 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         super.onPause();
         eventos.clear();
         events.clear();
-        getEvents();
+        if (adapter != null){
+            adapter.notifyDataSetChanged();
+            getEvents();
+        }
+
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,13 +74,13 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         }else if(activity.equals("BuscarEvento")){
 
             events = getArguments().getParcelableArrayList("eventos");
-            EventAdapter adapter = new EventAdapter(events, getActivity());
+            adapter = new EventAdapter(events, getActivity());
             listView.setAdapter(adapter);
 
         }else if(activity.equals("MisEventos")){
 
             events = getArguments().getParcelableArrayList("eventos");
-            EventAdapter adapter = new EventAdapter(events, getActivity());
+            adapter = new EventAdapter(events, getActivity());
             listView.setAdapter(adapter);
         }
         return view;

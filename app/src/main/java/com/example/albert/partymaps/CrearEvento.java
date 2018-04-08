@@ -42,6 +42,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback {
 
     private static GoogleMap mMap;
