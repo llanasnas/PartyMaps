@@ -59,5 +59,6 @@
     <string name="action_settings">Settings</string>
     <string name="crear_evento">Crear evento</string>
     <string name="title_activity_buscar_evento">BuscarEventoActivity</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 
 </resources>
