@@ -4,11 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
-    tools:context="com.example.albert.partymaps.LoginActivity">
+    tools:context="com.example.albert.partymaps.LoginActivity"
+
+    >
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/logo1"
+        />
+    <EditText
+        android:id="@+id/user"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:inputType="textEmailAddress"
+        android:layout_alignStart="@+id/password"
+        android:background="@drawable/edittextstyle"
+        android:layout_above="@+id/password"
+        />
 
 
+    <EditText
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:background="@drawable/edittextstyle"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        android:layout_marginBottom="30dp"
+        android:layout_centerVertical="true"
+        android:layout_below="@id/logo"
+        android:id="@+id/password"
+        android:layout_centerHorizontal="true"/>
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="45dp"
+        android:background="@drawable/submitbutton"
+        android:layout_below="@id/password"
+        android:textColor="#FFFFFF"
+        android:text="Iniciar Sesión"
+        android:id="@+id/submit"
+        android:layout_centerHorizontal="true"
 
+        />
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/submit"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_button"
+        android:layout_centerHorizontal="true"
+        android:text="Crear cuenta"
+        android:textSize="17sp"
+        android:id="@+id/create"
+        android:textColor="#FF1C1FCA"
+        />
 
 
 

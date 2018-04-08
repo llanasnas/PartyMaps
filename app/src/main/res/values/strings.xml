@@ -1,3 +1,63 @@
 <resources>
     <string name="app_name">PartyMaps</string>
+    <string name="nombre">Nombre</string>
+    <string name="email">Email</string>
+    <string name="fecha_nacimiento">Fecha de nacimiento</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="contraseña2">Confirmar Contraseña</string>
+    <string name="registrarse">Crear Cuenta</string>
+    <string name="ya_registrado">Ya tienes una cuenta? Login </string>
+    <string name="facebook_app_id">346503992520927</string>
+    <string name="fb_login_protocol_scheme">fb346503992520927</string>
+    <string name="perfil">Perfil</string>
+    <string name="log_out">cerrar sesión</string>
+    <string name="buscar">BUSCAR</string>
+    <string name="nombre_evento">Nombre del evento</string>
+    <string name="descripcion">Descripción</string>
+    <string name="estilo">Estilo de Música</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+    <string-array name="music_styles">
+        <item>Estilo musical</item>
+        <item>Reggae</item>
+        <item>House</item>
+        <item>Rap</item>
+        <item>Batalla de Gallos</item>
+        <item>Trance</item>
+        <item>Techno</item>
+        <item>Dancehall</item>
+        <item>Dance</item>
+        <item>Hip-Hop</item>
+        <item>Rock</item>
+        <item>Jazz</item>
+        <item>HardCore</item>
+        <item>Acid Tribe</item>
+        <item>Drum and Bass</item>
+        <item>Otros..</item>
+    </string-array>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam porttitor massa sit amet velit vehicula, sed porta quam tempus. Nam commodo sapien sit amet ex eleifend suscipit. Aliquam volutpat lobortis urna id auctor. Proin sed tortor in elit ornare rutrum non a arcu. Aenean eget neque at orci sollicitudin dignissim vitae vel orci. Nam tortor nunc, faucibus ut justo ut, lacinia volutpat dolor. Mauris ac ultrices dui, sit amet ultricies purus. Vestibulum laoreet lacinia sapien at hendrerit. Phasellus eu tristique ante. Aliquam erat volutpat. Vivamus a ultricies tellus, vel consectetur lacus. Curabitur consectetur sagittis magna, accumsan pretium odio accumsan sit amet.</string>
+    <string-array name="cities">
+        <item>Localidad</item>
+        <item>Barcelona</item>
+        <item>Madrid</item>
+    </string-array>
+    <string name="time_picker">Hora</string>
+    <string name="date_picker">Fecha</string>
+    <string-array name="menu">
+        <item>Buscar evento</item>
+        <item>Crear evento</item>
+        <item>Amigos</item>
+        <item>Mi perfil</item>
+        <item>Cerrar sesión</item>
+    </string-array>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="buscar_evento">Buscar Evento</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="crear_evento">Crear evento</string>
+    <string name="title_activity_buscar_evento">BuscarEventoActivity</string>
+
 </resources>

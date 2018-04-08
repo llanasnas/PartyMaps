@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="@dimen/item_image_height">
+
+
+
+    <ImageView
+        android:layout_width="@dimen/item_image_width"
+        android:layout_height="@dimen/item_image_height"
+        android:id="@+id/imagen"
+        android:src="@drawable/logo1"
+        />
+
+    <TextView
+        android:id="@+id/nombre_evento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_toRightOf="@id/imagen"
+        android:layout_marginTop="@dimen/text_margin"
+        android:text="@string/nombre_evento" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/nombre_evento"
+        android:layout_below="@+id/nombre_evento"
+        android:id="@+id/localidad"
+        android:layout_marginTop="@dimen/text_margin"
+        android:text="@string/nombre_evento" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MAY"
+        android:textColor="@android:color/black"
+        android:id="@+id/mes"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:layout_alignParentEnd="true"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textSize="@dimen/text_margin"
+        android:textColor="@android:color/black"
+        android:id="@+id/dia"
+        android:layout_below="@id/mes"
+        android:layout_marginRight="24dp"
+        android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>
