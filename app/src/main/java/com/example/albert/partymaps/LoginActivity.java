@@ -131,12 +131,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                 if (task.isSuccessful()) {
                                     // there was an error
-                                    Toast.makeText(LoginActivity.this, "Cargando eventos...", Toast.LENGTH_SHORT).show();;
+                                    Toast.makeText(LoginActivity.this, "Cargando eventos...", Toast.LENGTH_SHORT).show();
 
                                     Intent intent = new Intent(getBaseContext(), Main2Activity.class);
                                     startActivity(intent);
                                 } else {
-                                    Toast.makeText(LoginActivity.this, "Email o contraseña incorrecta", Toast.LENGTH_SHORT).show();;
+                                    Toast.makeText(LoginActivity.this, "Email o contraseña incorrecta", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });

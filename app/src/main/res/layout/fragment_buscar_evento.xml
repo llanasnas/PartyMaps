@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:id="@+id/buscar_eventos"
     android:layout_gravity="center"
+    android:background="@drawable/backgroundlogin"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.albert.partymaps.BuscarEventoFragment"
