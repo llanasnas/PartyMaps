@@ -53,18 +53,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
     }
-
-
-    private boolean isEmpty(String nombre){
-
-        if(nombre.length()==0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -105,8 +93,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-
-
     }
 
 
@@ -114,6 +100,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onStop() {
         super.onStop();
         marked=false;
-
     }
 }
