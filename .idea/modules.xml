@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\Usuari1\Desktop\PartyMaps\PartyMaps.iml" filepath="C:\Users\Usuari1\Desktop\PartyMaps\PartyMaps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PartyMaps.iml" filepath="$PROJECT_DIR$/PartyMaps.iml" />
       <module fileurl="file://C:\Users\ait98\StudioProjects\PartyMapss\PartyMaps.iml" filepath="C:\Users\ait98\StudioProjects\PartyMapss\PartyMaps.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PartyMapss.iml" filepath="$PROJECT_DIR$/PartyMapss.iml" />
+      <module fileurl="file://C:\Users\Usuari1\Desktop\PartyMaps\PartyMaps.iml" filepath="C:\Users\Usuari1\Desktop\PartyMaps\PartyMaps.iml" />
+      <module fileurl="file://C:\androidStudioProjects\PartyMaps\PartyMaps\PartyMapss.iml" filepath="C:\androidStudioProjects\PartyMaps\PartyMaps\PartyMapss.iml" />
       <module fileurl="file://C:\Users\Usuari1\Desktop\PartyMaps\PartyMapsss.iml" filepath="C:\Users\Usuari1\Desktop\PartyMaps\PartyMapsss.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
