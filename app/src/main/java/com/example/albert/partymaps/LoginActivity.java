@@ -178,8 +178,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-
-
         EditText user = (EditText) view.findViewById(R.id.user);
         EditText password = (EditText) view.findViewById(R.id.password);
         String contrasenya = password.getText().toString();

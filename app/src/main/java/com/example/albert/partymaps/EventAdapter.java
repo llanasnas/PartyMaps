@@ -1,11 +1,13 @@
 package com.example.albert.partymaps;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -53,7 +55,15 @@ public class EventAdapter extends BaseAdapter {
         Event event = events.get(i);
         TextView name = (TextView) view.findViewById(R.id.nombre_evento);
         TextView day = (TextView) view.findViewById(R.id.dia);
+        ImageView imagen = (ImageView) view.findViewById(R.id.imagen);
         TextView month = (TextView) view.findViewById(R.id.mes);
+
+        String imageName = event.getMusic_type();
+        imageName = imageName.replaceAll(" ","_").toLowerCase();
+        if(!imageName.equals("otros..")){
+            int id_image = context.getResources().getIdentifier(imageName , "drawable", context.getPackageName());
+            imagen.setImageResource(id_image);
+        }
         SimpleDateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateAsString = event.getDate();
         try {
@@ -71,7 +81,6 @@ public class EventAdapter extends BaseAdapter {
         name.setText(event.getName());
         TextView locality = (TextView) view.findViewById(R.id.localidad);
         locality.setText(String.valueOf(event.getLocality()));
-
         return view;
     }
 
