@@ -92,7 +92,7 @@ public class DescriptionFragment extends Fragment  {
             }
         });*/
 
-        name.setText(event.getMusic_type());
+        name.setText(event.getName());
         toolbar.setTitle(event.getName());
         description.setText(event.getDescription());
         fecha.setText(event.getDate() + " " + event.getTime());

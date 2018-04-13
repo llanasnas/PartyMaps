@@ -60,10 +60,10 @@ public class EventAdapter extends BaseAdapter {
 
         String imageName = event.getMusic_type();
         imageName = imageName.replaceAll(" ","_").toLowerCase();
-        if(!imageName.equals("otros..")){
+        /*if(!imageName.equals("otros..")){
             int id_image = context.getResources().getIdentifier(imageName , "drawable", context.getPackageName());
             imagen.setImageResource(id_image);
-        }
+        }*/
         SimpleDateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateAsString = event.getDate();
         try {
