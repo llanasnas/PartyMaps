@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 
@@ -40,8 +43,8 @@ public class BuscarEventoFragment extends Fragment {
         final EditText nombre = (EditText) view.findViewById(R.id.bpn);
         final Spinner localities = (Spinner) view.findViewById(R.id.buscar_por_localidad);
         final Spinner musicTypes = (Spinner) view.findViewById(R.id.estilo_de_musica);
-
-
+        SeekBar kilometros = view.findViewById(R.id.kilometros);
+        final TextView numeroKilometros = view.findViewById(R.id.numero_kilometros);
         String[] arraySpinner = getResources().getStringArray(R.array.cities);
         ArrayAdapter<String> adapterLocalities = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item,
                 arraySpinner);
@@ -51,6 +54,23 @@ public class BuscarEventoFragment extends Fragment {
                 arraymusic);
         events = getActivity().getIntent().getParcelableArrayListExtra("events");
         musicTypes.setAdapter(adapterMusica);
+
+        kilometros.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                numeroKilometros.setText("Kilometros: " + i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         AppCompatButton buscar = (AppCompatButton) view.findViewById(R.id.buscar_boton);
 

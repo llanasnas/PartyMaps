@@ -86,7 +86,7 @@
         android:layout_below="@+id/numero_kilometros"
         android:layout_alignStart="@id/estilo_de_musica"
         android:layout_marginTop="5dp"
-        android:progress="5"
+        android:progress="1"
         android:enabled="false"
         android:max="25"/>
 
