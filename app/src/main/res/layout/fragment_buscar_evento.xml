@@ -76,7 +76,8 @@
         android:layout_below="@+id/buscar_distancia"
         android:layout_alignStart="@id/estilo_de_musica"
         android:layout_marginTop="13dp"
-        android:text="SE SUSTITUYE DESDE JAVA"/>
+        android:textSize="16dp"
+        android:text="@string/kilometros"/>
 
     <SeekBar
         android:layout_width="@dimen/edit_width"
@@ -86,6 +87,7 @@
         android:layout_alignStart="@id/estilo_de_musica"
         android:layout_marginTop="5dp"
         android:progress="5"
+        android:enabled="false"
         android:max="25"/>
 
     <android.support.v7.widget.AppCompatButton
