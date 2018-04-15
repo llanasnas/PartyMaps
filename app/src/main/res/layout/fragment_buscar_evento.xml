@@ -51,12 +51,49 @@
         android:layout_below="@id/buscar_por_localidad"
         ></Spinner>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/distancia"
+        android:layout_marginTop="13dp"
+        android:layout_alignStart="@+id/estilo_de_musica"
+        android:textSize="16dp"
+        android:layout_below="@+id/estilo_de_musica"/>
+
+    <Switch
+        android:id="@+id/buscar_distancia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/buscar_boton"
+        android:layout_below="@+id/estilo_de_musica"
+        android:theme="@style/estiloSwitch"
+        android:layout_marginTop="13dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numero_kilometros"
+        android:layout_below="@+id/buscar_distancia"
+        android:layout_alignStart="@id/estilo_de_musica"
+        android:layout_marginTop="13dp"
+        android:text="SE SUSTITUYE DESDE JAVA"/>
+
+    <SeekBar
+        android:layout_width="@dimen/edit_width"
+        android:layout_height="wrap_content"
+        android:id="@+id/kilometros"
+        android:layout_below="@+id/numero_kilometros"
+        android:layout_alignStart="@id/estilo_de_musica"
+        android:layout_marginTop="5dp"
+        android:progress="5"
+        android:max="25"/>
+
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/buscar_boton"
         android:layout_width="@dimen/edit_width"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/estilo_de_musica"
+        android:layout_below="@id/kilometros"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:padding="12dp"
