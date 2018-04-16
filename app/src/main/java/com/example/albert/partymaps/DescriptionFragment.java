@@ -30,8 +30,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,6 +45,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -86,30 +89,45 @@ public class DescriptionFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 mAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = mAuth.getCurrentUser();
+                final FirebaseUser user = mAuth.getCurrentUser();
                 CollectionReference events = db.collection("Events");
-                //Query evento = events.whereEqualTo("date",event.getDate()).whereEqualTo("ubication",event.getUbication()).whereEqualTo("time",event.getTime());
 
-                String idevent = event.getDate() + event.getUbication() + event.getTime();
-                Map<String, Boolean> favoritos = new HashMap<>();
-                favoritos.put(idevent,true);
+                events.whereEqualTo("date",event.getDate()).whereEqualTo("ubication",event.getUbication()).whereEqualTo("time",event.getTime()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (DocumentSnapshot document : task.getResult()) {
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                String id = document.getId();
+                                String idevent = event.getDate() + event.getUbication() + event.getTime();
+                                Map<String, Object> favoritos = new HashMap<>();
+                                favoritos.put("concatenat",idevent);
+                                favoritos.put("id",id);
 
 
+                                db.collection("Users").document(user.getUid()).collection("favoritos").document(id).set(favoritos)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
 
-                db.collection("Users").document(user.getUid()).collection("favoritos").document(idevent.replace("/","-")
-                        .replace(" ","")).set(favoritos)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
+
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
-                            }
-                        });
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
 
 
 
@@ -125,7 +143,7 @@ public class DescriptionFragment extends Fragment  {
                 public void onMapReady(GoogleMap googleMap) {
 
                     googleMap.addMarker(new MarkerOptions().position(latLng)
-                            .title("Singapore"));
+                            .title(event.getName()));
                     googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 }
             });
