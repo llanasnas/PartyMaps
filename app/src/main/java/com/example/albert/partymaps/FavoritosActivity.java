@@ -34,6 +34,8 @@ public class FavoritosActivity extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String uid = user.getUid();
+        final ArrayList<String> eventos = new ArrayList();
+        final ArrayList<String> nombres = new ArrayList();
 
         db.collection("Users").document(uid).collection("favoritos")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -44,36 +46,45 @@ public class FavoritosActivity extends AppCompatActivity {
 
                     for (DocumentSnapshot document : task.getResult()) {
 
-                        db.collection("Events").document(document.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
-                                            document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
-
-                                    misEventos.add(e);
-
-                                }
-                            }
-                        });
-
+                        eventos.add(document.getId());
 
                     }
 
-                    ListFragment listFragment = new ListFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("activity","MisEventos");
-                    bundle.putParcelableArrayList("eventos",misEventos);
-                    listFragment.setArguments(bundle);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().
-                            add(R.id.favoritos, listFragment).
-                            commit();
                 }
+
+                for(String evento: eventos){
+
+                    db.collection("Events").document(evento).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()){
+                                DocumentSnapshot document = task.getResult();
+                                Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
+                                        document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
+
+                                misEventos.add(e);
+                            }
+
+                            ListFragment listFragment = new ListFragment();
+
+                            Bundle bundle = new Bundle();
+                            bundle.putString("activity","FavoritosActivity");
+                            bundle.putParcelableArrayList("eventos",misEventos);
+                            listFragment.setArguments(bundle);
+                            FragmentManager fragmentManager = getFragmentManager();
+                            fragmentManager.beginTransaction().
+                                    add(R.id.favoritos, listFragment).
+                                    commit();
+
+                        }
+                    });
+
+                }
+
             }
         });
+
+
 
     }
 
