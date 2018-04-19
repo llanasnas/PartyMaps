@@ -126,7 +126,15 @@ public class Main2Activity extends AppCompatActivity
 
         }else if (id == R.id.nav_amigos) {
 
-        } else if (id == R.id.nav_perfil) {
+        }else if (id == R.id.favoritos) {
+
+            Intent intent = new Intent(getBaseContext(),FavoritosActivity.class);
+            Bundle bundle = new Bundle();// Be sure con is not null here
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+
+        }else if (id == R.id.nav_perfil) {
 
         } else if (id == R.id.nav_cerrar) {
             FirebaseAuth.getInstance().signOut();

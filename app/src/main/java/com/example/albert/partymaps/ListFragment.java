@@ -82,6 +82,11 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             events = getArguments().getParcelableArrayList("eventos");
             adapter = new EventAdapter(events, getActivity());
             listView.setAdapter(adapter);
+        }else if(activity.equals("FavoritosActivity")){
+
+            events = getArguments().getParcelableArrayList("eventos");
+            adapter = new EventAdapter(events, getActivity());
+            listView.setAdapter(adapter);
         }
         return view;
 
@@ -152,7 +157,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
         if(activity.equals("Main2Activity")){
 
-
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().
                     replace(R.id.main,descriptionFragment).
@@ -168,6 +172,13 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     addToBackStack(null).
                     commit();
         } else if(activity.equals("MisEventos")){
+
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().
+                    replace(R.id.miseventos, descriptionFragment).
+                    commit();
+
+        } else if(activity.equals("FavoritosActivity")){
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().
