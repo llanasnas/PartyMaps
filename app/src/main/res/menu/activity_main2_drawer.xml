@@ -23,6 +23,10 @@
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Amigos" />
         <item
+            android:id="@+id/favoritos"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Favoritos" />
+        <item
             android:id="@+id/nav_perfil"
             android:icon="@drawable/ic_menu_manage"
             android:title="Perfil" />
