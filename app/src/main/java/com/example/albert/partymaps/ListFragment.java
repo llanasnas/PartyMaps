@@ -182,7 +182,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().
-                    replace(R.id.miseventos, descriptionFragment).
+                    replace(R.id.favoritos, descriptionFragment).
                     commit();
 
         }
