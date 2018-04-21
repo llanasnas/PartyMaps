@@ -136,6 +136,12 @@ public class Main2Activity extends AppCompatActivity
 
         }else if (id == R.id.nav_perfil) {
 
+            ProfileFragment fragment = new ProfileFragment();
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().
+                    add(R.id.main, fragment).
+                    commit();
+
         } else if (id == R.id.nav_cerrar) {
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();

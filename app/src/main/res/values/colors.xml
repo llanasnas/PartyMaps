@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0f75a0</color>
-    <color name="colorPrimaryDark">#02599c</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#004D40</color>
+    <color name="colorPrimaryDark">#00695C</color>
+    <color name="graylight">#fafafa</color>
+    <color name="colorAccent">#00695C</color>
     <color name="white">#FFFFFF</color>
     <color name="buton_crear">#D10F36</color>
     <color name="asda">#1c1fca</color>
     <color name="colorDesc">#020000</color>
+    <color name="startblue">#09c6df</color>
+    <color name="endblue">#0bcce6</color>
 </resources>
