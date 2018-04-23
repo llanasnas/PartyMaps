@@ -183,7 +183,7 @@ public class BuscarEventoFragment extends Fragment  {
 
                             if (activarGPS.isChecked()){
                                 GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-                                Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(numeroKilometros.getText().toString().length() - 2))*1000;
+                                Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11,numeroKilometros.getText().toString().length()))*1000;
                                 if (gpsTracker.getLocation() != null){
                                     Location locationUser = gpsTracker.getLocation();
                                     Location locationEvent = new Location("evento");

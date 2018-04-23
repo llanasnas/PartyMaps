@@ -266,5 +266,6 @@
     <orderEntry type="library" name="com.google.firebase:firebase-crash-license-12.0.1" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-gcm-license-12.0.1" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-iid-license-12.0.1" level="project" />
+    <orderEntry type="library" name="android-android-26" level="project" />
   </component>
 </module>
