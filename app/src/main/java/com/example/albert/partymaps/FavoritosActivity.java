@@ -62,7 +62,10 @@ public class FavoritosActivity extends AppCompatActivity {
                                 Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
                                         document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
 
-                                misEventos.add(e);
+                                if(e.getName() != null){
+                                    misEventos.add(e);
+                                }
+
                             }
 
                             ListFragment listFragment = new ListFragment();
