@@ -210,18 +210,17 @@ public class BuscarEventoFragment extends Fragment  {
                             added = true;
                         }
                     }
+                    ListFragment listFragment = new ListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("eventos",eventos);
+                    bundle.putString("activity","BuscarEvento");
+                    listFragment.setArguments(bundle);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().
+                            replace(R.id.buscar_eventos, listFragment).
+                            addToBackStack(null).
+                            commit();
                 }
-                ListFragment listFragment = new ListFragment();
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("eventos",eventos);
-                bundle.putString("activity","BuscarEvento");
-                listFragment.setArguments(bundle);
-                FragmentManager fragmentManager = getFragmentManager();
-                fragmentManager.beginTransaction().
-                        replace(R.id.buscar_eventos, listFragment).
-                        addToBackStack(null).
-                        commit();
-
             }
         });
         return view;
