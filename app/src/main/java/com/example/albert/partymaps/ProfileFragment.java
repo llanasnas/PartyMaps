@@ -31,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -78,7 +79,15 @@ public class ProfileFragment extends Fragment  {
             }
         });
 
-        
+        storageReference.child("images/"+ mAuth.getUid().concat("profileimage")).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            @Override
+            public void onComplete(@NonNull Task<Uri> task) {
+                if (task.isSuccessful()) {
+                    Picasso.get().load(task.getResult()).into(foto_gallery);
+                }
+            }
+        });
+
 
         db.collection("Users").document(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -121,7 +130,7 @@ public class ProfileFragment extends Fragment  {
             progressDialog.show();
 
 
-            StorageReference ref = storageReference.child("images/"+ mAuth.getUid().concat("profileimage"));
+            StorageReference ref = storageReference.child("images/"+ mAuth.getUid().concat("/profileimage"));
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
