@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment  {
             }
         });
 
-        storageReference.child("images/"+ mAuth.getUid().concat("profileimage")).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+        storageReference.child("images/"+ mAuth.getUid().concat("/profileimage")).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
