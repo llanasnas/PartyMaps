@@ -50,7 +50,8 @@
             android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:hint="@string/descripcion"
-            android:inputType="text"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
             />
 
         <Spinner

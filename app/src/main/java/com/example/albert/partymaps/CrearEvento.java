@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.Manifest;
+import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,6 +53,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     private static EditText datePicker;
     private static EditText timePicker;
     private static LatLng position;
+    EditText description ;
     private static Marker mark;
     private static MapFragment mapFragment;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -63,6 +65,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
@@ -93,7 +96,10 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
         datePicker.setInputType(InputType.TYPE_NULL);
         timePicker.setInputType(InputType.TYPE_NULL);
         AppCompatButton submit = (AppCompatButton) findViewById(R.id.confirm_event);
-
+        description = (EditText) findViewById(R.id.description);
+        description.setScroller(new Scroller(getApplicationContext()));
+        description.setVerticalScrollBarEnabled(true);
+        description.setMaxLines(30);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -108,7 +114,7 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(View view) {
                 nombre=false;descripcion=false;
                 EditText name = (EditText) findViewById(R.id.nombre_evento);
-                EditText description = (EditText) findViewById(R.id.description);
+
                 Spinner music = (Spinner) findViewById(R.id.estilo_musica);
 
                 if(isEmpty(name.getText().toString())){

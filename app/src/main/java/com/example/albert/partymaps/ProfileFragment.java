@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
-import com.bumptech.glide.Glide;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
