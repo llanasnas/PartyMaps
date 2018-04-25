@@ -132,7 +132,7 @@ public class DescriptionFragment extends Fragment  {
 
 
 
-                Snackbar.make(view, "Añadido a tus doritos", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Añadido a tus favoritos", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }});
         final LatLng latLng = new LatLng(Double.parseDouble(ubi[0]),Double.parseDouble(ubi[1]));
