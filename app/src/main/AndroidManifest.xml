@@ -73,7 +73,7 @@
         <activity
             android:name=".BuscarEventoActivity"
             android:label="@string/title_activity_buscar_evento"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme" />
         <activity android:name=".MisEventosActivity" />
         <activity
             android:name=".FavoritosActivity"
