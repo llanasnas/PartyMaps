@@ -27,7 +27,7 @@ public class FavoritosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favoritos);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("Eventos favoritos");
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final ArrayList<Event> misEventos = new ArrayList<Event>();
