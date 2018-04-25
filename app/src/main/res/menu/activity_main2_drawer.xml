@@ -10,21 +10,21 @@
             android:title="Buscar Eventos" />
         <item
             android:id="@+id/nav_crear"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_create_event"
             android:title="Crear Eventos" />
 
         <item
             android:id="@+id/nav_misEventos"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_my_events"
             android:title="Mis eventos" />
 
         <item
             android:id="@+id/nav_amigos"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_amigos"
             android:title="Amigos" />
         <item
             android:id="@+id/favoritos"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_favoritos"
             android:title="Favoritos" />
         <item
             android:id="@+id/nav_perfil"
@@ -32,7 +32,7 @@
             android:title="Perfil" />
         <item
             android:id="@+id/nav_cerrar"
-            android:icon="@drawable/ic_location_searching_black_24dp"
+            android:icon="@drawable/ic_close_session"
             android:title="Cerrar Sesión"
             />
 

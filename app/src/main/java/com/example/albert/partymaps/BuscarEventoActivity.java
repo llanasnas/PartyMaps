@@ -64,6 +64,7 @@ public class BuscarEventoActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_buscar_evento);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.
         client = new GoogleApiClient.Builder(this)
                 .addApi(AppIndex.API)
                 .addApi(LocationServices.API)
