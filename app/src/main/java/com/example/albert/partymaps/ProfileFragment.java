@@ -72,7 +72,6 @@ public class ProfileFragment extends Fragment  {
         final TextView dataNaixement = (TextView) view.findViewById(R.id.fecha_usuari);
         final TextView numEventos = (TextView) view.findViewById(R.id.num_eventos);
         foto_gallery = (ImageView) view.findViewById(R.id.profile_image);
-
         foto_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,15 +135,15 @@ public class ProfileFragment extends Fragment  {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
+                            //progressDialog.dismiss();
+                            //Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            Toast.makeText(getActivity(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            //progressDialog.dismiss();
+                            //Toast.makeText(getActivity(), "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -152,7 +151,7 @@ public class ProfileFragment extends Fragment  {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            //progressDialog.setMessage("Uploaded "+(int)progress+"%");
                         }
                     });
         }
