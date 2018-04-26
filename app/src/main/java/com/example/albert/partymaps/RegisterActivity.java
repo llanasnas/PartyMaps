@@ -98,8 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
                                  public void onComplete(@NonNull Task<AuthResult> task) {
                                      if (task.isSuccessful()) {
                                          // Sign in success, update UI with the signed-in User's information
-                                         Toast.makeText(getApplicationContext(), "Te has registrao pescao.",
-                                                 Toast.LENGTH_SHORT).show();
+
                                          Log.d(TAG, "createUserWithEmail:success");
                                          FirebaseUser user = mAuth.getCurrentUser();
                                          updateUI(user);
@@ -118,7 +117,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                      @Override
                                                      public void onSuccess(Void aVoid) {
                                                          Log.d(TAG, "DocumentSnapshot successfully written!");
-                                                         Toast.makeText(getApplicationContext(), "tot correcte",
+                                                         Toast.makeText(getApplicationContext(), "Registro Correcto",
                                                                  Toast.LENGTH_SHORT).show();
                                                      }
                                                  })
