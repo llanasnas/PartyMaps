@@ -181,17 +181,7 @@
 
         </LinearLayout>
 
-        <Button
-            android:background="@drawable/button"
-            android:textColor="#FFF"
-            android:layout_marginTop="40dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Agregar a amigos"
-            android:padding="20dp"
-            android:layout_marginBottom="20dp"
-            />
+       
 
     </LinearLayout>
 </ScrollView>
