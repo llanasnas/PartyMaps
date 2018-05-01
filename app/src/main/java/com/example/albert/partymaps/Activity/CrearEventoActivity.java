@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Activity;
 
 
 import android.app.DatePickerDialog;
@@ -25,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.albert.partymaps.Model.Event;
+import com.example.albert.partymaps.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -45,11 +47,11 @@ import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback {
+public class CrearEventoActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static GoogleMap mMap;
     private FirebaseAuth mAuth;
-    private static final String TAG = CrearEvento.class.getSimpleName();
+    private static final String TAG = CrearEventoActivity.class.getSimpleName();
     private static EditText datePicker;
     private static EditText timePicker;
     private static LatLng position;
@@ -210,12 +212,12 @@ public class CrearEvento extends AppCompatActivity implements OnMapReadyCallback
 
     }
     public void showTimePickerDialog(View v) {
-        DialogFragment newFragment = new CrearEvento.TimePickerFragment();
+        DialogFragment newFragment = new CrearEventoActivity.TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     public void showDatePickerDialog(View v) {
-        DialogFragment newFragment = new CrearEvento.DatePickerFragment();
+        DialogFragment newFragment = new CrearEventoActivity.DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 

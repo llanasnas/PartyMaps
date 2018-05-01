@@ -1,10 +1,13 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Activity;
 
 import android.app.FragmentManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.albert.partymaps.Model.Event;
+import com.example.albert.partymaps.Fragment.ListFragment;
+import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

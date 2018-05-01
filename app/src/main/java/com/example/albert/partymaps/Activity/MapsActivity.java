@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Activity;
 
 
 import android.content.pm.PackageManager;
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.Manifest;
 
+import com.example.albert.partymaps.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -79,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
 
             public void onMapClick(LatLng latLng) {
-                CrearEvento.takePos(latLng);
+                CrearEventoActivity.takePos(latLng);
                 if(marked){
                     mark.remove();
                     mark = mMap.addMarker(new MarkerOptions().position(latLng).title("fieston")

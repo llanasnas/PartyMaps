@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Fragment;
 
 
 import android.app.Activity;
@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

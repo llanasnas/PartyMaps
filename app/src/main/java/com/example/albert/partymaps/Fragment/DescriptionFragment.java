@@ -1,8 +1,6 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Fragment;
 
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
@@ -16,17 +14,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.albert.partymaps.Activity.CrearEventoActivity;
+import com.example.albert.partymaps.Model.Event;
+import com.example.albert.partymaps.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -37,15 +33,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -57,7 +49,7 @@ public class DescriptionFragment extends Fragment  {
 
     private static GoogleMap mMap;
     private static LatLng position;
-    private static final String TAG = CrearEvento.class.getSimpleName();
+    private static final String TAG = CrearEventoActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private static Marker mark;
     private boolean favorite = false;

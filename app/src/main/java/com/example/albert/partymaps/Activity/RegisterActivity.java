@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Activity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -19,6 +19,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albert.partymaps.R;
+import com.example.albert.partymaps.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Fragment;
 
 
 import android.app.FragmentManager;
@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.albert.partymaps.Activity.RegisterActivity;
+import com.example.albert.partymaps.Model.Event;
+import com.example.albert.partymaps.Util.EventAdapter;
+import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;

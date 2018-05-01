@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

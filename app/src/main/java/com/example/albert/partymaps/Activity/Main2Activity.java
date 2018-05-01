@@ -1,9 +1,8 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -15,7 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+
+import com.example.albert.partymaps.Model.Event;
+import com.example.albert.partymaps.Fragment.ListFragment;
+import com.example.albert.partymaps.Fragment.ProfileFragment;
+import com.example.albert.partymaps.R;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -123,7 +126,7 @@ public class Main2Activity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_crear) {
 
-            Intent intent = new Intent(getBaseContext(), CrearEvento.class);
+            Intent intent = new Intent(getBaseContext(), CrearEventoActivity.class);
             startActivity(intent);
         }else if(id == R.id.nav_misEventos){
 

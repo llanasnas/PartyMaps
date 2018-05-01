@@ -1,10 +1,12 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Activity;
 
 import android.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+
+import com.example.albert.partymaps.R;
 
 public class MainActivity extends AppCompatActivity {
     private String[] mPlanetTitles;

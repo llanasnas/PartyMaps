@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

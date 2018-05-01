@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Activity;
 import android.app.FragmentManager;
 
 import android.content.IntentSender;
@@ -11,6 +11,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.albert.partymaps.Fragment.BuscarEventoFragment;
+import com.example.albert.partymaps.Model.Event;
+import com.example.albert.partymaps.R;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -28,7 +31,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class BuscarEventoActivity extends AppCompatActivity  {
 

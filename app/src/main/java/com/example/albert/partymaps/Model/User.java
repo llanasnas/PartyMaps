@@ -1,4 +1,4 @@
-package com.example.albert.partymaps;
+package com.example.albert.partymaps.Model;
 
 /**
  * Created by Gerard on 21/01/2018.
