@@ -43,6 +43,7 @@ public class BuscarEventoActivity extends AppCompatActivity  {
     private GoogleApiClient client;
     private PendingResult<LocationSettingsResult> result;
     private static final Integer GPS_SETTINGS = 0x7;
+    public static boolean permisoGPS = false;
 
 
 
@@ -74,6 +75,7 @@ public class BuscarEventoActivity extends AppCompatActivity  {
             switch (requestCode) {
                 //Location
                 case 1:
+                    permisoGPS = true;
                     askForGPS();
                     break;
                 //Call
@@ -94,6 +96,10 @@ public class BuscarEventoActivity extends AppCompatActivity  {
     public void onStop() {
         super.onStop();
         client.disconnect();
+    }
+
+    public static boolean devolverPermisos(){
+        return permisoGPS;
     }
 
     private void askForGPS(){

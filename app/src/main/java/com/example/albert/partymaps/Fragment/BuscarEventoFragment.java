@@ -2,7 +2,9 @@ package com.example.albert.partymaps.Fragment;
 
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,6 +23,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albert.partymaps.Activity.BuscarEventoActivity;
 import com.example.albert.partymaps.Activity.RegisterActivity;
 import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.Util.GPSTracker;
@@ -82,6 +85,7 @@ public class BuscarEventoFragment extends Fragment  {
         final SeekBar kilometros = view.findViewById(R.id.kilometros);
         final Switch activarGPS = view.findViewById(R.id.buscar_distancia);
         final TextView numeroKilometros = view.findViewById(R.id.numero_kilometros);
+        numeroKilometros.setText("Kilometros: 1");
         String[] arraySpinner = getResources().getStringArray(R.array.cities);
         ArrayAdapter<String> adapterLocalities = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item,
                 arraySpinner);
@@ -96,7 +100,9 @@ public class BuscarEventoFragment extends Fragment  {
         activarGPS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
+                if (activarGPS.isChecked()){
+                    askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
+                }
             }
         });
 
@@ -129,9 +135,13 @@ public class BuscarEventoFragment extends Fragment  {
 
                 if (nombre.getText().toString().isEmpty() && musicTypes.getSelectedItem().toString().equals("Estilo musical") && localities.getSelectedItem().toString().equals("Localidad") && !activarGPS.isChecked()) {
 
-                    nombre.setError("Busca por nombre, localidad, estilo musical o distancia");
+                    nombre.setError("Busca por nombre, localidad, estilo musical, o distancia ");
 
-                } else {
+                }else if((activarGPS.isChecked() && !BuscarEventoActivity.devolverPermisos())){
+
+                    nombre.setError("Para buscar por distancia debes aceptar los permisos");
+
+                }else {
 
                     String nom = "", localidad = "", musica = "";
 
@@ -167,7 +177,7 @@ public class BuscarEventoFragment extends Fragment  {
                                 }
                             }
 
-                            if (activarGPS.isChecked()){
+                            if (activarGPS.isChecked() && BuscarEventoActivity.devolverPermisos()){
                                 GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
                                 Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11,numeroKilometros.getText().toString().length()))*1000;
                                 if (gpsTracker.getLocation() != null){
@@ -196,16 +206,30 @@ public class BuscarEventoFragment extends Fragment  {
                             added = true;
                         }
                     }
-                    ListFragment listFragment = new ListFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("eventos",eventos);
-                    bundle.putString("activity","BuscarEvento");
-                    listFragment.setArguments(bundle);
-                    FragmentManager fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction().
-                            replace(R.id.buscar_eventos, listFragment).
-                            addToBackStack(null).
-                            commit();
+                    if (eventos.isEmpty()){
+                        AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                        alertDialog.setTitle("Vaya...");
+                        alertDialog.setMessage("No se han encontrado eventos con tus criterios de búsqueda");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Aceptar",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                    }else{
+                        ListFragment listFragment = new ListFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("eventos",eventos);
+                        bundle.putString("activity","BuscarEvento");
+                        listFragment.setArguments(bundle);
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction().
+                                replace(R.id.buscar_eventos, listFragment).
+                                addToBackStack(null).
+                                commit();
+                    }
+
                 }
             }
         });
