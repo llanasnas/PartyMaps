@@ -24,7 +24,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -119,6 +122,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
 
     private void readData(final Firestorecallback firestorecallback) {
+
         db.collection("Events").orderBy("date")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -126,11 +130,23 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (DocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
-                                        document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
 
-                                eventos.add(e);
+                                try {
+                                    SimpleDateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");
+                                    Date fechaActual = new Date();
+                                    Date fechaEvent = fecha.parse(document.getString("date"));
+                                    if(fechaEvent.after(fechaActual)){
+                                        String date = document.getString("date");
+                                        Log.d(TAG, document.getId() + " => " + document.getData());
+                                        Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
+                                                document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
+
+                                        eventos.add(e);
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
 
                             }
                             firestorecallback.onCallback(eventos);

@@ -41,7 +41,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,8 +151,9 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    Toast.makeText(getApplicationContext(), "tot correcte",
+                                    Toast.makeText(getApplicationContext(), "Evento creado con éxito",
                                             Toast.LENGTH_SHORT).show();
+                                            finish();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -264,7 +268,6 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
             month++;
-            date=true;
             String dia,mes;     
             if(day<10){
                 dia = "0" + day;
@@ -277,6 +280,21 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                 mes = String.valueOf(month);
             }
             String fecha = dia + "/" + mes + "/" + year;
+
+            try {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                Date now = new Date();
+                Date eventDate = format.parse(fecha);
+                if(!eventDate.after(now)){
+                    datePicker.setError("No se aceptan fechas antiguas");
+                }else{
+                    date=true;
+
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             evento.setDate(fecha);
             datePicker.setText(fecha);
         }
