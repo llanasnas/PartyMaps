@@ -186,6 +186,12 @@ public class DescriptionFragment extends Fragment  {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mapFragment = null;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
