@@ -98,9 +98,6 @@ public class BuscarEventoActivity extends AppCompatActivity  {
         client.disconnect();
     }
 
-    public static boolean devolverPermisos(){
-        return permisoGPS;
-    }
 
     private void askForGPS(){
         mLocationRequest = LocationRequest.create();

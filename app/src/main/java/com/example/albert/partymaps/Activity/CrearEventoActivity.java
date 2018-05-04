@@ -68,12 +68,6 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
 
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        } else {
-            // Show rationale and request permission.
-        }
         setContentView(R.layout.activity_crear_evento);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -102,13 +96,6 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
         description.setScroller(new Scroller(getApplicationContext()));
         description.setVerticalScrollBarEnabled(true);
         description.setMaxLines(30);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        } else {
-            // Show rationale and request permission.
-        }
 
         submit.setOnClickListener(new View.OnClickListener(){
 

@@ -137,7 +137,7 @@ public class BuscarEventoFragment extends Fragment  {
 
                     nombre.setError("Busca por nombre, localidad, estilo musical, o distancia ");
 
-                }else if((activarGPS.isChecked() && !BuscarEventoActivity.devolverPermisos())){
+                }else if((activarGPS.isChecked() && !permisosYaOtorgados())){
 
                     nombre.setError("Para buscar por distancia debes aceptar los permisos");
 
@@ -177,7 +177,7 @@ public class BuscarEventoFragment extends Fragment  {
                                 }
                             }
 
-                            if (activarGPS.isChecked() && BuscarEventoActivity.devolverPermisos()){
+                            if (activarGPS.isChecked() && permisosYaOtorgados()){
                                 GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
                                 Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11,numeroKilometros.getText().toString().length()))*1000;
                                 if (gpsTracker.getLocation() != null){
@@ -253,5 +253,12 @@ public class BuscarEventoFragment extends Fragment  {
         } else {
             Toast.makeText(getActivity(), "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private boolean permisosYaOtorgados(){
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        return false;
     }
 }
