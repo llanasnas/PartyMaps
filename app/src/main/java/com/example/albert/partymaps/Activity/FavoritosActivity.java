@@ -54,7 +54,7 @@ public class FavoritosActivity extends AppCompatActivity {
 
                 }
 
-                if (eventos.isEmpty()){
+                if (!eventos.isEmpty()){
                     for(String evento: eventos){
 
                         db.collection("Events").document(evento).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
