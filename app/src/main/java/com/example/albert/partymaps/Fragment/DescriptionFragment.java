@@ -231,6 +231,7 @@ public class DescriptionFragment extends Fragment {
     public void onResume() {
         super.onResume();
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        mapFragment = null;
     }
 
     @Override
