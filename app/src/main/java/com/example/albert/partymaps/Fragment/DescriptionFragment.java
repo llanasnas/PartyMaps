@@ -23,6 +23,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -134,9 +135,15 @@ public class DescriptionFragment extends Fragment  {
                 @Override
                 public void onMapReady(GoogleMap googleMap) {
 
+                    googleMap.getUiSettings().setScrollGesturesEnabled(false);
+                    googleMap.getUiSettings().setZoomGesturesEnabled(false);
                     googleMap.addMarker(new MarkerOptions().position(latLng)
                             .title(event.getName()));
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
+                    // Zoom in, animating the camera.
+                    googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+                    // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+                    googleMap.animateCamera(CameraUpdateFactory.zoomTo(17), 1000, null);
                 }
             });
         }
