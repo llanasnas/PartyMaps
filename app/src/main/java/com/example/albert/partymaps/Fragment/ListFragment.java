@@ -108,8 +108,26 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         }else if(activity.equals("FavoritosActivity")){
 
             events = getArguments().getParcelableArrayList("eventos");
-            adapter = new EventAdapter(events, getActivity());
-            listView.setAdapter(adapter);
+
+            if (events.isEmpty()){
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Espera...");
+                alertDialog.setMessage("Parece que no tienes ningún evento favorito...");
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Volver",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                getActivity().finish();
+                            }
+                        });
+
+
+                alertDialog.show();
+            }else{
+                adapter = new EventAdapter(events, getActivity());
+                listView.setAdapter(adapter);
+            }
+
         }
         return view;
 
