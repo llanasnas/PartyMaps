@@ -119,7 +119,7 @@ public class UserAdapter extends BaseAdapter implements Filterable{
             @Override
             protected void publishResults(CharSequence constraint,
                                           FilterResults results) {
-                usersAux = (ArrayList<User>) results.values;
+                users = (ArrayList<User>) results.values;
                 notifyDataSetChanged();
             }
         };
