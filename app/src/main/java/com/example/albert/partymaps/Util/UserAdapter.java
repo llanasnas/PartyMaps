@@ -7,12 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,7 +31,7 @@ import java.util.ArrayList;
  * Created by Alumne on 04/05/2018.
  */
 
-public class UserAdapter extends BaseAdapter {
+public class UserAdapter extends BaseAdapter implements Filterable{
 
 
 
@@ -38,11 +41,14 @@ public class UserAdapter extends BaseAdapter {
     private Context context;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<User> users = new ArrayList<User>();
+    private ArrayList<User> usersAux = new ArrayList<User>();
 
     public UserAdapter(Context context, ArrayList<User> users) {
         this.context = context;
         this.users = users;
     }
+
+
 
     @Override
     public int getCount() {
@@ -75,11 +81,47 @@ public class UserAdapter extends BaseAdapter {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
-                        Picasso.get().load(task.getResult()).into(imatge);
+                           Picasso.get().load(task.getResult()).into(imatge);
                     }
                 }
             });
 
         return view;
+    }
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final ArrayList<User> results = new ArrayList<User>();
+                if (usersAux == null)
+                    usersAux = users;
+                if (constraint != null) {
+                    if (usersAux != null && usersAux.size() > 0) {
+                        for (final User g : usersAux) {
+                            if (g.getName().toLowerCase()
+                                    .contains(constraint.toString()))
+                                results.add(g);
+                        }
+                    }
+                    oReturn.values = results;
+                }
+                return oReturn;
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint,
+                                          FilterResults results) {
+                usersAux = (ArrayList<User>) results.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

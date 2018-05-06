@@ -136,9 +136,6 @@ public class ProfileFragment extends Fragment  {
                     }
                 }
             });
-
-
-
         }
 
 
@@ -203,12 +200,6 @@ public class ProfileFragment extends Fragment  {
             }
 
         });
-
-
-
-
-
-
     }
 
 
