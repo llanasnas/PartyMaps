@@ -129,6 +129,48 @@ public class DescriptionFragment extends Fragment {
                 }
             });
 
+        } else if (getActivity().getLocalClassName().toString().equals("Activity.MisEventosActivity")) {
+
+            fab.setImageResource(R.mipmap.ic_drop);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("Piénsatelo...");
+                    alertDialog.setMessage("Si borras este evento desaparecerá para todos, ¿estás seguro?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancelar",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Eliminar",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    final String idevent = event.getDate() + event.getUbication() + event.getTime();
+                                    db.collection("Events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (DocumentSnapshot document : task.getResult()) {
+                                                    if(document.getString("event_maker").equals(uid) && document.getString("ubication").equals(event.getUbication())){
+                                                        db.collection("Events").document(document.getId()).delete();
+                                                    }
+                                                }
+
+                                            }
+                                            Toast.makeText(getApplicationContext(), "Has eliminado tu evento", Toast.LENGTH_SHORT).show();
+                                            getActivity().finish();
+                                        }
+                                    });
+                                }
+                            });
+                    alertDialog.show();
+                }
+            });
+
         } else {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
