@@ -1,5 +1,7 @@
 package com.example.albert.partymaps.Model;
 
+import android.net.Uri;
+
 /**
  * Created by Gerard on 21/01/2018.
  */
@@ -8,6 +10,7 @@ public class User {
 
     private String name;
     private String mail;
+    private String uid;
     private String date;
 
 
@@ -21,8 +24,13 @@ public class User {
         this.mail = mail;
     }
 
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     public User() {
     }
+    public String getUid(){ return uid; }
 
     public String getName() {
         return name;

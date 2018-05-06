@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="100dp"
-    android:layout_height="100dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/list_gradient"
+    android:gravity="center"
+    android:orientation="horizontal">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:id="@+id/user_image"/>
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="15dp"
-    android:layout_marginLeft="10dp"
-    android:layout_toRightOf="@+id/user_image"
-    android:text="nombre usuario"
-    />
+        android:id="@+id/imatge_user"
+        android:layout_width="60dp"
+        android:src="@drawable/logo1"
+        android:layout_height="60dp"
+        android:layout_margin="10dp"
+        android:tint="@color/list_color_2a"
+        android:tintMode="multiply" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/nomUsuari"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="Add more"
+        android:textSize="25dp" />
+
+</LinearLayout>

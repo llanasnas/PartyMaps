@@ -63,5 +63,6 @@
     <string name="title_activity_buscar_evento">Buscar Evento</string>
     <string name="title_activity_profile">Perfil</string>
     <string name="title_activity_favoritos">Favoritos</string>
+    <string name="title_activity_users_list">Usuarios</string>
 
 </resources>
