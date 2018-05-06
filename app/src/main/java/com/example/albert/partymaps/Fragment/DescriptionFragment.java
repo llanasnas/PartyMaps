@@ -1,6 +1,8 @@
 package com.example.albert.partymaps.Fragment;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.albert.partymaps.Activity.CrearEventoActivity;
 import com.example.albert.partymaps.Model.Event;
@@ -41,11 +44,13 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DescriptionFragment extends Fragment  {
+public class DescriptionFragment extends Fragment {
 
 
     private static GoogleMap mMap;
@@ -68,67 +73,110 @@ public class DescriptionFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_description, container, false);
         Toolbar toolbar = view.findViewById(R.id.toolbarDesc);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        if( ((AppCompatActivity)getActivity()).getSupportActionBar() != null){
-            ((AppCompatActivity)getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_fav);
 
-
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getCurrentUser();
+        final String uid = user.getUid();
         final Event event = getArguments().getParcelable("evento");
-        String ubicacion = event.getUbication().substring(10,event.getUbication().length()-1);
+        String ubicacion = event.getUbication().substring(10, event.getUbication().length() - 1);
         String[] ubi = ubicacion.split(",");
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth = FirebaseAuth.getInstance();
-                final FirebaseUser user = mAuth.getCurrentUser();
-                CollectionReference events = db.collection("Events");
-
-                events.whereEqualTo("date",event.getDate()).whereEqualTo("ubication",event.getUbication()).whereEqualTo("time",event.getTime()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (DocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                String id = document.getId();
-                                String idevent = event.getDate() + event.getUbication() + event.getTime();
-                                Map<String, Object> favoritos = new HashMap<>();
-                                favoritos.put("concatenat",idevent);
-                                favoritos.put("id",id);
 
 
-                                db.collection("Users").document(user.getUid()).collection("favoritos").document(id).set(favoritos)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+        if (getActivity().getLocalClassName().toString().equals("Activity.FavoritosActivity")) {
+            fab.setImageResource(R.mipmap.ic_drop);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("No tan rápido...");
+                    alertDialog.setMessage("¿Quieres eliminar este evento de tu lista de favoritos?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancelar",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Eliminar",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    final String idevent = event.getDate() + event.getUbication() + event.getTime();
+                                    db.collection("Users").document(uid).collection("favoritos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (DocumentSnapshot document : task.getResult()) {
+                                                    if (document.getString("concatenat").equals(idevent)){
+                                                        db.collection("Users").document(uid).collection("favoritos").document(document.getId()).delete();
+                                                    }
+                                                }
+
                                             }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error writing document", e);
-                                            }
-                                        });
+                                            Toast.makeText(getApplicationContext(), "Evento eliminado de favoritos", Toast.LENGTH_SHORT).show();
+                                            getActivity().finish();
+                                        }
+                                    });
+                                }
+                            });
+                    alertDialog.show();
+                }
+            });
+
+        } else {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CollectionReference events = db.collection("Events");
+
+                    events.whereEqualTo("date", event.getDate()).whereEqualTo("ubication", event.getUbication()).whereEqualTo("time", event.getTime()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                    String id = document.getId();
+                                    String idevent = event.getDate() + event.getUbication() + event.getTime();
+                                    Map<String, Object> favoritos = new HashMap<>();
+                                    favoritos.put("concatenat", idevent);
+                                    favoritos.put("id", id);
 
 
+                                    db.collection("Users").document(user.getUid()).collection("favoritos").document(id).set(favoritos)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error writing document", e);
+                                                }
+                                            });
+
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
                             }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
                         }
-                    }
-                });
+                    });
+
+                    Snackbar.make(view, "Añadido a tus favoritos", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+        }
 
 
-
-
-
-
-                Snackbar.make(view, "Añadido a tus favoritos", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }});
-        final LatLng latLng = new LatLng(Double.parseDouble(ubi[0]),Double.parseDouble(ubi[1]));
+        final LatLng latLng = new LatLng(Double.parseDouble(ubi[0]), Double.parseDouble(ubi[1]));
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance();
             mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -139,7 +187,7 @@ public class DescriptionFragment extends Fragment  {
                     googleMap.getUiSettings().setZoomGesturesEnabled(false);
                     googleMap.addMarker(new MarkerOptions().position(latLng)
                             .title(event.getName()));
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
                     // Zoom in, animating the camera.
                     googleMap.animateCamera(CameraUpdateFactory.zoomIn());
                     // Zoom out to zoom level 10, animating with a duration of 2 seconds.
@@ -166,7 +214,7 @@ public class DescriptionFragment extends Fragment  {
                     favorite = true;
                 }
             }
-        });*/
+    });*/
 
 
         name.setText(event.getName());
@@ -176,20 +224,19 @@ public class DescriptionFragment extends Fragment  {
         //hora.setText(event.getTime());
 
 
-
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 
     @Override
@@ -204,7 +251,6 @@ public class DescriptionFragment extends Fragment  {
 
 
     }
-
 
 
 }
