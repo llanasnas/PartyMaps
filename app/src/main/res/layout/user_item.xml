@@ -12,7 +12,6 @@
         android:src="@drawable/logo1"
         android:layout_height="60dp"
         android:layout_margin="10dp"
-        android:tint="@color/list_color_2a"
         android:tintMode="multiply" />
 
     <TextView

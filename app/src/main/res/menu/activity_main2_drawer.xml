@@ -21,7 +21,12 @@
         <item
             android:id="@+id/nav_amigos"
             android:icon="@drawable/ic_amigos"
-            android:title="Amigos" />
+            android:title="Seguidos" />
+        <item
+            android:id="@+id/usuarios"
+            android:icon="@drawable/ic_users"
+            android:title="Usuarios"
+            />
         <item
             android:id="@+id/favoritos"
             android:icon="@drawable/ic_favoritos"
@@ -35,6 +40,7 @@
             android:icon="@drawable/ic_close_session"
             android:title="Cerrar Sesión"
             />
+
 
     </group>
 

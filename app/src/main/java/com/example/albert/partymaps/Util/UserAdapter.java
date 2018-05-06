@@ -34,10 +34,10 @@ public class UserAdapter extends BaseAdapter {
 
 
     FirebaseStorage storage;
-    StorageReference storageReference;
+    StorageReference storageReference ;
     private Context context;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private ArrayList<User> users;
+    private ArrayList<User> users = new ArrayList<User>();
 
     public UserAdapter(Context context, ArrayList<User> users) {
         this.context = context;
@@ -64,6 +64,8 @@ public class UserAdapter extends BaseAdapter {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
         }
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
         final ImageView imatge = (ImageView) view.findViewById(R.id.imatge_user);
         TextView nom = (TextView) view.findViewById(R.id.nomUsuari);
 

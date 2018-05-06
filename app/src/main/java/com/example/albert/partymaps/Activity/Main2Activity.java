@@ -138,6 +138,11 @@ public class Main2Activity extends AppCompatActivity
 
         }else if (id == R.id.nav_amigos) {
 
+        }else if (id == R.id.usuarios) {
+
+            Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
+            startActivity(intent);
+
         }else if (id == R.id.favoritos) {
 
             Intent intent = new Intent(getBaseContext(),FavoritosActivity.class);
