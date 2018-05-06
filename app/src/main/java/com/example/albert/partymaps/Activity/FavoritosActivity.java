@@ -54,37 +54,51 @@ public class FavoritosActivity extends AppCompatActivity {
 
                 }
 
-                for(String evento: eventos){
+                if (eventos.isEmpty()){
+                    for(String evento: eventos){
 
-                    db.collection("Events").document(evento).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()){
-                                DocumentSnapshot document = task.getResult();
-                                Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
-                                        document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
+                        db.collection("Events").document(evento).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()){
+                                    DocumentSnapshot document = task.getResult();
+                                    Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
+                                            document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
 
-                                if(e.getName() != null){
-                                    misEventos.add(e);
+                                    if(e.getName() != null){
+                                        misEventos.add(e);
+                                    }
+
                                 }
 
+                                ListFragment listFragment = new ListFragment();
+
+                                Bundle bundle = new Bundle();
+                                bundle.putString("activity","FavoritosActivity");
+                                bundle.putParcelableArrayList("eventos",misEventos);
+                                listFragment.setArguments(bundle);
+                                FragmentManager fragmentManager = getFragmentManager();
+                                fragmentManager.beginTransaction().
+                                        add(R.id.favoritos, listFragment).
+                                        commit();
+
                             }
+                        });
 
-                            ListFragment listFragment = new ListFragment();
+                    }
+                }else{
+                    ListFragment listFragment = new ListFragment();
 
-                            Bundle bundle = new Bundle();
-                            bundle.putString("activity","FavoritosActivity");
-                            bundle.putParcelableArrayList("eventos",misEventos);
-                            listFragment.setArguments(bundle);
-                            FragmentManager fragmentManager = getFragmentManager();
-                            fragmentManager.beginTransaction().
-                                    add(R.id.favoritos, listFragment).
-                                    commit();
-
-                        }
-                    });
-
+                    Bundle bundle = new Bundle();
+                    bundle.putString("activity","FavoritosActivity");
+                    bundle.putParcelableArrayList("eventos",misEventos);
+                    listFragment.setArguments(bundle);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction().
+                            add(R.id.favoritos, listFragment).
+                            commit();
                 }
+
 
             }
         });
