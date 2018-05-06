@@ -1,7 +1,9 @@
 package com.example.albert.partymaps.Fragment;
 
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
@@ -86,8 +88,23 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
         }else if(activity.equals("MisEventos")){
 
             events = getArguments().getParcelableArrayList("eventos");
-            adapter = new EventAdapter(events, getActivity());
-            listView.setAdapter(adapter);
+            if (events.isEmpty()){
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Un momento...");
+                alertDialog.setMessage("Parece que aún no has creado ningún evento...");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Volver",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                getActivity().finish();
+                            }
+                        });
+                alertDialog.show();
+            }else{
+                adapter = new EventAdapter(events, getActivity());
+                listView.setAdapter(adapter);
+            }
+
         }else if(activity.equals("FavoritosActivity")){
 
             events = getArguments().getParcelableArrayList("eventos");
