@@ -16,10 +16,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,6 +38,8 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -50,10 +54,18 @@ public class ProfileFragment extends Fragment  {
     private static final int PICK_IMAGE = 100;
     private Uri filePath;
     //Firebase
+    public TextView nomUsuari ;
+    public TextView correuUsuari ;
+    public TextView dataNaixement ;
+    private Button followButton;
+    public TextView numEventos ;
+    public boolean seguido = false;
+    public User user ;
     FirebaseStorage storage;
     StorageReference storageReference;
     private final int PICK_IMAGE_REQUEST = 71;
     private Uri imageUri;
+    private String activity;
     ImageView foto_gallery;
 
     public ProfileFragment() {
@@ -68,11 +80,87 @@ public class ProfileFragment extends Fragment  {
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        final TextView nomUsuari = (TextView) view.findViewById(R.id.nom_usuari);
-        final TextView correuUsuari = (TextView) view.findViewById(R.id.correu_usuari);
-        final TextView dataNaixement = (TextView) view.findViewById(R.id.fecha_usuari);
-        final TextView numEventos = (TextView) view.findViewById(R.id.num_eventos);
+        nomUsuari = (TextView) view.findViewById(R.id.nom_usuari);
+        correuUsuari = (TextView) view.findViewById(R.id.correu_usuari);
+        dataNaixement = (TextView) view.findViewById(R.id.fecha_usuari);
+        numEventos = (TextView) view.findViewById(R.id.num_eventos);
+        followButton = (Button) view.findViewById(R.id.followButton);
         foto_gallery = (ImageView) view.findViewById(R.id.profile_image);
+        activity = getArguments().getString("activity");
+        if(activity.equals("Main2Activity")){
+            followButton.setVisibility(view.GONE);
+            setOwnProfile();
+        }else{
+            user = getArguments().getParcelable("user");
+            nomUsuari.setText(user.getName());
+            isFollowing();
+            correuUsuari.setText(user.getMail());
+            dataNaixement.setText(user.getDate());
+            storageReference.child("images/"+ user.getUid().concat("/profileimage")).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+                        Picasso.get().load(task.getResult()).into(foto_gallery);
+                    }
+                }
+            });
+            db.collection("Events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    int num_events = 0;
+                    for (DocumentSnapshot document : task.getResult()) {
+
+                        if(document.getString("event_maker").equals(user.getUid())){
+                            num_events++;
+                        }
+                    }
+                    numEventos.setText(String.valueOf(num_events));
+                }
+
+            });
+            followButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    if(seguido){
+                        followButton.setText("Seguir");
+                        db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).delete();
+                        seguido = false;
+                    }else {
+                        Map<String, Object> seguidos = new HashMap<>();
+                        seguidos.put("UID", user.getUid());
+                        db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).set(seguidos);
+                        followButton.setText("Dejar de seguir");
+                        seguido = true;
+                    }
+                }
+            });
+
+
+
+        }
+
+
+        return view;
+    }
+    private void isFollowing() {
+        db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+                if (documentSnapshot.exists()) {
+                    followButton.setText("Dejar de seguir");
+                    seguido = true;
+                } else {
+
+                }
+            }
+        });
+    }
+
+    private void setOwnProfile(){
+
         foto_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,9 +195,9 @@ public class ProfileFragment extends Fragment  {
                 int num_events = 0;
                 for (DocumentSnapshot document : task.getResult()) {
 
-                        if(document.getString("event_maker").equals(mAuth.getUid())){
-                            num_events++;
-                        }
+                    if(document.getString("event_maker").equals(mAuth.getUid())){
+                        num_events++;
+                    }
                 }
                 numEventos.setText(String.valueOf(num_events));
             }
@@ -120,8 +208,10 @@ public class ProfileFragment extends Fragment  {
 
 
 
-        return view;
+
     }
+
+
     private void uploadImage() {
 
         if(filePath != null)

@@ -1,12 +1,14 @@
 package com.example.albert.partymaps.Model;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by Gerard on 21/01/2018.
  */
 
-public class User {
+public class User implements Parcelable{
 
     private String name;
     private String mail;
@@ -23,6 +25,25 @@ public class User {
         this.name = name;
         this.mail = mail;
     }
+
+    protected User(Parcel in) {
+        name = in.readString();
+        mail = in.readString();
+        uid = in.readString();
+        date = in.readString();
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 
     public void setUid(String uid) {
         this.uid = uid;
@@ -55,5 +76,18 @@ public class User {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(mail);
+        dest.writeString(uid);
+        dest.writeString(date);
     }
 }

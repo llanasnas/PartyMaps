@@ -34,7 +34,7 @@ public class UserAdapter extends BaseAdapter {
 
 
     FirebaseStorage storage;
-    StorageReference storageReference ;
+    StorageReference storageReference;
     private Context context;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<User> users = new ArrayList<User>();

@@ -155,7 +155,11 @@ public class Main2Activity extends AppCompatActivity
 
             ProfileFragment fragment = new ProfileFragment();
             FragmentManager fragmentManager = getFragmentManager();
+            Bundle bundle = new Bundle();
+            bundle.putString("activity","Main2Activity");
+            fragment.setArguments(bundle);
             fragmentManager.beginTransaction().
+                    addToBackStack(null).
                     add(R.id.main, fragment).
                     commit();
 
