@@ -2,14 +2,18 @@ package com.example.albert.partymaps.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Gerard on 01/02/2018.
  */
 
-public class Event implements Parcelable,Serializable{
+public class Event implements Parcelable,Serializable,Comparable<Event>{
 
     private String name;
     private String music_type;
@@ -124,5 +128,23 @@ public class Event implements Parcelable,Serializable{
         dest.writeString(date);
         dest.writeString(time);
         dest.writeString(ubication);
+    }
+
+    public Date devolverFechaFormateada(){
+        Date date = new Date();
+        SimpleDateFormat format=new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            date = format.parse(getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    @Override
+    public int compareTo(@NonNull Event event) {
+        int num = devolverFechaFormateada().compareTo(event.devolverFechaFormateada());
+        int b = 0;
+        return num;
     }
 }

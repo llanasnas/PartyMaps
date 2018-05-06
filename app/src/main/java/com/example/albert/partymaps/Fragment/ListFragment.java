@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -143,6 +144,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             public void onCallback(ArrayList<Event> list) {
                 events = list;
                 Log.d(TAG,"Tamaño" + events.size());
+                Collections.sort(events);
                 EventAdapter adapter = new EventAdapter(events, getActivity());
                 listView.setAdapter(adapter);
 
@@ -156,7 +158,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
     private void readData(final Firestorecallback firestorecallback) {
 
-        db.collection("Events").orderBy("date")
+        db.collection("Events")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -182,6 +184,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
 
                             }
+                            Collections.sort(eventos);
                             firestorecallback.onCallback(eventos);
 
                         } else {
