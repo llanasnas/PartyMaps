@@ -15,11 +15,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.example.albert.partymaps.Fragment.ListFragment;
 import com.example.albert.partymaps.Fragment.ProfileFragment;
+import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.example.albert.partymaps.Util.UserAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApiNotAvailableException;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,6 +78,33 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
                 }
             }
         });
+    }
+    public void showEvents(String uid){
+
+        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                ArrayList<Event> events = new ArrayList<Event>();
+                for (DocumentSnapshot document :  queryDocumentSnapshots.getDocuments()){
+
+                    Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
+                            document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
+                    e.setId(document.getId());
+                    events.add(e);
+
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("activity","profile");
+                bundle.putParcelableArrayList("events",events);
+                ListFragment fragment = new ListFragment();
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().
+                        addToBackStack(null).
+                        add(R.id.main, fragment).
+                        commit();
+            }
+        });
+
     }
     private void setupSearchView()
     {

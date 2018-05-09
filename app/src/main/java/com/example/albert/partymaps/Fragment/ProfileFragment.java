@@ -21,6 +21,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.albert.partymaps.Activity.Main2Activity;
+import com.example.albert.partymaps.Activity.UsersListActivity;
+import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,6 +41,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -90,9 +94,21 @@ public class ProfileFragment extends Fragment  {
         if(activity.equals("Main2Activity")){
             followButton.setVisibility(view.GONE);
             setOwnProfile();
+            numEventos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((Main2Activity)getActivity()).showEvents(mAuth.getUid());
+                }
+            });
         }else{
             user = getArguments().getParcelable("user");
             nomUsuari.setText(user.getName());
+            numEventos.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((UsersListActivity)getActivity()).showEvents(user.getUid());
+                }
+            });
             isFollowing();
             correuUsuari.setText(user.getMail());
             dataNaixement.setText(user.getDate());

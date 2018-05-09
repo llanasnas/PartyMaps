@@ -20,7 +20,11 @@ import com.example.albert.partymaps.Fragment.ListFragment;
 import com.example.albert.partymaps.Fragment.ProfileFragment;
 import com.example.albert.partymaps.R;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -28,6 +32,7 @@ public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListFragment listFragment;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +116,33 @@ public class Main2Activity extends AppCompatActivity
         super.onRestart();
         finish();
         startActivity(getIntent());
+    }
+    public void showEvents(String uid){
+
+        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                ArrayList<Event> events = new ArrayList<Event>();
+                for (DocumentSnapshot document :  queryDocumentSnapshots.getDocuments()){
+
+                    Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
+                            document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
+                    e.setId(document.getId());
+                    events.add(e);
+
+                }
+                Bundle bundle = new Bundle();
+                bundle.putString("activity","profile");
+                bundle.putParcelableArrayList("events",events);
+                ListFragment fragment = new ListFragment();
+                fragment.setArguments(bundle);
+                getFragmentManager().beginTransaction().
+                        addToBackStack(null).
+                        add(R.id.main, fragment).
+                        commit();
+            }
+        });
+
     }
 
     @Override

@@ -99,7 +99,22 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                             }
                         });
                 alertDialog.show();
-            }else{
+            }else if(activity.equals("profile")){
+                events = getArguments().getParcelableArrayList("events");
+                if (events.isEmpty()) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("Un momento...");
+                    alertDialog.setMessage("Parece que aún no ha creado ningún evento...");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Volver",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    getActivity().finish();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            }else {
                 adapter = new EventAdapter(events, getActivity());
                 listView.setAdapter(adapter);
             }
