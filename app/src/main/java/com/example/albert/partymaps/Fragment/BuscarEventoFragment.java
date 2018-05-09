@@ -36,6 +36,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -44,7 +45,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BuscarEventoFragment extends Fragment  {
+public class BuscarEventoFragment extends Fragment {
 
     private ArrayList<Event> events = new ArrayList<Event>();
     private ArrayList<Event> eventos = new ArrayList<Event>();
@@ -56,7 +57,12 @@ public class BuscarEventoFragment extends Fragment  {
     PendingResult<LocationSettingsResult> result;
     static final Integer GPS_SETTINGS = 0x7;
     static final Integer LOCATION = 0x1;
-
+    EditText nombre = new EditText(null);
+    Spinner localities = new Spinner(null);
+    Spinner musicTypes = new Spinner(null);
+    SeekBar kilometros = new SeekBar(null);
+    Switch activarGPS = new Switch(null);
+    TextView numeroKilometros = new TextView(null);
 
 
     public BuscarEventoFragment() {
@@ -79,12 +85,12 @@ public class BuscarEventoFragment extends Fragment  {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_buscar_evento, container, false);
 
-        final EditText nombre = (EditText) view.findViewById(R.id.bpn);
-        final Spinner localities = (Spinner) view.findViewById(R.id.buscar_por_localidad);
-        final Spinner musicTypes = (Spinner) view.findViewById(R.id.estilo_de_musica);
-        final SeekBar kilometros = view.findViewById(R.id.kilometros);
-        final Switch activarGPS = view.findViewById(R.id.buscar_distancia);
-        final TextView numeroKilometros = view.findViewById(R.id.numero_kilometros);
+        nombre = (EditText) view.findViewById(R.id.bpn);
+        localities = (Spinner) view.findViewById(R.id.buscar_por_localidad);
+        musicTypes = (Spinner) view.findViewById(R.id.estilo_de_musica);
+        kilometros = view.findViewById(R.id.kilometros);
+        activarGPS = view.findViewById(R.id.buscar_distancia);
+        numeroKilometros = view.findViewById(R.id.numero_kilometros);
         numeroKilometros.setText("Kilometros: 1");
         String[] arraySpinner = getResources().getStringArray(R.array.cities);
         ArrayAdapter<String> adapterLocalities = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item,
@@ -100,12 +106,11 @@ public class BuscarEventoFragment extends Fragment  {
         activarGPS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (activarGPS.isChecked()){
-                    askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
+                if (activarGPS.isChecked()) {
+                    askForPermission(Manifest.permission.ACCESS_FINE_LOCATION, LOCATION);
                 }
             }
         });
-
 
 
         kilometros.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -126,7 +131,6 @@ public class BuscarEventoFragment extends Fragment  {
         });
 
 
-
         AppCompatButton buscar = (AppCompatButton) view.findViewById(R.id.buscar_boton);
 
         buscar.setOnClickListener(new View.OnClickListener() {
@@ -137,11 +141,11 @@ public class BuscarEventoFragment extends Fragment  {
 
                     nombre.setError("Busca por nombre, localidad, estilo musical, o distancia ");
 
-                }else if((activarGPS.isChecked() && !permisosYaOtorgados())){
+                } else if ((activarGPS.isChecked() && !permisosYaOtorgados())) {
 
                     nombre.setError("Para buscar por distancia debes aceptar los permisos");
 
-                }else {
+                } else {
 
                     String nom = "", localidad = "", musica = "";
 
@@ -170,24 +174,24 @@ public class BuscarEventoFragment extends Fragment  {
                                     break;
                                 }
                             }
-                            if(!musica.equals("")){
-                                if(event.getMusic_type().equals(musica)){
+                            if (!musica.equals("")) {
+                                if (event.getMusic_type().equals(musica)) {
                                     eventos.add(event);
                                     break;
                                 }
                             }
 
-                            if (activarGPS.isChecked() && permisosYaOtorgados()){
+                            if (activarGPS.isChecked() && permisosYaOtorgados()) {
                                 GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-                                Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11,numeroKilometros.getText().toString().length()))*1000;
-                                if (gpsTracker.getLocation() != null){
+                                Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11, numeroKilometros.getText().toString().length())) * 1000;
+                                if (gpsTracker.getLocation() != null) {
                                     Location locationUser = gpsTracker.getLocation();
                                     Location locationEvent = new Location("evento");
                                     String ubicacionEvento = event.getUbication();
 
-                                    ubicacionEvento = ubicacionEvento.replaceAll("lat/lng:","");
+                                    ubicacionEvento = ubicacionEvento.replaceAll("lat/lng:", "");
 
-                                    ubicacionEvento = ubicacionEvento.substring(2,ubicacionEvento.length()-1);
+                                    ubicacionEvento = ubicacionEvento.substring(2, ubicacionEvento.length() - 1);
 
                                     String[] latLong = ubicacionEvento.split(",");
 
@@ -197,7 +201,7 @@ public class BuscarEventoFragment extends Fragment  {
 
                                     Float distancia = locationUser.distanceTo(locationEvent);
 
-                                    if (distancia <= distanciaMaxima){
+                                    if (distancia <= distanciaMaxima) {
                                         eventos.add(event);
                                         break;
                                     }
@@ -206,7 +210,7 @@ public class BuscarEventoFragment extends Fragment  {
                             added = true;
                         }
                     }
-                    if (eventos.isEmpty()){
+                    if (eventos.isEmpty()) {
                         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                         alertDialog.setTitle("Vaya...");
                         alertDialog.setMessage("No se han encontrado eventos con tus criterios de búsqueda");
@@ -217,11 +221,11 @@ public class BuscarEventoFragment extends Fragment  {
                                     }
                                 });
                         alertDialog.show();
-                    }else{
+                    } else {
                         ListFragment listFragment = new ListFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putParcelableArrayList("eventos",eventos);
-                        bundle.putString("activity","BuscarEvento");
+                        bundle.putParcelableArrayList("eventos", eventos);
+                        bundle.putString("activity", "BuscarEvento");
                         listFragment.setArguments(bundle);
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().
@@ -255,10 +259,127 @@ public class BuscarEventoFragment extends Fragment  {
         }
     }
 
-    private boolean permisosYaOtorgados(){
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+    private boolean permisosYaOtorgados() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
+        return false;
+    }
+
+
+    private ArrayList<Event> buscarEventos(ArrayList<Event> eventosSinFiltrar) {
+
+        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
+        Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11, numeroKilometros.getText().toString().length())) * 1000;
+
+        String nombreEvento = nombre.getText().toString();
+        String localidadEvento = localities.getSelectedItem().toString();
+        String musicaEvento = musicTypes.getSelectedItem().toString();
+        boolean buscarDistancia = activarGPS.isChecked() && permisosYaOtorgados();
+
+        ArrayList<Event> eventosFiltrados = new ArrayList<Event>();
+
+        for (Event event : eventosSinFiltrar) {
+
+
+            if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && !buscarDistancia) {
+
+                if (event.getName().contains(nombreEvento)) {
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && !buscarDistancia) {
+
+                if (event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento)) {
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && !buscarDistancia) {
+
+                if(event.getName().contains(nombreEvento) && event.getMusic_type().equals(musicaEvento)){
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
+
+                if(event.getName().contains(nombreEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
+
+                if(event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento)){
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && !buscarDistancia) {
+
+                if(event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && !buscarDistancia) {
+
+                if (event.getLocality().equals(localidadEvento)){
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
+
+
+
+            } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
+
+
+
+            } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && !buscarDistancia) {
+
+            } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
+
+            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && !buscarDistancia) {
+
+            } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
+
+            } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
+
+            }
+
+        }
+
+
+        return eventosFiltrados;
+
+    }
+
+
+    public boolean estaEnDistanciaCorrecta(GPSTracker gps, String distanciaEvento, Float distanciaMaxima){
+
+        if(gps !=null){
+
+            Location locationUser = gps.getLocation();
+            Location locationEvent = new Location("evento");
+            String ubicacionEvento = distanciaEvento;
+
+            ubicacionEvento = ubicacionEvento.replaceAll("lat/lng:", "");
+
+            ubicacionEvento = ubicacionEvento.substring(2, ubicacionEvento.length() - 1);
+
+            String[] latLong = ubicacionEvento.split(",");
+
+            locationEvent.setLatitude(Float.parseFloat(latLong[0]));
+
+            locationEvent.setLongitude(Float.parseFloat(latLong[1]));
+
+            Float distancia = locationUser.distanceTo(locationEvent);
+
+            if (distancia <= distanciaMaxima) {
+                return true;
+            }
+
+
+
+        }
+
         return false;
     }
 }
