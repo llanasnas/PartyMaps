@@ -64,7 +64,7 @@ public class FavoritosActivity extends AppCompatActivity {
                                     DocumentSnapshot document = task.getResult();
                                     Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
                                             document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
-
+                                    e.setId(document.getId());
                                     if(e.getName() != null){
                                         misEventos.add(e);
                                     }

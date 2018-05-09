@@ -3,6 +3,8 @@ package com.example.albert.partymaps.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.NonNull;
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +43,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +60,8 @@ public class DescriptionFragment extends Fragment {
 
     private static GoogleMap mMap;
     private static LatLng position;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageReference = storage.getReference();
     private static final String TAG = CrearEventoActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private static Marker mark;
@@ -87,7 +94,16 @@ public class DescriptionFragment extends Fragment {
         String ubicacion = event.getUbication().substring(10, event.getUbication().length() - 1);
         String[] ubi = ubicacion.split(",");
 
-
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storageReference = storage.getReferenceFromUrl("gs://partymaps-51476.appspot.com").child("images/events/"+event.getId());
+        final ImageView mImageView = (ImageView) view.findViewById(R.id.image_description);
+        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                mImageView.setImageBitmap(bitmap);
+            }
+        });
         if (getActivity().getLocalClassName().toString().equals("Activity.FavoritosActivity")) {
             fab.setImageResource(R.mipmap.ic_drop);
 

@@ -39,7 +39,7 @@ public class MisEventosActivity extends AppCompatActivity {
                     for (DocumentSnapshot document : task.getResult()) {
                         Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
                                 document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
-
+                        e.setId(document.getId());
                         misEventos.add(e);
                     }
 

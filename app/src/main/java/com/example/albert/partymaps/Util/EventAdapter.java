@@ -1,6 +1,8 @@
 package com.example.albert.partymaps.Util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,11 +30,15 @@ public class EventAdapter extends BaseAdapter {
 
     private ArrayList<Event> events;
     private Context context;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageReference = storage.getReference();
+    private ImageView mImageView;
 
     public EventAdapter(ArrayList<Event> events, Context context) {
         this.events = events;
         this.context = context;
     }
+
 
     @Override
     public int getCount() {
@@ -64,6 +74,8 @@ public class EventAdapter extends BaseAdapter {
         }*/
         SimpleDateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
         String dateAsString = event.getDate();
+
+
         try {
             Date date = sourceFormat.parse(dateAsString);
             String mes = new SimpleDateFormat("MMM").format(date).toUpperCase();
@@ -75,11 +87,38 @@ public class EventAdapter extends BaseAdapter {
         String day_final  = event.getDate().substring(0,2);
         day_final = day_final.replace("/","");
         day.setText(day_final);
+        /*final long ONE_MEGABYTE = 1024 * 1024;
+        storageReference = storage.getReferenceFromUrl("gs://partymaps-51476.appspot.com").child("images/events/"+event.getId());
+        mImageView = (ImageView) view.findViewById(R.id.imagen);
 
+        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                mImageView.setImageBitmap(bitmap);
+            }
+        });*/
+        //setImage(event,mImageView);
         name.setText(event.getName());
         TextView locality = (TextView) view.findViewById(R.id.localidad);
         locality.setText(String.valueOf(event.getLocality()));
         return view;
     }
+
+    public void setImage(Event event, final ImageView mImageView){
+
+
+        final long ONE_MEGABYTE = 1024 * 1024;
+        storageReference = storage.getReferenceFromUrl("gs://partymaps-51476.appspot.com").child("images/events/"+event.getId());
+
+        storageReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                mImageView.setImageBitmap(bitmap);
+            }
+        });
+    }
+
 
 }

@@ -175,7 +175,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                                         Log.d(TAG, document.getId() + " => " + document.getData());
                                         Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
                                                 document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
-
+                                            e.setId(document.getId());
                                         eventos.add(e);
                                     }
                                 } catch (ParseException e) {

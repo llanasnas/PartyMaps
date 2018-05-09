@@ -19,6 +19,7 @@ public class Event implements Parcelable,Serializable,Comparable<Event>{
     private String music_type;
     private String description;
     private String locality;
+    private String id;
     private String date;
     private String time;
     private String ubication;
@@ -31,6 +32,14 @@ public class Event implements Parcelable,Serializable,Comparable<Event>{
         date = in.readString();
         time = in.readString();
         ubication = in.readString();
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -127,6 +136,7 @@ public class Event implements Parcelable,Serializable,Comparable<Event>{
         dest.writeString(locality);
         dest.writeString(date);
         dest.writeString(time);
+        dest.writeString(id);
         dest.writeString(ubication);
     }
 
