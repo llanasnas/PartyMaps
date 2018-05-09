@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment  {
             isFollowing();
             correuUsuari.setText(user.getMail());
             dataNaixement.setText(user.getDate());
-            storageReference.child("images/"+ user.getUid().concat("/profileimage")).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            storageReference.child("images/profile/"+ user.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
@@ -141,6 +141,7 @@ public class ProfileFragment extends Fragment  {
 
         return view;
     }
+
     private void isFollowing() {
         db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -165,7 +166,7 @@ public class ProfileFragment extends Fragment  {
             }
         });
 
-        storageReference.child("images/"+ mAuth.getUid().concat("/profileimage")).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+        storageReference.child("images/profile/"+ mAuth.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 if (task.isSuccessful()) {
@@ -212,7 +213,7 @@ public class ProfileFragment extends Fragment  {
             progressDialog.show();
 
 
-            StorageReference ref = storageReference.child("images/"+ mAuth.getUid().concat("/profileimage"));
+            StorageReference ref = storageReference.child("images/profile/"+ mAuth.getUid());
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override

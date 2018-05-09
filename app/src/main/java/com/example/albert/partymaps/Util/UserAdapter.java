@@ -12,9 +12,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -72,16 +74,18 @@ public class UserAdapter extends BaseAdapter implements Filterable{
         }
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
         final ImageView imatge = (ImageView) view.findViewById(R.id.imatge_user);
         TextView nom = (TextView) view.findViewById(R.id.nomUsuari);
 
         nom.setText(users.get(position).getName());
 
-            storageReference.child("images/" + users.get(position).getUid().concat("/profileimage")).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            storageReference.child("images/profile/"+ users.get(position).getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
                            Picasso.get().load(task.getResult()).into(imatge);
+
                     }
                 }
             });

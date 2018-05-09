@@ -4,8 +4,15 @@ package com.example.albert.partymaps.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -20,6 +27,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.Manifest;
+import android.widget.ImageView;
 import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TimePicker;
@@ -39,8 +47,19 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,12 +76,20 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
     private static final String TAG = CrearEventoActivity.class.getSimpleName();
     private static EditText datePicker;
     private static EditText timePicker;
+    private static int RESULT_LOAD_IMG = 1;
+    private ImageView imatgeEvento;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageReference = storage.getReference();
     private static LatLng position;
+    private InputStream imageStream;
+    private Uri imageUri;
+    private Bitmap selectedImage;
     EditText description ;
+    String imgDecodableString;
     private static Marker mark;
     private static MapFragment mapFragment;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static boolean marked=false,nombre=false,descripcion=false,date=false,time=false,coord=false,musicType=false;
+    private static boolean marked=false,nombre=false,descripcion=false,date=false,time=false,coord=false,musicType=false,imageUpload=false;
     private static Event evento = new Event();
 
 
@@ -90,7 +117,15 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
        music_type.setAdapter(adapterMusica);
         timePicker = (EditText) findViewById(R.id.time_picker);
         datePicker = (EditText) findViewById(R.id.date_picker);
-
+        imatgeEvento = (ImageView) findViewById(R.id.imatge_evento);
+        imatgeEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, RESULT_LOAD_IMG);
+            }
+        });
 
         datePicker.setInputType(InputType.TYPE_NULL);
         timePicker.setInputType(InputType.TYPE_NULL);
@@ -144,8 +179,8 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                     user_add.put("ubication",evento.getUbication());
                     user_add.put("event_maker",uid);
 
-
-                    db.collection("Events").document()
+                    final DocumentReference ref = db.collection("Events").document();
+                    ref
                             .set(user_add)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -153,6 +188,35 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
                                     Toast.makeText(getApplicationContext(), "Evento creado con éxito",
                                             Toast.LENGTH_SHORT).show();
+                                            if(imageUpload){
+                                                String id = ref.getId();
+                                                storageReference.child("images/events/"+id);
+                                                imatgeEvento.setDrawingCacheEnabled(true);
+                                                imatgeEvento.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                                                imatgeEvento.layout(0, 0, imatgeEvento.getMeasuredWidth(), imatgeEvento.getMeasuredHeight());
+                                                imatgeEvento.buildDrawingCache();
+                                                Bitmap bitmap = Bitmap.createBitmap(imatgeEvento.getDrawingCache());
+                                                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                                                byte[] data = outputStream.toByteArray();
+
+                                                UploadTask uploadTask = storageReference.putBytes(data);
+                                                uploadTask.addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception exception) {
+                                                    }
+                                                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                                                        Toast.makeText(getApplicationContext(), "Imágen subida con éxito",
+                                                                Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+
+
+
                                             finish();
                                 }
                             })
@@ -192,6 +256,46 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
 
 
     }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+
+        if (resultCode == RESULT_OK) {
+            try {
+                imageUri = data.getData();
+                imageStream = getContentResolver().openInputStream(imageUri);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                scaleDown(selectedImage,1.2f,true);
+                imatgeEvento.setImageBitmap(selectedImage);
+
+                imageUpload=true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(CrearEventoActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(CrearEventoActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
+        }
+    }
+    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
+                                   boolean filter) {
+        float ratio = Math.min(
+                (float) maxImageSize / realImage.getWidth(),
+                (float) maxImageSize / realImage.getHeight());
+        int width = Math.round((float) ratio * realImage.getWidth());
+        int height = Math.round((float) ratio * realImage.getHeight());
+
+        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
+                height, filter);
+        return newBitmap;
+    }
+
+
+
+
     private boolean isEmpty(String nombre){
 
         if(nombre.length()==0){
