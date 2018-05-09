@@ -40,6 +40,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -190,7 +191,7 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                                             Toast.LENGTH_SHORT).show();
                                             if(imageUpload){
                                                 String id = ref.getId();
-                                                storageReference.child("images/events/"+id);
+                                                storageReference = storage.getReferenceFromUrl("gs://partymaps-51476.appspot.com").child("images/events/"+id);
                                                 imatgeEvento.setDrawingCacheEnabled(true);
                                                 imatgeEvento.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
                                                 imatgeEvento.layout(0, 0, imatgeEvento.getMeasuredWidth(), imatgeEvento.getMeasuredHeight());
@@ -214,8 +215,6 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                                                     }
                                                 });
                                             }
-
-
 
                                             finish();
                                 }
@@ -266,8 +265,10 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
             try {
                 imageUri = data.getData();
                 imageStream = getContentResolver().openInputStream(imageUri);
+
                 selectedImage = BitmapFactory.decodeStream(imageStream);
-                scaleDown(selectedImage,1.2f,true);
+
+                selectedImage  = downscaleToMaxAllowedDimension(selectedImage);
                 imatgeEvento.setImageBitmap(selectedImage);
 
                 imageUpload=true;
@@ -280,17 +281,23 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
             Toast.makeText(CrearEventoActivity.this, "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
     }
-    public static Bitmap scaleDown(Bitmap realImage, float maxImageSize,
-                                   boolean filter) {
-        float ratio = Math.min(
-                (float) maxImageSize / realImage.getWidth(),
-                (float) maxImageSize / realImage.getHeight());
-        int width = Math.round((float) ratio * realImage.getWidth());
-        int height = Math.round((float) ratio * realImage.getHeight());
+    private static Bitmap downscaleToMaxAllowedDimension(Bitmap bitmap) {
+        int MAX_ALLOWED_RESOLUTION = 1024;
+        int outWidth;
+        int outHeight;
+        int inWidth = bitmap.getWidth();
+        int inHeight = bitmap.getHeight();
+        if(inWidth > inHeight){
+            outWidth = MAX_ALLOWED_RESOLUTION;
+            outHeight = (inHeight * MAX_ALLOWED_RESOLUTION) / inWidth;
+        } else {
+            outHeight = MAX_ALLOWED_RESOLUTION;
+            outWidth = (inWidth * MAX_ALLOWED_RESOLUTION) / inHeight;
+        }
 
-        Bitmap newBitmap = Bitmap.createScaledBitmap(realImage, width,
-                height, filter);
-        return newBitmap;
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
+
+        return resizedBitmap;
     }
 
 
