@@ -64,8 +64,11 @@ public class ProfileFragment extends Fragment  {
     public TextView nomUsuari ;
     public TextView correuUsuari ;
     public TextView rateValue ;
+    public long media = 0;
+    public int count = 0;
     public TextView dataNaixement ;
     private Button followButton;
+    private TextView seguidoresText;
     public TextView numEventos ;
     public boolean seguido = false;
     public User user ;
@@ -93,6 +96,7 @@ public class ProfileFragment extends Fragment  {
         correuUsuari = (TextView) view.findViewById(R.id.correu_usuari);
         dataNaixement = (TextView) view.findViewById(R.id.fecha_usuari);
         numEventos = (TextView) view.findViewById(R.id.num_eventos);
+        seguidoresText = (TextView) view.findViewById(R.id.seguidores);
         followButton = (Button) view.findViewById(R.id.followButton);
         foto_gallery = (ImageView) view.findViewById(R.id.profile_image);
         activity = getArguments().getString("activity");
@@ -114,7 +118,9 @@ public class ProfileFragment extends Fragment  {
                     showEvents(user.getUid());
                 }
             });
-            //getRateValue(user.getUid());
+            media = 0;
+            count = 0;
+            getRateValue(user.getUid());
             isFollowing();
             correuUsuari.setText(user.getMail());
             dataNaixement.setText(user.getDate());
@@ -148,11 +154,17 @@ public class ProfileFragment extends Fragment  {
                     if(seguido){
                         followButton.setText("Seguir");
                         db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).delete();
+                        db.collection("Users").document(user.getUid()).collection("seguidores").document(mAuth.getUid()).delete();
+                        setSeguidores();
                         seguido = false;
                     }else {
                         Map<String, Object> seguidos = new HashMap<>();
                         seguidos.put("UID", user.getUid());
+                        final Map<String, Object> seguidor = new HashMap<>();
+                        seguidos.put("UID", user.getUid());
                         db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).set(seguidos);
+                        db.collection("Users").document(user.getUid()).collection("seguidores").document(mAuth.getUid()).set(seguidor);
+                        setSeguidores();
                         followButton.setText("Dejar de seguir");
                         seguido = true;
                     }
@@ -162,6 +174,18 @@ public class ProfileFragment extends Fragment  {
 
 
         return view;
+    }
+
+
+    public void setSeguidores(){
+
+        db.collection("Users").document(user.getUid()).collection("seguidores").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int seguidores = queryDocumentSnapshots.size()+1;
+                seguidoresText.setText(String.valueOf(seguidores));
+            }
+        });
     }
     public void showEvents(String uid){
 
@@ -215,7 +239,9 @@ public class ProfileFragment extends Fragment  {
                 openGallery();
             }
         });
-        //getRateValue(mAuth.getUid());
+        media = 0;
+        count = 0;
+        getRateValue(mAuth.getUid());
         storageReference.child("images/profile/"+ mAuth.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
@@ -300,23 +326,30 @@ public class ProfileFragment extends Fragment  {
     public void getRateValue(String uid){
 
 
-        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    int media=0;
-                    int count=0;
-                    for (DocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, document.getId() + " => " + document.getData());
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-                           media = media + Integer.parseInt(document.getString("value"));
-                           count++;
-                    }
-                    media = media/count;
-                    rateValue.setText(String.valueOf(media));
-                } else {
-                    Log.d(TAG, "Error getting subcollection.", task.getException());
+                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()){
+
+                    db.collection("Events").document(document.getId()).collection("rate").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                            for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()){
+                                media = document.getLong("value");
+                                count++;
+                            }
+                            if(count!=0){
+                                media = media / count;
+                                rateValue.setText(String.valueOf(media));
+                            }
+
+                        }
+                    });
                 }
+
+
             }
         });
 
