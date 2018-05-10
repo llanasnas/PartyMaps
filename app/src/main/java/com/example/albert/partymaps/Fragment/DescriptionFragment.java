@@ -65,7 +65,10 @@ public class DescriptionFragment extends Fragment {
     private static final String TAG = CrearEventoActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private static Marker mark;
+    private Event event;
+    private static ImageView[] stars = new ImageView[5];
     private boolean favorite = false;
+    private boolean[] starMarked = new boolean[5];
     private static MapFragment mapFragment;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -85,15 +88,20 @@ public class DescriptionFragment extends Fragment {
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         }
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_fav);
+        stars[0] = (ImageView) view.findViewById(R.id.star1);
+        stars[1] = (ImageView) view.findViewById(R.id.star2);
+        stars[2] = (ImageView) view.findViewById(R.id.star3);
+        stars[3] = (ImageView) view.findViewById(R.id.star4);
+        stars[4] = (ImageView) view.findViewById(R.id.star5);
 
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
         final String uid = user.getUid();
-        final Event event = getArguments().getParcelable("evento");
+        event = getArguments().getParcelable("evento");
         String ubicacion = event.getUbication().substring(10, event.getUbication().length() - 1);
         String[] ubi = ubicacion.split(",");
-
+        setStars();
         final long ONE_MEGABYTE = 1024 * 1024;
         storageReference = storage.getReferenceFromUrl("gs://partymaps-51476.appspot.com").child("images/events/"+event.getId());
         final ImageView mImageView = (ImageView) view.findViewById(R.id.image_description);
@@ -144,6 +152,9 @@ public class DescriptionFragment extends Fragment {
                     alertDialog.show();
                 }
             });
+
+
+
 
         } else if (getActivity().getLocalClassName().toString().equals("Activity.MisEventosActivity")) {
 
@@ -283,6 +294,74 @@ public class DescriptionFragment extends Fragment {
 
 
         return view;
+    }
+    public void setStars(){
+
+        for(int i=0;i<5;i++){
+            final int aux = i;
+            stars[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                        switch (aux){
+
+                            case 0:
+
+                                for (int j=0;j<5;j++){
+                                    if(j==0){
+                                        stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
+                                    }else{
+                                        stars[j].setImageResource(R.drawable.ic_star_border_black_24dp);
+                                    }
+                                }
+                                break;
+
+                            case 1:
+
+                                for (int j=0;j<5;j++){
+                                    if(j==0||j==1){
+                                        stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
+                                    }else{
+                                        stars[j].setImageResource(R.drawable.ic_star_border_black_24dp);
+                                    }
+                                }
+                                break;
+                            case 2:
+
+                                for (int j=0;j<5;j++){
+                                    if(j==0||j==1||j==2){
+                                        stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
+                                    }else{
+                                        stars[j].setImageResource(R.drawable.ic_star_border_black_24dp);
+                                    }
+                                }
+                                break;
+                            case 3:
+
+                                for (int j=0;j<5;j++){
+                                    if(j==0||j==1||j==2||j==3){
+                                        stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
+                                    }else{
+                                        stars[j].setImageResource(R.drawable.ic_star_border_black_24dp);
+                                    }
+                                }
+                                break;
+                            case 4:
+
+                                for (int j=0;j<5;j++){
+                                    if(j==0||j==1||j==2||j==3||j==4){
+                                        stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
+                                    }else{
+                                        stars[j].setImageResource(R.drawable.ic_star_border_black_24dp);
+                                    }
+                                }
+                                break;
+
+                        }
+                }
+            });
+
+        }
     }
 
     @Override
