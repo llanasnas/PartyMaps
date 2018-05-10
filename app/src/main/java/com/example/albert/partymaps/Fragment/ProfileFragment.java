@@ -100,9 +100,11 @@ public class ProfileFragment extends Fragment  {
         followButton = (Button) view.findViewById(R.id.followButton);
         foto_gallery = (ImageView) view.findViewById(R.id.profile_image);
         activity = getArguments().getString("activity");
+
         if(activity.equals("Main2Activity")){
             followButton.setVisibility(view.GONE);
             setOwnProfile();
+            setSeguidores(mAuth.getUid());
             numEventos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -111,6 +113,7 @@ public class ProfileFragment extends Fragment  {
             });
         }else{
             user = getArguments().getParcelable("user");
+            setSeguidores(user.getUid());
             nomUsuari.setText(user.getName());
             numEventos.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -155,7 +158,7 @@ public class ProfileFragment extends Fragment  {
                         followButton.setText("Seguir");
                         db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).delete();
                         db.collection("Users").document(user.getUid()).collection("seguidores").document(mAuth.getUid()).delete();
-                        setSeguidores();
+                        setSeguidores(user.getUid());
                         seguido = false;
                     }else {
                         Map<String, Object> seguidos = new HashMap<>();
@@ -164,7 +167,7 @@ public class ProfileFragment extends Fragment  {
                         seguidos.put("UID", user.getUid());
                         db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).set(seguidos);
                         db.collection("Users").document(user.getUid()).collection("seguidores").document(mAuth.getUid()).set(seguidor);
-                        setSeguidores();
+                        setSeguidores(user.getUid());
                         followButton.setText("Dejar de seguir");
                         seguido = true;
                     }
@@ -177,9 +180,9 @@ public class ProfileFragment extends Fragment  {
     }
 
 
-    public void setSeguidores(){
+    public void setSeguidores(String uid){
 
-        db.collection("Users").document(user.getUid()).collection("seguidores").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        db.collection("Users").document(uid).collection("seguidores").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 int seguidores = queryDocumentSnapshots.size();
