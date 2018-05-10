@@ -34,11 +34,12 @@ import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 
-public class UsersListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener{
+public class UsersListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, SearchView.OnQueryTextListener,UsersDataChange{
 
     private ArrayList<User> users = new ArrayList<User>();
     private ListView listView;
     private SearchView mSearchView;
+    private UserAdapter userAdapter;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -73,7 +74,7 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
                         }
                     }
 
-                    UserAdapter userAdapter = new UserAdapter(getApplicationContext(),users);
+                    userAdapter = new UserAdapter(getParent(),getApplicationContext(),users);
                     listView.setAdapter(userAdapter);
                 }
             }
@@ -136,7 +137,7 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
+        users = userAdapter.getUsers();
         User user = users.get(position);
         ProfileFragment profileFragment = new ProfileFragment();
         Bundle bundle = new Bundle();
@@ -150,6 +151,13 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
                 addToBackStack(null).
                 commit();
 
+
+    }
+
+    @Override
+    public void changeData(ArrayList<User> users) {
+
+        this.users = users;
 
     }
 }

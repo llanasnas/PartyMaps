@@ -1,5 +1,6 @@
 package com.example.albert.partymaps.Util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.albert.partymaps.Activity.UsersDataChange;
+import com.example.albert.partymaps.Activity.UsersListActivity;
 import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,14 +46,22 @@ public class UserAdapter extends BaseAdapter implements Filterable{
     private Context context;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<User> users = new ArrayList<User>();
+    private Activity activity ;
     private ArrayList<User> usersAux = new ArrayList<User>();
+    private ArrayList<User> usersAll = new ArrayList<User>();
 
-    public UserAdapter(Context context, ArrayList<User> users) {
+    public UserAdapter(Activity activity, Context context, ArrayList<User> users) {
         this.context = context;
+        this.activity = activity;
         this.users = users;
+        this.usersAll = users;
+        this.usersAux = users;
     }
+    public UsersDataChange usersDataChange;
 
-
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
     @Override
     public int getCount() {
@@ -59,7 +70,7 @@ public class UserAdapter extends BaseAdapter implements Filterable{
 
     @Override
     public Object getItem(int position) {
-        return users.get(position);
+        return usersAux.get(position);
     }
 
     @Override
@@ -102,20 +113,26 @@ public class UserAdapter extends BaseAdapter implements Filterable{
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                final FilterResults oReturn = new FilterResults();
-                final ArrayList<User> results = new ArrayList<User>();
-                if (usersAux == null)
-                    usersAux = users;
-                if (constraint != null) {
-                    if (usersAux != null && usersAux.size() > 0) {
-                        for (final User g : usersAux) {
-                            if (g.getName().toLowerCase()
-                                    .contains(constraint.toString()))
-                                results.add(g);
+
+
+                    final FilterResults oReturn = new FilterResults();
+                    final ArrayList<User> results = new ArrayList<User>();
+
+                    if (usersAux == null)
+                        usersAux = usersAll;
+                    if (constraint != null) {
+                        constraint.toString().toLowerCase();
+                        usersAux = usersAll;
+                        if (usersAux != null && usersAux.size() > 0) {
+                            for (final User g : usersAux) {
+                                if (g.getName().toLowerCase()
+                                        .contains(constraint.toString()))
+                                    results.add(g);
+                            }
                         }
+                        oReturn.values = results;
                     }
-                    oReturn.values = results;
-                }
+
                 return oReturn;
             }
 
@@ -125,7 +142,10 @@ public class UserAdapter extends BaseAdapter implements Filterable{
                                           FilterResults results) {
                 users = (ArrayList<User>) results.values;
                 notifyDataSetChanged();
+
             }
         };
     }
+
+
 }

@@ -101,6 +101,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
+        if(mAuth.getCurrentUser() != null){
+            Toast.makeText(LoginActivity.this, "Cargando eventos...", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getBaseContext(), Main2Activity.class);
+            startActivity(intent);
+        }
         submit.setOnClickListener(new View.OnClickListener(){
 
             @Override

@@ -2,6 +2,7 @@ package com.example.albert.partymaps.Fragment;
 
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -97,7 +98,7 @@ public class ProfileFragment extends Fragment  {
             numEventos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((Main2Activity)getActivity()).showEvents(mAuth.getUid());
+                    showEvents(mAuth.getUid());
                 }
             });
         }else{
@@ -106,7 +107,7 @@ public class ProfileFragment extends Fragment  {
             numEventos.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((UsersListActivity)getActivity()).showEvents(user.getUid());
+                    showEvents(user.getUid());
                 }
             });
             isFollowing();
@@ -157,7 +158,35 @@ public class ProfileFragment extends Fragment  {
 
         return view;
     }
+    public void showEvents(String uid){
 
+        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                ArrayList<Event> events = new ArrayList<Event>();
+                for (DocumentSnapshot document :  queryDocumentSnapshots.getDocuments()){
+
+                    Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
+                            document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
+                    e.setId(document.getId());
+                    events.add(e);
+
+                }
+
+                Bundle bundle = new Bundle();
+                bundle.putString("activity","profile");
+                bundle.putParcelableArrayList("events",events);
+                ListFragment fragment = new ListFragment();
+                fragment.setArguments(bundle);
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.main, fragment);
+                ft.addToBackStack(null).commit();
+
+
+            }
+        });
+
+    }
     private void isFollowing() {
         db.collection("Users").document(mAuth.getUid()).collection("seguidos").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
