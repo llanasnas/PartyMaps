@@ -182,7 +182,7 @@ public class ProfileFragment extends Fragment  {
         db.collection("Users").document(user.getUid()).collection("seguidores").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                int seguidores = queryDocumentSnapshots.size()+1;
+                int seguidores = queryDocumentSnapshots.size();
                 seguidoresText.setText(String.valueOf(seguidores));
             }
         });
