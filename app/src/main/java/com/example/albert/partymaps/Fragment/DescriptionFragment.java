@@ -63,7 +63,7 @@ public class DescriptionFragment extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageReference = storage.getReference();
     private static final String TAG = CrearEventoActivity.class.getSimpleName();
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static Marker mark;
     private Event event;
     private static ImageView[] stars = new ImageView[5];
@@ -295,10 +295,27 @@ public class DescriptionFragment extends Fragment {
 
         return view;
     }
+    public void rateEvent(int value){
+
+        Map<String, Integer> rate = new HashMap<>();
+        rate.put("value", value);
+
+        db.collection("Events").document(event.getId()).collection("rate").document(mAuth.getUid()).set(rate).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Error getting documents: ");
+            }
+        });
+
+
+    }
+
     public void setStars(){
+
 
         for(int i=0;i<5;i++){
             final int aux = i;
+
             stars[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -306,7 +323,7 @@ public class DescriptionFragment extends Fragment {
                         switch (aux){
 
                             case 0:
-
+                                rateEvent(1);
                                 for (int j=0;j<5;j++){
                                     if(j==0){
                                         stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
@@ -317,7 +334,7 @@ public class DescriptionFragment extends Fragment {
                                 break;
 
                             case 1:
-
+                                rateEvent(2);
                                 for (int j=0;j<5;j++){
                                     if(j==0||j==1){
                                         stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
@@ -327,7 +344,7 @@ public class DescriptionFragment extends Fragment {
                                 }
                                 break;
                             case 2:
-
+                                rateEvent(3);
                                 for (int j=0;j<5;j++){
                                     if(j==0||j==1||j==2){
                                         stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
@@ -337,7 +354,7 @@ public class DescriptionFragment extends Fragment {
                                 }
                                 break;
                             case 3:
-
+                                rateEvent(4);
                                 for (int j=0;j<5;j++){
                                     if(j==0||j==1||j==2||j==3){
                                         stars[j].setImageResource(R.drawable.ic_star_llena_24dp);
@@ -347,7 +364,7 @@ public class DescriptionFragment extends Fragment {
                                 }
                                 break;
                             case 4:
-
+                                rateEvent(5);
                                 for (int j=0;j<5;j++){
                                     if(j==0||j==1||j==2||j==3||j==4){
                                         stars[j].setImageResource(R.drawable.ic_star_llena_24dp);

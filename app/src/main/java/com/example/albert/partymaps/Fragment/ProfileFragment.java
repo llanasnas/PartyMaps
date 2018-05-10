@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.albert.partymaps.Activity.Main2Activity;
+import com.example.albert.partymaps.Activity.RegisterActivity;
 import com.example.albert.partymaps.Activity.UsersListActivity;
 import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.Model.User;
@@ -57,10 +58,12 @@ public class ProfileFragment extends Fragment  {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final int PICK_IMAGE = 100;
+    private static final String TAG = ProfileFragment.class.getSimpleName();
     private Uri filePath;
     //Firebase
     public TextView nomUsuari ;
     public TextView correuUsuari ;
+    public TextView rateValue ;
     public TextView dataNaixement ;
     private Button followButton;
     public TextView numEventos ;
@@ -86,6 +89,7 @@ public class ProfileFragment extends Fragment  {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         nomUsuari = (TextView) view.findViewById(R.id.nom_usuari);
+        rateValue = (TextView) view.findViewById(R.id.rateValue);
         correuUsuari = (TextView) view.findViewById(R.id.correu_usuari);
         dataNaixement = (TextView) view.findViewById(R.id.fecha_usuari);
         numEventos = (TextView) view.findViewById(R.id.num_eventos);
@@ -110,6 +114,7 @@ public class ProfileFragment extends Fragment  {
                     showEvents(user.getUid());
                 }
             });
+            //getRateValue(user.getUid());
             isFollowing();
             correuUsuari.setText(user.getMail());
             dataNaixement.setText(user.getDate());
@@ -210,7 +215,7 @@ public class ProfileFragment extends Fragment  {
                 openGallery();
             }
         });
-
+        //getRateValue(mAuth.getUid());
         storageReference.child("images/profile/"+ mAuth.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
@@ -289,6 +294,34 @@ public class ProfileFragment extends Fragment  {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+
+    public void getRateValue(String uid){
+
+
+        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int media=0;
+                    int count=0;
+                    for (DocumentSnapshot document : task.getResult()) {
+                        Log.d(TAG, document.getId() + " => " + document.getData());
+
+                           media = media + Integer.parseInt(document.getString("value"));
+                           count++;
+                    }
+                    media = media/count;
+                    rateValue.setText(String.valueOf(media));
+                } else {
+                    Log.d(TAG, "Error getting subcollection.", task.getException());
+                }
+            }
+        });
+
+
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
