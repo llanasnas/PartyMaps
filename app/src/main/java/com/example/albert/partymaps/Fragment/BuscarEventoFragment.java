@@ -212,8 +212,8 @@ public class BuscarEventoFragment extends Fragment {
         Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11, numeroKilometros.getText().toString().length())) * 1000;
 
         String nombreEvento = nombre.getText().toString();
-        String localidadEvento = localities.getSelectedItem().toString();
-        String musicaEvento = musicTypes.getSelectedItem().toString();
+        String localidadEvento = localities.getSelectedItem().toString().equals("Localidad")? "" : localities.getSelectedItem().toString();
+        String musicaEvento = musicTypes.getSelectedItem().toString().equals("Estilo musical")? "" : musicTypes.getSelectedItem().toString();
         boolean buscarDistancia = activarGPS.isChecked() && permisosYaOtorgados();
 
         ArrayList<Event> eventosFiltrados = new ArrayList<Event>();
