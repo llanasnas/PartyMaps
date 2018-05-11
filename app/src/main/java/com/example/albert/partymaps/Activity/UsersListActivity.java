@@ -64,6 +64,8 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
         setupSearchView();
         if (getIntent().hasExtra("seguidos")) {
             setSeguidos();
+        }else if(getIntent().hasExtra("activity")){
+            setSeguidos();
         }else{
             setAllUsers();
         }

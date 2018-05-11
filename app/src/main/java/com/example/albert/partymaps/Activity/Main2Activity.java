@@ -122,33 +122,7 @@ public class Main2Activity extends AppCompatActivity
         finish();
         startActivity(getIntent());
     }
-    public void showEvents(String uid){
 
-        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<Event> events = new ArrayList<Event>();
-                for (DocumentSnapshot document :  queryDocumentSnapshots.getDocuments()){
-
-                    Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
-                            document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
-                    e.setId(document.getId());
-                    events.add(e);
-
-                }
-                Bundle bundle = new Bundle();
-                bundle.putString("activity","profile");
-                bundle.putParcelableArrayList("events",events);
-                ListFragment fragment = new ListFragment();
-                fragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().
-                        addToBackStack(null).
-                        add(R.id.main, fragment).
-                        commit();
-            }
-        });
-
-    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
