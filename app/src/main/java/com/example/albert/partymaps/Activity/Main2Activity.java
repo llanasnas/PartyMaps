@@ -3,6 +3,7 @@ package com.example.albert.partymaps.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -18,9 +19,12 @@ import android.view.MenuItem;
 import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.Fragment.ListFragment;
 import com.example.albert.partymaps.Fragment.ProfileFragment;
+import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +36,7 @@ public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListFragment listFragment;
+    ArrayList<User> users = new ArrayList<User>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
@@ -168,12 +173,46 @@ public class Main2Activity extends AppCompatActivity
             startActivity(intent);
 
 
-        }else if (id == R.id.nav_amigos) {
-
         }else if (id == R.id.usuarios) {
 
             Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
             startActivity(intent);
+
+        }else if (id == R.id.nav_amigos) {
+
+
+            db.collection("Users").document(FirebaseAuth.getInstance().getUid()).collection("seguidos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+
+                        for(DocumentSnapshot document: task.getResult()){
+
+
+                            db.collection("Users").document(document.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        User user = new User(document.getString("name"), document.getString("mail"), document.getString("date"));
+                                        user.setUid(document.getId());
+                                        users.add(user);
+                                    }
+                                    Bundle bundle = new Bundle();
+                                    bundle.putParcelableArrayList("users",users);
+                                    bundle.putString("seguidos","seguidos");
+                                    Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+
+                                }
+                            });
+                        }
+
+                    }
+                }
+            });
+
 
         }else if (id == R.id.favoritos) {
 

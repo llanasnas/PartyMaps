@@ -24,22 +24,16 @@ public class Event implements Parcelable,Serializable,Comparable<Event>{
     private String time;
     private String ubication;
 
+
     protected Event(Parcel in) {
         name = in.readString();
         music_type = in.readString();
         description = in.readString();
         locality = in.readString();
+        id = in.readString();
         date = in.readString();
         time = in.readString();
         ubication = in.readString();
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -53,6 +47,15 @@ public class Event implements Parcelable,Serializable,Comparable<Event>{
             return new Event[size];
         }
     };
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
 
     public String getUbication() {
         return ubication;
@@ -129,16 +132,18 @@ public class Event implements Parcelable,Serializable,Comparable<Event>{
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(music_type);
-        dest.writeString(description);
-        dest.writeString(locality);
-        dest.writeString(date);
-        dest.writeString(time);
-        dest.writeString(id);
-        dest.writeString(ubication);
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeString(name);
+        parcel.writeString(music_type);
+        parcel.writeString(description);
+        parcel.writeString(locality);
+        parcel.writeString(id);
+        parcel.writeString(date);
+        parcel.writeString(time);
+        parcel.writeString(ubication);
     }
+
 
     public Date devolverFechaFormateada(){
         Date date = new Date();

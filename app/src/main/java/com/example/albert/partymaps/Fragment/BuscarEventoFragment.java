@@ -57,12 +57,12 @@ public class BuscarEventoFragment extends Fragment {
     PendingResult<LocationSettingsResult> result;
     static final Integer GPS_SETTINGS = 0x7;
     static final Integer LOCATION = 0x1;
-    EditText nombre = new EditText(null);
-    Spinner localities = new Spinner(null);
-    Spinner musicTypes = new Spinner(null);
-    SeekBar kilometros = new SeekBar(null);
-    Switch activarGPS = new Switch(null);
-    TextView numeroKilometros = new TextView(null);
+    EditText nombre ;
+    Spinner localities ;
+    Spinner musicTypes ;
+    SeekBar kilometros ;
+    Switch activarGPS ;
+    TextView numeroKilometros;
 
 
     public BuscarEventoFragment() {

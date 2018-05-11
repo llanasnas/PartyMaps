@@ -91,7 +91,7 @@ public class UserAdapter extends BaseAdapter implements Filterable{
 
         nom.setText(users.get(position).getName());
 
-            storageReference.child("images/profile/"+ users.get(position).getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+            /*storageReference.child("images/profile/"+ users.get(position).getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
                 public void onComplete(@NonNull Task<Uri> task) {
                     if (task.isSuccessful()) {
@@ -99,7 +99,7 @@ public class UserAdapter extends BaseAdapter implements Filterable{
 
                     }
                 }
-            });
+            });*/
 
         return view;
     }

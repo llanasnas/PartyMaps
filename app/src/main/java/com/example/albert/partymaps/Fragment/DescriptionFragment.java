@@ -102,6 +102,20 @@ public class DescriptionFragment extends Fragment {
         String ubicacion = event.getUbication().substring(10, event.getUbication().length() - 1);
         String[] ubi = ubicacion.split(",");
         setStars();
+        db.collection("Events").document(event.getId()).collection("rate").document(mAuth.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    try {
+                        int value = (int) task.getResult().getDouble("value").intValue();
+                        isValorated(value);
+                    }catch(NullPointerException e){
+
+                    }
+
+                }
+            }
+        });
         final long ONE_MEGABYTE = 1024 * 1024;
         storageReference = storage.getReferenceFromUrl("gs://partymaps-51476.appspot.com").child("images/events/"+event.getId());
         final ImageView mImageView = (ImageView) view.findViewById(R.id.image_description);
@@ -268,22 +282,7 @@ public class DescriptionFragment extends Fragment {
         TextView name = (TextView) view.findViewById(R.id.name_description);
         TextView description = (TextView) view.findViewById(R.id.description_description);
         TextView fecha = (TextView) view.findViewById(R.id.date_description);
-        //TextView hora = (TextView) view.findViewById(R.id.hour_description);
-        //final ImageView star = (ImageView) view.findViewById(R.id.fav);
 
-       /* star.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(favorite){
-                    star.setImageResource(R.drawable.ic_star_border_black_24dp);
-                    favorite = false;
-                }else {
-                    star.setImageResource(R.drawable.ic_star_llena_24dp);
-                    favorite = true;
-                }
-            }
-    });*/
 
 
         name.setText(event.getName());
@@ -307,6 +306,15 @@ public class DescriptionFragment extends Fragment {
             }
         });
 
+
+    }
+    public void isValorated(int value){
+
+        for(int i = 0; i < value ;i++){
+
+            stars[i].setImageResource(R.drawable.ic_star_llena_24dp);
+
+        }
 
     }
 

@@ -62,6 +62,24 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
         });
         listView.setTextFilterEnabled(true);
         setupSearchView();
+        if (getIntent().hasExtra("seguidos")) {
+            setSeguidos();
+        }else{
+            setAllUsers();
+        }
+
+
+    }
+    private void setSeguidos(){
+
+        users = getIntent().getParcelableArrayListExtra("users");
+        userAdapter = new UserAdapter(getParent(),getApplicationContext(),users);
+        listView.setAdapter(userAdapter);
+
+    }
+
+    private void setAllUsers(){
+
         db.collection("Users").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -79,34 +97,9 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
                 }
             }
         });
-    }
-    public void showEvents(String uid){
-
-        db.collection("Events").whereEqualTo("event_maker",uid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<Event> events = new ArrayList<Event>();
-                for (DocumentSnapshot document :  queryDocumentSnapshots.getDocuments()){
-
-                    Event e = new Event(document.getString("name"), document.getString("music_type"), document.getString("description"),
-                            document.getString("locality"), document.getString("date"), document.getString("time"), document.getString("ubication"));
-                    e.setId(document.getId());
-                    events.add(e);
-
-                }
-                Bundle bundle = new Bundle();
-                bundle.putString("activity","profile");
-                bundle.putParcelableArrayList("events",events);
-                ListFragment fragment = new ListFragment();
-                fragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().
-                        addToBackStack(null).
-                        add(R.id.main, fragment).
-                        commit();
-            }
-        });
 
     }
+
     private void setupSearchView()
     {
         mSearchView.setIconifiedByDefault(false);

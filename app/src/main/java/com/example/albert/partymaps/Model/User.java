@@ -26,11 +26,20 @@ public class User implements Parcelable{
         this.mail = mail;
     }
 
+
     protected User(Parcel in) {
         name = in.readString();
         mail = in.readString();
         uid = in.readString();
         date = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(mail);
+        dest.writeString(uid);
+        dest.writeString(date);
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -83,11 +92,5 @@ public class User implements Parcelable{
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(mail);
-        dest.writeString(uid);
-        dest.writeString(date);
-    }
+
 }
