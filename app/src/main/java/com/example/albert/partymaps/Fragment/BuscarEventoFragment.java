@@ -147,69 +147,8 @@ public class BuscarEventoFragment extends Fragment {
 
                 } else {
 
-                    String nom = "", localidad = "", musica = "";
+                    eventos = buscarEventos(events);
 
-                    if (!nombre.getText().toString().isEmpty()) {
-                        nom = nombre.getText().toString();
-                    }
-                    if (!localities.getSelectedItem().toString().equals("Localidad")) {
-                        localidad = localities.getSelectedItem().toString();
-                    }
-                    if (!musicTypes.getSelectedItem().toString().equals("Estilo musical")) {
-                        musica = musicTypes.getSelectedItem().toString();
-                    }
-                    Boolean added;
-                    for (Event event : events) {
-                        added = false;
-                        while (!added) {
-                            if (!nom.equals("")) {
-                                if (event.getName().contains(nom)) {
-                                    eventos.add(event);
-                                    break;
-                                }
-                            }
-                            if (!localidad.equals("")) {
-                                if (event.getLocality().equals(localidad)) {
-                                    eventos.add(event);
-                                    break;
-                                }
-                            }
-                            if (!musica.equals("")) {
-                                if (event.getMusic_type().equals(musica)) {
-                                    eventos.add(event);
-                                    break;
-                                }
-                            }
-
-                            if (activarGPS.isChecked() && permisosYaOtorgados()) {
-                                GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-                                Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11, numeroKilometros.getText().toString().length())) * 1000;
-                                if (gpsTracker.getLocation() != null) {
-                                    Location locationUser = gpsTracker.getLocation();
-                                    Location locationEvent = new Location("evento");
-                                    String ubicacionEvento = event.getUbication();
-
-                                    ubicacionEvento = ubicacionEvento.replaceAll("lat/lng:", "");
-
-                                    ubicacionEvento = ubicacionEvento.substring(2, ubicacionEvento.length() - 1);
-
-                                    String[] latLong = ubicacionEvento.split(",");
-
-                                    locationEvent.setLatitude(Float.parseFloat(latLong[0]));
-
-                                    locationEvent.setLongitude(Float.parseFloat(latLong[1]));
-
-                                    Float distancia = locationUser.distanceTo(locationEvent);
-
-                                    if (distancia <= distanciaMaxima) {
-                                        eventos.add(event);
-                                        break;
-                                    }
-                                }
-                            }
-                            added = true;
-                        }
-                    }
                     if (eventos.isEmpty()) {
                         AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                         alertDialog.setTitle("Vaya...");
@@ -306,41 +245,66 @@ public class BuscarEventoFragment extends Fragment {
                     eventosFiltrados.add(event);
                 }
 
-            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
+            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && !buscarDistancia) {
 
                 if(event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento)){
                     eventosFiltrados.add(event);
                 }
 
-            } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && !buscarDistancia) {
+            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
                 if(event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
-            } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && !buscarDistancia) {
+            } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && !buscarDistancia) {
 
                 if (event.getLocality().equals(localidadEvento)){
                     eventosFiltrados.add(event);
                 }
 
-            } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
+            } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
 
+                if (event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento)){
+                    eventosFiltrados.add(event);
+                }
 
 
             } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
-
+                if (event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
 
             } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && !buscarDistancia) {
 
+                if (event.getMusic_type().equals(musicaEvento)){
+                    eventosFiltrados.add(event);
+                }
+
             } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
-            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && !buscarDistancia) {
+                if (event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
+
+            } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
+
+                if (event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
 
             } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
+                if(event.getName().contains(nombreEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
+
             } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
+
+                if (estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
 
             }
 
