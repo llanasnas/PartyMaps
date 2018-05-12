@@ -56,15 +56,11 @@ public class ListUsers extends Fragment implements AdapterView.OnItemClickListen
         mSearchView = view.findViewById(R.id.searchView);
         listView.setTextFilterEnabled(true);
         setupSearchView();
-        if(getArguments().getString("activity").equals("bundle")){
-            setSeguidos();
-        }else{
-            setAllUsers();
-        }
+        setUsers();
         
         return view;
     }
-    private void setSeguidos(){
+    private void setUsers(){
 
         users = getArguments().getParcelableArrayList("users");
         userAdapter = new UserAdapter(getActivity(),getActivity().getApplicationContext(),users);
@@ -72,27 +68,6 @@ public class ListUsers extends Fragment implements AdapterView.OnItemClickListen
 
     }
 
-    private void setAllUsers(){
-
-        db.collection("Users").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for (DocumentSnapshot document : task.getResult()){
-                        if(!document.getId().equals(mAuth.getUid())) {
-                            User user = new User(document.getString("name"), document.getString("mail"), document.getString("date"));
-                            user.setUid(document.getId());
-                            users.add(user);
-                        }
-                    }
-
-                    userAdapter = new UserAdapter(getActivity(),getActivity().getApplicationContext(),users);
-                    listView.setAdapter(userAdapter);
-                }
-            }
-        });
-
-    }
     private void setupSearchView()
     {
         mSearchView.setIconifiedByDefault(false);

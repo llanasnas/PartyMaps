@@ -24,6 +24,7 @@ import com.example.albert.partymaps.Fragment.ListFragment;
 import com.example.albert.partymaps.Fragment.ProfileFragment;
 import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
+import com.example.albert.partymaps.Util.UserAdapter;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -210,12 +211,26 @@ public class Main2Activity extends AppCompatActivity
 
         }else if (id == R.id.usuarios) {
 
+            db.collection("Users").orderBy("name").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        for (DocumentSnapshot document : task.getResult()){
+                                User user = new User(document.getString("name"), document.getString("mail"), document.getString("date"));
+                                user.setUid(document.getId());
+                                users.add(user);
 
-            Bundle bundle = new Bundle();
-            bundle.putString("activity",getClass().getSimpleName());
-            Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
-            intent.putExtras(bundle);
-            startActivity(intent);
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelableArrayList("users",users);
+                        bundle.putString("activity","all");
+                        Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                }
+            });
+
 
         }else if (id == R.id.nav_amigos) {
 

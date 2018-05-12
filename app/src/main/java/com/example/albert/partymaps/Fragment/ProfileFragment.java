@@ -164,11 +164,10 @@ public class ProfileFragment extends Fragment {
                     showEvents(user.getUid());
                 }
             });
-            media = 0.0;
-            count = 0;
+
             getRateValue(user.getUid());
             isFollowing();
-        
+
             dataNaixement.setText(user.getDate());
             storageReference.child("images/profile/" + user.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
