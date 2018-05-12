@@ -43,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class ProfileFragment extends Fragment {
     public TextView nomUsuari;
     public TextView correuUsuari;
     public TextView rateValue;
-    public long media = 0;
+    public Double media = 0.0;
     public int count = 0;
     public TextView dataNaixement;
     private Button followButton;
@@ -73,6 +74,7 @@ public class ProfileFragment extends Fragment {
     private TextView seguidoresTV;
     public TextView numEventos;
     public TextView eventosTV;
+    public int valoraciones = 0;
     public boolean seguido = false;
     public User user;
     FirebaseStorage storage;
@@ -162,7 +164,7 @@ public class ProfileFragment extends Fragment {
                     showEvents(user.getUid());
                 }
             });
-            media = 0;
+            media = 0.0;
             count = 0;
             getRateValue(user.getUid());
             isFollowing();
@@ -219,21 +221,22 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
-    public void showFollowers(String uid){
+
+    public void showFollowers(String uid) {
 
         db.collection("Users").document(uid).collection("seguidores").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
 
-                    for(DocumentSnapshot document: task.getResult()){
+                    for (DocumentSnapshot document : task.getResult()) {
 
 
                         db.collection("Users").document(document.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if(task.isSuccessful()) {
+                                if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     User user = new User(document.getString("name"), document.getString("mail"), document.getString("date"));
                                     user.setUid(document.getId());
@@ -242,7 +245,7 @@ public class ProfileFragment extends Fragment {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("activity", "profile");
                                 bundle.putParcelableArrayList("users", users);
-                                Intent intent = new Intent(getActivity(),UsersListActivity.class);
+                                Intent intent = new Intent(getActivity(), UsersListActivity.class);
                                 intent.putExtras(bundle);
                                 startActivity(intent);
 
@@ -291,12 +294,10 @@ public class ProfileFragment extends Fragment {
                     ListFragment fragment = new ListFragment();
                     fragment.setArguments(bundle);
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    if(getActivity().getClass().getSimpleName().equals("UsersListActivity")){
-
+                    if (getActivity().getClass().getSimpleName().equals("UsersListActivity")) {
                         ft.replace(R.id.userList, fragment);
                         ft.addToBackStack(null).commit();
-
-                    }else {
+                    } else {
                         ft.replace(R.id.main, fragment);
                         ft.addToBackStack(null).commit();
                     }
@@ -331,7 +332,7 @@ public class ProfileFragment extends Fragment {
                 openGallery();
             }
         });
-        media = 0;
+        media = 0.0;
         count = 0;
         getRateValue(mAuth.getUid());
         storageReference.child("images/profile/" + mAuth.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -416,34 +417,33 @@ public class ProfileFragment extends Fragment {
 
 
     public void getRateValue(String uid) {
-
-
-        db.collection("Events").whereEqualTo("event_maker", uid).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        valoraciones = 0;
+        db.collection("Events").whereEqualTo("event_maker", uid).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
 
-                for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
+                    for (final DocumentSnapshot doc : task.getResult().getDocuments()) {
 
-                    db.collection("Events").document(document.getId()).collection("rate").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                            for (DocumentSnapshot document : queryDocumentSnapshots.getDocuments()) {
-                                media = document.getLong("value");
-                                count++;
-                            }
-                            if (count != 0) {
-                                media = media / count;
-                                rateValue.setText(String.valueOf(media));
-                            }
-                        }
-                    });
+                        db.collection("Events").document(doc.getId()).collection("rate").get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        valoraciones=  valoraciones + task.getResult().size();
+                                        rateValue.setText(String.valueOf(valoraciones));
+                                        if (task.isSuccessful()) {
+                                            for (DocumentSnapshot document : task.getResult()) {
+                                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                            }
+                                        } else {
+                                            Log.d(TAG, "Error getting subcollection.", task.getException());
+                                        }
+                                    }
+                                });
+                    }
                 }
-
-
             }
         });
-
-
     }
 
     @Override

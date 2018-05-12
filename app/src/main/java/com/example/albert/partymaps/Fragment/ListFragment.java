@@ -262,7 +262,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().
-                    replace(R.id.main, descriptionFragment).
+                    replace(R.id.userList, descriptionFragment).
                     commit();
 
         }
