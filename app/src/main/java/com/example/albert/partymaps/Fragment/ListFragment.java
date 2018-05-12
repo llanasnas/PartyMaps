@@ -148,7 +148,6 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             }
         }
         return view;
-
     }
 
     @Override

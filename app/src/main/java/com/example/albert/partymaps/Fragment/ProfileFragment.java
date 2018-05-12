@@ -291,8 +291,15 @@ public class ProfileFragment extends Fragment {
                     ListFragment fragment = new ListFragment();
                     fragment.setArguments(bundle);
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.replace(R.id.main, fragment);
-                    ft.addToBackStack(null).commit();
+                    if(getActivity().getClass().getSimpleName().equals("UsersListActivity")){
+
+                        ft.replace(R.id.userList, fragment);
+                        ft.addToBackStack(null).commit();
+
+                    }else {
+                        ft.replace(R.id.main, fragment);
+                        ft.addToBackStack(null).commit();
+                    }
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), "adsfja", Toast.LENGTH_LONG).show();
                 }
