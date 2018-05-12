@@ -1,11 +1,13 @@
 package com.example.albert.partymaps.Activity;
 
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -158,6 +160,10 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                 }
                 if(!date){datePicker.setError("Debes asignar una fecha");}
                 if(!time){timePicker.setError("Debes asignar una hora");}
+                if (checkDatePast(datePicker.getText().toString())){
+                    datePicker.setError("No puedes crear eventos en el pasado");
+                }
+
 
 
                 if(coord&&nombre&&descripcion&date&&time&&musicType){
@@ -301,6 +307,24 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
     }
 
 
+    private boolean checkDatePast(String date){
+
+        Date dateCheck = new Date();
+        Date dateActu = new Date();
+        SimpleDateFormat format=new SimpleDateFormat("dd/MM/yyyy");
+        Calendar fechaActu = Calendar.getInstance();
+        try {
+            dateCheck = format.parse(date);
+            if (dateCheck.before(fechaActu.getTime())){
+                return true;
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 
     private boolean isEmpty(String nombre){
@@ -379,7 +403,7 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
             month++;
-            String dia,mes;     
+            String dia,mes;
             if(day<10){
                 dia = "0" + day;
             }else{
@@ -397,17 +421,29 @@ public class CrearEventoActivity extends AppCompatActivity implements OnMapReady
                 Date now = new Date();
                 Date eventDate = format.parse(fecha);
                 if(!eventDate.after(now)){
-                    datePicker.setError("No se aceptan fechas antiguas");
+                    datePicker.setText("");
+                    final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                    alertDialog.setTitle("Espera McFly...");
+                    alertDialog.setMessage("No se pueden crear eventos en el pasado");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Aceptar",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    datePicker.setText("");
+                                }
+                            });
+                    alertDialog.show();
                 }else{
                     date=true;
+                    evento.setDate(fecha);
+                    datePicker.setText(fecha);
 
                 }
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            evento.setDate(fecha);
-            datePicker.setText(fecha);
+
         }
     }
     public static void takePos(LatLng latLng){
