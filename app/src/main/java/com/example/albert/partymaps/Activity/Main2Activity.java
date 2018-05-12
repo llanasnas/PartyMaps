@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.Fragment.ListFragment;
@@ -46,7 +47,19 @@ public class Main2Activity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Inicio");
+        db.collection("Users").document(FirebaseAuth.getInstance().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
+                DocumentSnapshot doc = task.getResult();
+                NavigationView mnavigationView = (NavigationView) findViewById(R.id.nav_view);
+                View header = mnavigationView.getHeaderView(0);
+                TextView nameNavigation = (TextView) header.findViewById(R.id.nom_navigation);
+                TextView emailNavigation = (TextView) header.findViewById(R.id.email_navigation);
+                nameNavigation.setText(doc.getString("name"));
+                emailNavigation.setText(doc.getString("mail"));
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
