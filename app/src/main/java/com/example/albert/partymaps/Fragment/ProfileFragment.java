@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
     private Uri filePath;
     //Firebase
     public TextView nomUsuari;
-    public TextView correuUsuari;
+    
     public TextView rateValue;
     public Double media = 0.0;
     public int count = 0;
@@ -347,7 +347,6 @@ public class ProfileFragment extends Fragment {
 
                 DocumentSnapshot userData = task.getResult();
                 nomUsuari.setText(userData.getString("name"));
-                correuUsuari.setText(userData.getString("mail"));
                 dataNaixement.setText(userData.getString("date"));
             }
         });
