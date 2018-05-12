@@ -29,7 +29,6 @@ public class UsersListActivity extends AppCompatActivity {
         listUsers.setArguments(bundle);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().add(R.id.userList, listUsers).
-                addToBackStack(null).
                 commit();
 
 

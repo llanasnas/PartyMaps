@@ -98,7 +98,7 @@ public class ProfileFragment extends Fragment {
         storageReference = storage.getReference();
         nomUsuari = (TextView) view.findViewById(R.id.nom_usuari);
         rateValue = (TextView) view.findViewById(R.id.rateValue);
-        correuUsuari = (TextView) view.findViewById(R.id.correu_usuari);
+
         dataNaixement = (TextView) view.findViewById(R.id.fecha_usuari);
         numEventos = (TextView) view.findViewById(R.id.num_eventos);
         eventosTV = (TextView) view.findViewById(R.id.eventos_tv);
@@ -168,7 +168,7 @@ public class ProfileFragment extends Fragment {
             count = 0;
             getRateValue(user.getUid());
             isFollowing();
-            correuUsuari.setText(user.getMail());
+        
             dataNaixement.setText(user.getDate());
             storageReference.child("images/profile/" + user.getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
