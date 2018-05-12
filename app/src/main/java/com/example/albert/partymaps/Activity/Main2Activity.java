@@ -2,6 +2,7 @@ package com.example.albert.partymaps.Activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.albert.partymaps.Model.Event;
@@ -30,6 +32,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -37,6 +42,8 @@ public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ListFragment listFragment;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageReference = storage.getReference();
     ArrayList<User> users = new ArrayList<User>();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -56,10 +63,21 @@ public class Main2Activity extends AppCompatActivity
                 View header = mnavigationView.getHeaderView(0);
                 TextView nameNavigation = (TextView) header.findViewById(R.id.nom_navigation);
                 TextView emailNavigation = (TextView) header.findViewById(R.id.email_navigation);
+                final ImageView imatgePerfil = (ImageView) header.findViewById(R.id.imatge_navigation);
                 nameNavigation.setText(doc.getString("name"));
                 emailNavigation.setText(doc.getString("mail"));
+                storageReference.child("images/profile/" + FirebaseAuth.getInstance().getUid()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Picasso.get().load(task.getResult()).into(imatgePerfil);
+                        }
+                    }
+                });
             }
         });
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
