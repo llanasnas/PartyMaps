@@ -302,7 +302,7 @@ public class ProfileFragment extends Fragment {
                         ft.addToBackStack(null).commit();
                     }
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), "adsfja", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "No hay eventos", Toast.LENGTH_LONG).show();
                 }
             }
 

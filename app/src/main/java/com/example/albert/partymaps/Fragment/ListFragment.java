@@ -263,8 +263,8 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().
                     replace(R.id.userList, descriptionFragment).
+                    addToBackStack(null).
                     commit();
-
         }
 
     }
