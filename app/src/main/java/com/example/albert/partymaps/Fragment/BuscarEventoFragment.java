@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
@@ -45,7 +46,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BuscarEventoFragment extends Fragment {
+public class BuscarEventoFragment extends Fragment implements LocationListener{
 
     private ArrayList<Event> events = new ArrayList<Event>();
     private ArrayList<Event> eventos = new ArrayList<Event>();
@@ -193,8 +194,6 @@ public class BuscarEventoFragment extends Fragment {
 
                 android.support.v4.app.ActivityCompat.requestPermissions(getActivity(), new String[]{permission}, requestCode);
             }
-        } else {
-            Toast.makeText(getActivity(), "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -208,7 +207,6 @@ public class BuscarEventoFragment extends Fragment {
 
     private ArrayList<Event> buscarEventos(ArrayList<Event> eventosSinFiltrar) {
 
-        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
         Float distanciaMaxima = Float.parseFloat(numeroKilometros.getText().toString().substring(11, numeroKilometros.getText().toString().length())) * 1000;
 
         String nombreEvento = nombre.getText().toString();
@@ -241,7 +239,7 @@ public class BuscarEventoFragment extends Fragment {
 
             } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
 
-                if(event.getName().contains(nombreEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                if(event.getName().contains(nombreEvento) && estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
@@ -253,7 +251,7 @@ public class BuscarEventoFragment extends Fragment {
 
             } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
-                if(event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                if(event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
@@ -272,7 +270,7 @@ public class BuscarEventoFragment extends Fragment {
 
             } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
-                if (event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                if (event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
@@ -284,25 +282,25 @@ public class BuscarEventoFragment extends Fragment {
 
             } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
-                if (event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                if (event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
             } else if (!nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
 
-                if (event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                if (event.getName().contains(nombreEvento) && event.getLocality().equals(localidadEvento) && estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
             } else if (!nombreEvento.isEmpty() && localidadEvento.isEmpty() && !musicaEvento.isEmpty() && buscarDistancia) {
 
-                if(event.getName().contains(nombreEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                if(event.getName().contains(nombreEvento) && event.getMusic_type().equals(musicaEvento) && estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
             } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
 
-                if (estaEnDistanciaCorrecta(gpsTracker, event.getUbication(), distanciaMaxima)){
+                if (estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
@@ -316,11 +314,15 @@ public class BuscarEventoFragment extends Fragment {
     }
 
 
-    public boolean estaEnDistanciaCorrecta(GPSTracker gps, String distanciaEvento, Float distanciaMaxima){
+    public boolean estaEnDistanciaCorrecta(String distanciaEvento, Float distanciaMaxima){
 
-        if(gps !=null){
+        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
 
-            Location locationUser = gps.getLocation();
+
+            Location locationUser = gpsTracker.getLocation();
+            if (locationUser == null) {
+                return false;
+            }
             Location locationEvent = new Location("evento");
             String ubicacionEvento = distanciaEvento;
 
@@ -341,9 +343,26 @@ public class BuscarEventoFragment extends Fragment {
             }
 
 
-
-        }
-
         return false;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }
