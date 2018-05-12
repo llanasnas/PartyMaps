@@ -54,6 +54,7 @@ public class Main2Activity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Inicio");
+        getSeguidores();
         db.collection("Users").document(FirebaseAuth.getInstance().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -155,6 +156,34 @@ public class Main2Activity extends AppCompatActivity
         startActivity(getIntent());
     }
 
+    private void getSeguidores(){
+        db.collection("Users").document(FirebaseAuth.getInstance().getUid()).collection("seguidos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+
+                    for(DocumentSnapshot document: task.getResult()){
+
+
+                        db.collection("Users").document(document.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if(task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    User user = new User(document.getString("name"), document.getString("mail"), document.getString("date"));
+                                    user.setUid(document.getId());
+                                    users.add(user);
+                                }
+
+                            }
+                        });
+                    }
+
+                }
+            }
+        });
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -187,37 +216,12 @@ public class Main2Activity extends AppCompatActivity
         }else if (id == R.id.nav_amigos) {
 
 
-            db.collection("Users").document(FirebaseAuth.getInstance().getUid()).collection("seguidos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if(task.isSuccessful()){
-
-                        for(DocumentSnapshot document: task.getResult()){
-
-
-                            db.collection("Users").document(document.getId()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if(task.isSuccessful()) {
-                                        DocumentSnapshot document = task.getResult();
-                                        User user = new User(document.getString("name"), document.getString("mail"), document.getString("date"));
-                                        user.setUid(document.getId());
-                                        users.add(user);
-                                    }
-                                    Bundle bundle = new Bundle();
-                                    bundle.putParcelableArrayList("users",users);
-                                    bundle.putString("seguidos","seguidos");
-                                    Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
-                                    intent.putExtras(bundle);
-                                    startActivity(intent);
-
-                                }
-                            });
-                        }
-
-                    }
-                }
-            });
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("users",users);
+            bundle.putString("seguidos","seguidos");
+            Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
 
 
         }else if (id == R.id.favoritos) {
