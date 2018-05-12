@@ -79,11 +79,12 @@ public class Main2Activity extends AppCompatActivity
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_addeve);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getBaseContext(), CrearEventoActivity.class);
+                startActivity(intent);
             }
         });
 

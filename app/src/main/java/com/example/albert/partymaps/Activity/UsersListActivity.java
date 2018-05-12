@@ -2,6 +2,7 @@ package com.example.albert.partymaps.Activity;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -53,11 +54,12 @@ public class UsersListActivity extends AppCompatActivity implements AdapterView.
         listView.setOnItemClickListener(this);
         mSearchView = findViewById(R.id.searchView);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_addeve);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getBaseContext(), CrearEventoActivity.class);
+                startActivity(intent);
             }
         });
         listView.setTextFilterEnabled(true);
