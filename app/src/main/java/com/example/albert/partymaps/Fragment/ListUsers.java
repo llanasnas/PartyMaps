@@ -56,9 +56,7 @@ public class ListUsers extends Fragment implements AdapterView.OnItemClickListen
         mSearchView = view.findViewById(R.id.searchView);
         listView.setTextFilterEnabled(true);
         setupSearchView();
-        if (getArguments().getString("seguidos").equals("seguidos")) {
-            setSeguidos();
-        }else if(getArguments().getString("activity").equals("profile")){
+        if(getArguments().getString("activity").equals("bundle")){
             setSeguidos();
         }else{
             setAllUsers();

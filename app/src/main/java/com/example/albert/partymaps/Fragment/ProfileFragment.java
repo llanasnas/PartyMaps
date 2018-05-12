@@ -243,8 +243,7 @@ public class ProfileFragment extends Fragment {
                                     users.add(user);
                                 }
                                 Bundle bundle = new Bundle();
-                                bundle.putString("activity", "profile");
-                                bundle.putString("seguidos", "profile");
+                                bundle.putString("activity","bundle");
                                 bundle.putParcelableArrayList("users", users);
                                 Intent intent = new Intent(getActivity(), UsersListActivity.class);
                                 intent.putExtras(bundle);
@@ -253,13 +252,10 @@ public class ProfileFragment extends Fragment {
                             }
                         });
                     }
-
                 }
 
             }
         });
-
-
     }
 
     public void setSeguidores(String uid) {

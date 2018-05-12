@@ -212,7 +212,7 @@ public class Main2Activity extends AppCompatActivity
 
 
             Bundle bundle = new Bundle();
-            bundle.putString("seguidos",getClass().getSimpleName());
+            bundle.putString("activity",getClass().getSimpleName());
             Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);
@@ -222,7 +222,7 @@ public class Main2Activity extends AppCompatActivity
 
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("users",users);
-            bundle.putString("seguidos","seguidos");
+            bundle.putString("activity","bundle");
             Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);

@@ -51,8 +51,11 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
     @Override
     public void onPause() {
         super.onPause();
-        eventos.clear();
-        events.clear();
+
+            eventos.clear();
+            events.clear();
+
+
         if (adapter != null){
             adapter.notifyDataSetChanged();
             getEvents();
@@ -129,7 +132,9 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
             }
 
         }else if(activity.equals("profile")){
-            events = getArguments().getParcelableArrayList("events");
+            if(events.isEmpty()){
+                events = getArguments().getParcelableArrayList("events");
+            }
             if (events.isEmpty()) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
                 alertDialog.setTitle("Un momento...");
@@ -256,7 +261,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     replace(R.id.favoritos, descriptionFragment).
                     commit();
 
-        }else if(activity.equals("profile")){
+        }else {
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.userList, descriptionFragment).
