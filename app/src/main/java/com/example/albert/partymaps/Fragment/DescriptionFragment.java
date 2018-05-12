@@ -284,7 +284,8 @@ public class DescriptionFragment extends Fragment {
         TextView fecha = (TextView) view.findViewById(R.id.date_description);
 
 
-
+        TextView tipoMusica = view.findViewById(R.id.musicStyle);
+        tipoMusica.setText(event.getMusic_type());
         name.setText(event.getName());
         toolbar.setTitle(event.getName());
         description.setText(event.getDescription());
