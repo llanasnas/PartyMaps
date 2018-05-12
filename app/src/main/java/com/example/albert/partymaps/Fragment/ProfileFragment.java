@@ -244,6 +244,7 @@ public class ProfileFragment extends Fragment {
                                 }
                                 Bundle bundle = new Bundle();
                                 bundle.putString("activity", "profile");
+                                bundle.putString("seguidos", "profile");
                                 bundle.putParcelableArrayList("users", users);
                                 Intent intent = new Intent(getActivity(), UsersListActivity.class);
                                 intent.putExtras(bundle);

@@ -210,7 +210,11 @@ public class Main2Activity extends AppCompatActivity
 
         }else if (id == R.id.usuarios) {
 
+
+            Bundle bundle = new Bundle();
+            bundle.putString("seguidos",getClass().getSimpleName());
             Intent intent = new Intent(getBaseContext(),UsersListActivity.class);
+            intent.putExtras(bundle);
             startActivity(intent);
 
         }else if (id == R.id.nav_amigos) {
