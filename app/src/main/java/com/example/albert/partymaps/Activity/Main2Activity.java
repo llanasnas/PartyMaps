@@ -2,11 +2,14 @@ package com.example.albert.partymaps.Activity;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +22,8 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.albert.partymaps.Model.Event;
 import com.example.albert.partymaps.Fragment.ListFragment;
 import com.example.albert.partymaps.Fragment.ProfileFragment;
@@ -26,6 +31,7 @@ import com.example.albert.partymaps.Model.User;
 import com.example.albert.partymaps.R;
 import com.example.albert.partymaps.Util.UserAdapter;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.fido.fido2.api.common.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -72,7 +78,16 @@ public class Main2Activity extends AppCompatActivity
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         if (task.isSuccessful()) {
-                            Picasso.get().load(task.getResult()).into(imatgePerfil);
+                            //Picasso.get().load(task.getResult()).into(imatgePerfil);
+                            Glide.with(getApplicationContext()).load(task.getResult()).asBitmap().centerCrop().into(new BitmapImageViewTarget(imatgePerfil) {
+                                @Override
+                                protected void setResource(Bitmap resource) {
+                                    RoundedBitmapDrawable circularBitmapDrawable =
+                                            RoundedBitmapDrawableFactory.create(getApplicationContext().getResources(), resource);
+                                    circularBitmapDrawable.setCircular(true);
+                                    imatgePerfil.setImageDrawable(circularBitmapDrawable);
+                                }
+                            });
                         }
                     }
                 });
