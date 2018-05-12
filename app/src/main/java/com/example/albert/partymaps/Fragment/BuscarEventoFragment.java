@@ -263,7 +263,7 @@ public class BuscarEventoFragment extends Fragment implements LocationListener{
 
             } else if (nombreEvento.isEmpty() && !localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
 
-                if (event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento)){
+                if (event.getLocality().equals(localidadEvento) && estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
                     eventosFiltrados.add(event);
                 }
 
@@ -301,6 +301,12 @@ public class BuscarEventoFragment extends Fragment implements LocationListener{
             } else if (nombreEvento.isEmpty() && localidadEvento.isEmpty() && musicaEvento.isEmpty() && buscarDistancia) {
 
                 if (estaEnDistanciaCorrecta(event.getUbication(), distanciaMaxima)){
+                    eventosFiltrados.add(event);
+                }
+
+            }else if(nombreEvento.isEmpty() && !localidadEvento.isEmpty() && !musicaEvento.isEmpty() && !buscarDistancia){
+
+                if (event.getLocality().equals(localidadEvento) && event.getMusic_type().equals(musicaEvento)){
                     eventosFiltrados.add(event);
                 }
 
