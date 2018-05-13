@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.albert.partymaps.Activity.Main2Activity;
 import com.example.albert.partymaps.Activity.RegisterActivity;
 import com.example.albert.partymaps.Activity.UsersListActivity;
@@ -63,7 +67,7 @@ public class ProfileFragment extends Fragment {
     private Uri filePath;
     //Firebase
     public TextView nomUsuari;
-    
+
     public TextView rateValue;
     public Double media = 0.0;
     public int count = 0;
@@ -285,15 +289,18 @@ public class ProfileFragment extends Fragment {
                     }
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("activity", "profile");
                     bundle.putParcelableArrayList("events", events);
                     ListFragment fragment = new ListFragment();
-                    fragment.setArguments(bundle);
+
                     final FragmentTransaction ft = getFragmentManager().beginTransaction();
                     if (getActivity().getClass().getSimpleName().equals("UsersListActivity")) {
+                        bundle.putString("activity", "profile");
+                        fragment.setArguments(bundle);
                         ft.replace(R.id.userList, fragment);
                         ft.addToBackStack(null).commit();
                     } else {
+                        bundle.putString("activity", "Main2Activity");
+                        fragment.setArguments(bundle);
                         ft.replace(R.id.main, fragment);
                         ft.addToBackStack(null).commit();
                     }

@@ -131,7 +131,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                 listView.setAdapter(adapter);
             }
 
-        }else if(activity.equals("profile")){
+        }else if(activity.equals("profile")||activity.equals("main")){
             if(events.isEmpty()){
                 events = getArguments().getParcelableArrayList("events");
             }
@@ -261,7 +261,7 @@ public class ListFragment extends Fragment implements AdapterView.OnItemClickLis
                     replace(R.id.favoritos, descriptionFragment).
                     commit();
 
-        }else {
+        } else {
 
             FragmentManager fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.userList, descriptionFragment).
